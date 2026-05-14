@@ -5,9 +5,9 @@ import { useMemo, useState } from "react";
 import {
   ActionButton,
   CopyButton,
+  DropdownField,
   FieldLabel,
   SectionCard,
-  SelectField,
   StatusBanner,
   TextareaField,
   ToolGrid,
@@ -16,6 +16,10 @@ import {
 import { formatJson } from "@/lib/tool-helpers";
 
 const sampleJson = `{"name":"Developer Tools Hub","tools":["json","jwt","regex"],"premium":true}`;
+const indentOptions = [
+  { label: "2 spaces", value: "2" },
+  { label: "4 spaces", value: "4" },
+] as const;
 
 export default function JsonFormatterTool() {
   const [input, setInput] = useState(sampleJson);
@@ -47,6 +51,7 @@ export default function JsonFormatterTool() {
   return (
     <ToolGrid>
       <SectionCard
+        className="relative z-20 overflow-visible"
         title="Input JSON"
         description="Paste a JSON payload, then use Ctrl + Shift + C to copy formatted output or Ctrl + Backspace to clear."
       >
@@ -57,18 +62,23 @@ export default function JsonFormatterTool() {
           spellCheck={false}
         />
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <div className="w-32">
+        <div className="mt-4 flex flex-wrap items-end gap-3">
+          <div className="w-full sm:w-44">
             <FieldLabel label="Indent" />
-            <SelectField value={space} onChange={(event) => setSpace(event.target.value)}>
-              <option value="2">2 spaces</option>
-              <option value="4">4 spaces</option>
-            </SelectField>
+            <DropdownField
+              value={space}
+              options={[...indentOptions]}
+              onChange={setSpace}
+            />
           </div>
-          <ActionButton variant="ghost" onClick={() => setInput(sampleJson)}>
+          <ActionButton
+            className="self-end"
+            variant="ghost"
+            onClick={() => setInput(sampleJson)}
+          >
             Load example
           </ActionButton>
-          <ActionButton variant="ghost" onClick={() => setInput("")}>
+          <ActionButton className="self-end" variant="ghost" onClick={() => setInput("")}>
             Clear
           </ActionButton>
         </div>
@@ -78,7 +88,7 @@ export default function JsonFormatterTool() {
         title="Formatted output"
         description="Syntax is validated before formatting so you can spot malformed payloads quickly."
       >
-        <div className="flex items-center justify-between gap-3">
+        <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Pretty JSON" />
           <CopyButton value={result.output} />
         </div>

@@ -33,7 +33,7 @@ export default function UuidGeneratorTool() {
         title="UUID generator"
         description="Generate RFC 4122 UUID v4 values with the browser crypto API."
       >
-        <div className="grid gap-4 sm:grid-cols-[180px_1fr] sm:items-end">
+        <div className="grid gap-4 sm:grid-cols-[180px_1fr] sm:items-start">
           <div>
             <FieldLabel label="How many UUIDs?" />
             <DropdownField
@@ -46,7 +46,7 @@ export default function UuidGeneratorTool() {
             />
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3 sm:pt-9">
             <ActionButton
               variant="secondary"
               onClick={() => setUuids(generateUuids(Number(count)))}

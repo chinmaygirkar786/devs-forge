@@ -81,7 +81,7 @@ export default function JwtDecoderTool() {
         title="Decoded token"
         description="Review standard claims like issuer, subject, issued at, and expiration."
       >
-        <div className="flex items-center justify-between gap-3">
+        <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Decoded JSON" />
           <CopyButton value={output} />
         </div>

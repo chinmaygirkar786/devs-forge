@@ -30,9 +30,9 @@ export default function ColorPaletteGeneratorTool() {
   async function copySwatchColor(value: string, label: string) {
     try {
       await navigator.clipboard.writeText(value);
-      setToastMessage(`Copied ${label} swatch ${value} to your clipboard.`);
+      setToastMessage(`Copied ${label} color swatch (${value}) to your clipboard.`);
     } catch {
-      setToastMessage(`Could not copy ${value}. Please try again.`);
+      setToastMessage(`Couldn't copy color swatch ${value}. Please try again.`);
     }
   }
 
@@ -49,7 +49,7 @@ export default function ColorPaletteGeneratorTool() {
               type="color"
               value={color}
               onChange={(event) => setColor(event.target.value.toUpperCase())}
-              className="h-12 w-16 rounded-2xl border border-border bg-transparent"
+              className="h-12 w-16 rounded-2xl border border-border bg-transparent cursor-pointer"
             />
             <InputField
               value={color}
@@ -72,7 +72,9 @@ export default function ColorPaletteGeneratorTool() {
               variant="ghost"
               onClick={() =>
                 setColor(
-                  starterColors[Math.floor(Math.random() * starterColors.length)] ?? "#4F46E5",
+                  starterColors[
+                    Math.floor(Math.random() * starterColors.length)
+                  ] ?? "#4F46E5",
                 )
               }
             >

@@ -51,9 +51,15 @@ export default function MarkdownPreviewerTool() {
           <FieldLabel label="Markdown input" />
           <CopyButton value={input} label="Copy markdown" />
         </div>
-        <TextareaField value={input} onChange={(event) => setInput(event.target.value)} />
+        <TextareaField
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+        />
         <div className="mt-4 flex flex-wrap gap-3">
-          <ActionButton variant="ghost" onClick={() => setInput(sampleMarkdown)}>
+          <ActionButton
+            variant="ghost"
+            onClick={() => setInput(sampleMarkdown)}
+          >
             Load example
           </ActionButton>
           <ActionButton variant="ghost" onClick={() => setInput("")}>
@@ -67,7 +73,9 @@ export default function MarkdownPreviewerTool() {
         description="Use this to validate README content, docs sections, or release notes before publishing."
       >
         <div className="prose-output min-h-[220px] rounded-3xl border border-border bg-background px-5 py-4">
-          <ReactMarkdown>{input || "Start typing Markdown to preview it here."}</ReactMarkdown>
+          <ReactMarkdown>
+            {input || "Start typing Markdown to preview it here."}
+          </ReactMarkdown>
         </div>
       </SectionCard>
     </ToolGrid>
