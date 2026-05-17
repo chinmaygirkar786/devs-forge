@@ -1,6 +1,6 @@
-import { toolCategories, tools } from "@/tools";
+import { toolCategories, toolSlugs, tools } from "@/tools";
 
-export { toolCategories, tools } from "@/tools";
+export { toolCategories, toolSlugs, tools } from "@/tools";
 export type { ToolCategory, ToolDefinition, ToolExample } from "@/tools";
 
 export function getAllTools() {

@@ -43,6 +43,13 @@
 - Confirmed `npm run lint` passes.
 - Confirmed `npm run build` passes with statically generated homepage and tool routes.
 
+## Step 8 - Cloudflare deployment routing fix
+- Fixed tool routes returning 404 on Cloudflare by removing `dynamicParams = false`, which breaks dynamic route handling in `@opennextjs/cloudflare`.
+- Added explicit static generation for tool pages and per-tool Open Graph images.
+- Added `public/_routes.json` so non-static paths like `/tools/*` are handled by the Worker instead of falling through to a missing static file.
+- Added Cloudflare build scripts (`cf:build`, `cf:preview`, `cf:deploy`) and declared `@opennextjs/cloudflare` + `wrangler` dependencies.
+- Cloudflare deploy must run `npm run cf:build` (or `npm run cf:deploy`), not plain `next build` alone.
+
 ## Step 7 - UI polish and stability fixes
 - Added `cursor-pointer` affordances to the theme toggle buttons and the navbar search trigger so interactive controls feel clickable.
 - Fixed a React/Next client rendering warning by replacing the inline theme bootstrap `<script>` in `src/app/layout.tsx` with `next/script`.

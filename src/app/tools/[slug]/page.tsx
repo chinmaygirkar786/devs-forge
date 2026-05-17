@@ -5,12 +5,12 @@ import { SEOHead } from "@/components/SEOHead";
 import { ToolLayout } from "@/components/ToolLayout";
 import { ToolPageClient } from "@/components/ToolPageClient";
 import { buildToolJsonLd, buildToolMetadata } from "@/lib/seo";
-import { getRelatedTools, getToolBySlug, tools } from "@/lib/tools";
+import { getRelatedTools, getToolBySlug, toolSlugs } from "@/lib/tools";
 
-export const dynamicParams = false;
+export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return tools.map((tool) => ({ slug: tool.slug }));
+  return toolSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

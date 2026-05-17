@@ -4,7 +4,8 @@
   "name": "devs-forge",
   "compatibility_date": "2026-05-17",
   "compatibility_flags": [
-    "nodejs_compat"
+    "nodejs_compat",
+    "global_fetch_strictly_public"
   ],
   "assets": {
     "directory": ".open-next/assets",

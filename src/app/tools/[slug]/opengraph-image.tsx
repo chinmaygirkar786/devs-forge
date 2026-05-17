@@ -1,6 +1,12 @@
 import { ImageResponse } from "next/og";
 
-import { getToolBySlug } from "@/lib/tools";
+import { getToolBySlug, toolSlugs } from "@/lib/tools";
+
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  return toolSlugs.map((slug) => ({ slug }));
+}
 
 export const alt = "Developer tool preview";
 export const size = {
