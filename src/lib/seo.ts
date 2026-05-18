@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 
+import { getToolBySlug } from "@/lib/tools";
 import { siteConfig } from "@/lib/site";
 import type { ToolCategory, ToolDefinition } from "@/tools";
 import { toolCategories, tools } from "@/tools";
+
+const indexableRobots: Metadata["robots"] = {
+  index: true,
+  follow: true,
+  googleBot: {
+    index: true,
+    follow: true,
+  },
+};
 
 export function absoluteUrl(path = "") {
   return `${siteConfig.url}${path}`;
@@ -69,13 +79,14 @@ export function buildToolPageDescription(tool: ToolDefinition) {
 }
 
 export function buildToolMetadata(tool: ToolDefinition): Metadata {
-  const title = buildToolPageTitle(tool);
-  const description = buildToolPageDescription(tool);
+  const title = tool.metaTitle ?? buildToolPageTitle(tool);
+  const description = tool.metaDescription ?? buildToolPageDescription(tool);
   const url = absoluteUrl(`/tools/${tool.slug}`);
 
   return {
     title: absoluteTitle(`${title} | ${siteConfig.name}`),
     description,
+    robots: indexableRobots,
     keywords: [
       tool.keywordCluster.primary,
       ...tool.keywordCluster.secondary,
@@ -293,4 +304,9 @@ export function buildToolJsonLd(tool: ToolDefinition) {
 
 export function buildToolPageJsonLd(tool: ToolDefinition) {
   return buildToolJsonLd(tool);
+}
+
+export function getToolMetadataBySlug(slug: string): Metadata | null {
+  const tool = getToolBySlug(slug);
+  return tool ? buildToolMetadata(tool) : null;
 }
