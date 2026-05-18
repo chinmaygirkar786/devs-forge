@@ -25,6 +25,8 @@ export type ToolDefinition = {
   description: string;
   category: ToolCategory;
   popular?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
   keywordCluster: {
     primary: string;
     secondary: string[];

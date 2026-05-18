@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SEOHead } from "@/components/SEOHead";
 import { ToolLayout } from "@/components/ToolLayout";
 import { ToolPageClient } from "@/components/ToolPageClient";
-import { buildToolMetadata, buildToolPageJsonLd } from "@/lib/seo";
+import { buildToolPageJsonLd, getToolMetadataBySlug } from "@/lib/seo";
 import { getRelatedTools, getToolBySlug, toolSlugs } from "@/lib/tools";
 
 export const dynamic = "force-static";
@@ -25,7 +25,7 @@ export async function generateMetadata({
     return {};
   }
 
-  return buildToolMetadata(tool);
+  return getToolMetadataBySlug(slug) ?? {};
 }
 
 export default async function ToolPage({
