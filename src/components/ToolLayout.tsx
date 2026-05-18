@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import type { ToolDefinition } from "@/lib/tools";
 import { toolCategories } from "@/lib/tools";
 
@@ -12,11 +13,26 @@ type ToolLayoutProps = {
 export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
   return (
     <div className="page-fade">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Tools", href: "/tools" },
+          {
+            label: toolCategories[tool.category].title,
+            href: `/tools/category/${tool.category}`,
+          },
+          { label: tool.name },
+        ]}
+      />
+
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
         <div className="flex flex-wrap items-start gap-3">
-          <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap text-primary">
+          <Link
+            href={`/tools/category/${tool.category}`}
+            className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap text-primary hover:opacity-90"
+          >
             {toolCategories[tool.category].title}
-          </span>
+          </Link>
           <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-accent">
             {tool.keywordCluster.primary}
           </span>
@@ -27,6 +43,9 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
           {tool.description}
+        </p>
+        <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
+          {tool.seoIntro}
         </p>
       </section>
 
@@ -92,6 +111,30 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
           </div>
         </section>
       </div>
+
+      <section className="surface-card mt-8 rounded-3xl p-6">
+        <h2 className="text-2xl font-bold text-foreground">When to use this tool</h2>
+        <ul className="mt-5 space-y-3 text-sm leading-7 text-muted-foreground">
+          {tool.useCases.map((useCase) => (
+            <li key={useCase} className="flex gap-3">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <span>{useCase}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="surface-card mt-8 rounded-3xl p-6">
+        <h2 className="text-2xl font-bold text-foreground">Frequently asked questions</h2>
+        <div className="mt-5 space-y-6">
+          {tool.faqs.map((faq) => (
+            <div key={faq.question}>
+              <h3 className="text-base font-semibold text-foreground">{faq.question}</h3>
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

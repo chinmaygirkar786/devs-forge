@@ -1,36 +1,16 @@
-import type { ComponentType } from "react";
-
 import type { AffiliateContext } from "@/lib/affiliate";
 
-export type ToolCategory =
-  | "formatting"
-  | "conversion"
-  | "generators"
-  | "utilities";
+import { toolSeoContent } from "@/tools/seo-content";
+import type { ToolCategory, ToolDefinition } from "@/tools/types";
 
-export type ToolExample = {
-  title: string;
-  input?: string;
-  output?: string;
-};
+export type {
+  ToolCategory,
+  ToolDefinition,
+  ToolExample,
+  ToolFaq,
+} from "@/tools/types";
 
-export type ToolDefinition = {
-  slug: string;
-  name: string;
-  description: string;
-  category: ToolCategory;
-  popular?: boolean;
-  keywordCluster: {
-    primary: string;
-    secondary: string[];
-    longTail: string[];
-  };
-  howItWorks: string[];
-  examples: ToolExample[];
-  relatedSlugs: string[];
-  affiliateContext: AffiliateContext[];
-  loadComponent: () => Promise<{ default: ComponentType }>;
-};
+type ToolSeed = Omit<ToolDefinition, "seoIntro" | "useCases" | "faqs">;
 
 export const toolCategories: Record<
   ToolCategory,
@@ -58,7 +38,7 @@ export const toolCategories: Record<
   },
 };
 
-export const tools: ToolDefinition[] = [
+const toolSeeds: ToolSeed[] = [
   {
     slug: "json-formatter",
     name: "JSON Formatter & Validator",
@@ -356,7 +336,7 @@ export const tools: ToolDefinition[] = [
     examples: [
       {
         title: "Preview a README section",
-        input: "# Developer Tools Hub\n\n- Fast\n- SEO-first\n- Browser-only",
+        input: "# Devs Forge\n\n- Fast\n- Browser-only\n- Free tools",
       },
     ],
     relatedSlugs: ["html-formatter", "gradient-generator", "color-palette-generator"],
@@ -513,4 +493,11 @@ export const tools: ToolDefinition[] = [
   },
 ];
 
+export const tools: ToolDefinition[] = toolSeeds.map((tool) => ({
+  ...tool,
+  ...toolSeoContent[tool.slug],
+}));
+
 export const toolSlugs = tools.map((tool) => tool.slug);
+
+export const toolCategoryKeys = Object.keys(toolCategories) as ToolCategory[];

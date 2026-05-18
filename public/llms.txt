@@ -1,0 +1,29 @@
+# Devs Forge
+
+> Free browser-based developer tools at https://devs-forge.com
+
+Devs Forge provides online utilities for JSON formatting, JWT decoding, regex testing,
+Base64 conversion, UUID generation, HTML formatting, timestamp conversion, and more.
+All tools run locally in the user's browser.
+
+## Main pages
+
+- Home: https://devs-forge.com/
+- All tools: https://devs-forge.com/tools
+- About: https://devs-forge.com/about
+- Sitemap: https://devs-forge.com/sitemap.xml
+
+## Tool pages
+
+- JSON Formatter: https://devs-forge.com/tools/json-formatter
+- JWT Decoder: https://devs-forge.com/tools/jwt-decoder
+- Regex Tester: https://devs-forge.com/tools/regex-tester
+- Base64 Encoder: https://devs-forge.com/tools/base64-encoder
+- UUID Generator: https://devs-forge.com/tools/uuid-generator
+- Color Palette Generator: https://devs-forge.com/tools/color-palette-generator
+- Gradient Generator: https://devs-forge.com/tools/gradient-generator
+- Markdown Previewer: https://devs-forge.com/tools/markdown-previewer
+- URL Encoder: https://devs-forge.com/tools/url-encoder
+- HTML Formatter: https://devs-forge.com/tools/html-formatter
+- Timestamp Converter: https://devs-forge.com/tools/timestamp-converter
+- JSON to TypeScript: https://devs-forge.com/tools/json-to-typescript

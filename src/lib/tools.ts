@@ -1,7 +1,17 @@
-import { toolCategories, toolSlugs, tools } from "@/tools";
+import {
+  toolCategories,
+  toolCategoryKeys,
+  toolSlugs,
+  tools,
+} from "@/tools";
 
-export { toolCategories, toolSlugs, tools } from "@/tools";
-export type { ToolCategory, ToolDefinition, ToolExample } from "@/tools";
+export {
+  toolCategories,
+  toolCategoryKeys,
+  toolSlugs,
+  tools,
+} from "@/tools";
+export type { ToolCategory, ToolDefinition, ToolExample, ToolFaq } from "@/tools";
 
 export function getAllTools() {
   return tools;
@@ -36,9 +46,17 @@ export function getRelatedTools(slug: string, limit = 3) {
 }
 
 export function getToolsByCategory() {
-  return Object.entries(toolCategories).map(([key, value]) => ({
+  return toolCategoryKeys.map((key) => ({
     key,
-    ...value,
+    ...toolCategories[key],
     tools: tools.filter((tool) => tool.category === key),
   }));
+}
+
+export function getToolsForCategory(category: keyof typeof toolCategories) {
+  return tools.filter((tool) => tool.category === category);
+}
+
+export function isToolCategory(value: string): value is keyof typeof toolCategories {
+  return value in toolCategories;
 }

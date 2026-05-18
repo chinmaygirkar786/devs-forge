@@ -11,7 +11,7 @@ type ToolPageClientProps = {
 };
 
 const loadingFallback = () => (
-  <div className="surface-card rounded-3xl p-6 text-sm text-muted-foreground">
+  <div className="surface-card min-h-[280px] rounded-3xl p-6 text-sm text-muted-foreground">
     Loading interactive tool...
   </div>
 );
