@@ -33,28 +33,34 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
-              SEO-first developer productivity suite
+              Free online developer tools
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               {siteConfig.heroTitle}
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
-              Use premium-feeling online coding utilities for JSON formatting, JWT
-              decoding, regex testing, Base64 conversion, UUID generation, color
-              systems, timestamps, Markdown preview, and more. Every tool runs
-              locally in your browser for speed, privacy, and zero setup.
+              {siteConfig.name} is a free hub of browser-based coding utilities for
+              JSON formatting, JWT decoding, regex testing, Base64 conversion, UUID
+              generation, color systems, timestamps, Markdown preview, and more. Every
+              tool runs locally for speed, privacy, and zero setup.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/tools/json-formatter"
+                href="/tools"
                 className="rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background"
               >
-                Start with JSON Formatter
+                Browse all tools
+              </Link>
+              <Link
+                href="/tools/json-formatter"
+                className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground"
+              >
+                JSON Formatter
               </Link>
               <button
                 type="button"
-                className="rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground"
+                className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground"
               >
                 Press Ctrl + K to search
               </button>
@@ -92,7 +98,9 @@ export default function Home() {
               {category.title}
             </p>
             <h2 className="mt-3 text-2xl font-bold text-foreground">
-              {category.tools.length} tools
+              <Link href={`/tools/category/${category.key}`} className="hover:text-primary">
+                {category.tools.length} tools
+              </Link>
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
               {category.description}

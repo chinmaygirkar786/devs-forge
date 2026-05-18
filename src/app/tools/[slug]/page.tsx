@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SEOHead } from "@/components/SEOHead";
 import { ToolLayout } from "@/components/ToolLayout";
 import { ToolPageClient } from "@/components/ToolPageClient";
-import { buildToolJsonLd, buildToolMetadata } from "@/lib/seo";
+import { buildToolMetadata, buildToolPageJsonLd } from "@/lib/seo";
 import { getRelatedTools, getToolBySlug, toolSlugs } from "@/lib/tools";
 
 export const dynamic = "force-static";
@@ -42,7 +42,7 @@ export default async function ToolPage({
 
   return (
     <>
-      <SEOHead jsonLd={buildToolJsonLd(tool)} />
+      <SEOHead jsonLd={buildToolPageJsonLd(tool)} />
       <ToolLayout tool={tool} relatedTools={getRelatedTools(slug)}>
         <ToolPageClient slug={slug} />
       </ToolLayout>

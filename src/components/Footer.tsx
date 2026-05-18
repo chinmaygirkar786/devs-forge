@@ -18,6 +18,14 @@ export function Footer() {
           <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
             {siteConfig.description}
           </p>
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link href="/tools" className="font-medium text-foreground hover:text-primary">
+              All tools
+            </Link>
+            <Link href="/about" className="font-medium text-foreground hover:text-primary">
+              About
+            </Link>
+          </div>
         </div>
 
         <div>
@@ -39,11 +47,24 @@ export function Footer() {
 
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Built for SEO
+            Explore
           </h3>
           <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <li>Static generation for tool routes</li>
-            <li>Structured metadata and strong internal linking</li>
+            <li>
+              <Link href="/tools" className="hover:text-foreground">
+                Full tools directory
+              </Link>
+            </li>
+            <li>
+              <Link href="/tools/category/formatting" className="hover:text-foreground">
+                Formatting tools
+              </Link>
+            </li>
+            <li>
+              <Link href="/tools/category/utilities" className="hover:text-foreground">
+                Developer utilities
+              </Link>
+            </li>
             <li>Local-only workflows for speed and privacy</li>
           </ul>
         </div>

@@ -15,6 +15,7 @@ export const siteConfig = {
     "Use instant online utilities for JSON, JWTs, regex, timestamps, HTML, Markdown, colors, UUIDs, URLs, and more without leaving your workflow.",
   navigation: [
     { href: "/", label: "Home" },
+    { href: "/tools", label: "All Tools" },
     { href: "/#popular-tools", label: "Popular Tools" },
     { href: "/#categories", label: "Categories" },
   ],
