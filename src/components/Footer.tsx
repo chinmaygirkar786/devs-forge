@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { deploymentNotes, siteConfig } from "@/lib/site";
+import { SiteLogo } from "@/components/SiteLogo";
+import { siteConfig } from "@/lib/site";
 import { tools } from "@/tools";
 
 export function Footer() {
@@ -10,21 +11,12 @@ export function Footer() {
     <footer className="mt-20 border-t border-border">
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
-            {siteConfig.shortName}
-          </p>
-          <h2 className="mt-3 text-2xl font-bold text-foreground">
-            Fast developer utilities with product-grade polish.
-          </h2>
+          <div className="flex items-center gap-3">
+            <SiteLogo size="sm" />
+            <h2 className="text-2xl font-bold text-foreground">{siteConfig.name}</h2>
+          </div>
           <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">
-            Built for developers who need clean online coding utilities without ads,
-            unnecessary friction, or a backend dependency.
-          </p>
-          <p className="mt-4 text-xs text-muted-foreground">
-            Affiliate system is ready for future links.{" "}
-            <span className="font-medium text-foreground">
-              {deploymentNotes.futureAffiliatePlaceholder}
-            </span>
+            {siteConfig.description}
           </p>
         </div>
 

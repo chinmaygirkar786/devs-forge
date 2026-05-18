@@ -47,7 +47,7 @@ export default function Image() {
               fontWeight: 700,
             }}
           >
-            DH
+            {siteConfig.logoMark}
           </div>
           <div
             style={{
@@ -57,13 +57,13 @@ export default function Image() {
               color: "#A5B4FC",
             }}
           >
-            Developer Tools Hub
+            {siteConfig.domain}
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <div style={{ fontSize: "72px", fontWeight: 800, lineHeight: 1.1 }}>
-            Developer Tools for Everyday Productivity
+            {siteConfig.heroTitle}
           </div>
           <div style={{ fontSize: "28px", lineHeight: 1.5, color: "#CBD5E1" }}>
             Fast browser-based utilities for JSON, JWT, regex, HTML, timestamps,

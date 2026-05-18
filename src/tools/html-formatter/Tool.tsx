@@ -15,7 +15,7 @@ import {
 } from "@/components/tool-ui";
 import { formatHtml, minifyHtml } from "@/lib/tool-helpers";
 
-const sampleHtml = `<section><h1>Developer Tools Hub</h1><p>Fast online coding utilities.</p><ul><li>JSON</li><li>JWT</li><li>Regex</li></ul></section>`;
+const sampleHtml = `<section><h1>Devs Forge</h1><p>Fast online coding utilities.</p><ul><li>JSON</li><li>JWT</li><li>Regex</li></ul></section>`;
 const htmlModeOptions = [
   { label: "Format HTML", value: "format" },
   { label: "Minify HTML", value: "minify" },

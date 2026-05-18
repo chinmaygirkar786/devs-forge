@@ -151,22 +151,20 @@ export default function Home() {
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="surface-card rounded-[2rem] p-6 sm:p-8">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            Built for performance
+            Why {siteConfig.name}
           </p>
           <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">
-            Lightweight, browser-only utilities for everyday engineering work.
+            A single hub for the coding utilities you reach for every day.
           </h2>
           <p className="mt-4 text-base leading-8 text-muted-foreground">
-            Developer Tools Hub is designed as a product, not a generic tool dump. The
-            site uses static generation wherever possible, tight internal linking,
-            compact client bundles, and local-only interactions to help deliver fast
-            Core Web Vitals and a premium SaaS feel.
+            {siteConfig.name} exists to help you format, decode, convert, and generate
+            data without switching tabs, creating accounts, or uploading sensitive
+            payloads to a server. Each tool is built for a specific developer task you
+            already do regularly.
           </p>
           <p className="mt-4 text-base leading-8 text-muted-foreground">
-            Whether you need a free developer tools online workflow for formatting API
-            payloads, decoding tokens, testing regex patterns, or generating color
-            systems, the goal is the same: solve the task immediately and move back to
-            shipping.
+            From JSON and JWT workflows to regex checks, timestamps, colors, and
+            markup—open the tool you need, get a clear result, copy it, and move on.
           </p>
         </div>
 
@@ -189,10 +187,10 @@ export default function Home() {
               </p>
             </div>
             <div className="surface-muted rounded-2xl p-4">
-              <h3 className="font-semibold text-foreground">Monetization ready</h3>
+              <h3 className="font-semibold text-foreground">Privacy first</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Contextual affiliate placements are wired without cluttering the
-                product experience.
+                Inputs stay on your device. No account, no uploads, and no backend
+                required to use the tools.
               </p>
             </div>
           </div>

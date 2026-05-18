@@ -1,14 +1,16 @@
 export const siteConfig = {
-  name: "Developer Tools Hub",
-  shortName: "DevTools Hub",
+  name: "Devs Forge",
+  shortName: "Devs Forge",
+  domain: "devs-forge.com",
+  logoMark: "DF",
   description:
     "Fast, free developer tools for formatting, decoding, generating, and converting code and data directly in your browser.",
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://developer-tools-hub.vercel.app",
-  creator: "Developer Tools Hub",
-  socialHandle: "@devtoolshub",
-  heroTitle: "Developer Tools for Everyday Productivity",
+    "https://devs-forge.com",
+  creator: "Devs Forge",
+  socialHandle: "@devsforge",
+  heroTitle: "Developer Tools Built for Everyday Work",
   heroDescription:
     "Use instant online utilities for JSON, JWTs, regex, timestamps, HTML, Markdown, colors, UUIDs, URLs, and more without leaving your workflow.",
   navigation: [
@@ -16,10 +18,4 @@ export const siteConfig = {
     { href: "/#popular-tools", label: "Popular Tools" },
     { href: "/#categories", label: "Categories" },
   ],
-};
-
-export const deploymentNotes = {
-  analyticsEventName: "affiliate_click",
-  futureAffiliatePlaceholder:
-    "Replace placeholder affiliate URLs in src/lib/affiliate.ts before launch monetization.",
 };

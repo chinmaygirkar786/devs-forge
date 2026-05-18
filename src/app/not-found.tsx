@@ -10,8 +10,8 @@ export default function NotFound() {
         This tool does not exist.
       </h1>
       <p className="mt-4 text-base leading-8 text-muted-foreground">
-        Head back to the developer tools hub to find JSON, JWT, regex, timestamp,
-        and formatting tools that are available now.
+        Head back to Devs Forge to find JSON, JWT, regex, timestamp, and formatting
+        tools that are available now.
       </p>
       <Link
         href="/"

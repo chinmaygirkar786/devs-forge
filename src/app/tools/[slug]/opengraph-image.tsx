@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+import { siteConfig } from "@/lib/site";
 import { getToolBySlug, toolSlugs } from "@/lib/tools";
 
 export const dynamic = "force-static";
@@ -48,7 +49,7 @@ export default async function Image({
             color: "#A5B4FC",
           }}
         >
-          <div>Developer Tools Hub</div>
+          <div>{siteConfig.name}</div>
           <div>{tool?.keywordCluster.primary ?? "Developer utility"}</div>
         </div>
 
