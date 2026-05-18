@@ -167,6 +167,114 @@ export function jsonToTypeScript(value: string, rootName: string) {
     .join("\n\n");
 }
 
+const HTML_VOID_ELEMENTS = new Set([
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "param",
+  "source",
+  "track",
+  "wbr",
+]);
+
+type HtmlToken =
+  | { type: "text"; value: string }
+  | { type: "tag"; value: string };
+
+function readHtmlTag(source: string, start: number) {
+  let index = start + 1;
+
+  while (index < source.length) {
+    const character = source[index];
+
+    if (character === '"' || character === "'") {
+      index += 1;
+      while (index < source.length && source[index] !== character) {
+        index += 1;
+      }
+    } else if (character === ">") {
+      return {
+        value: source.slice(start, index + 1),
+        nextIndex: index + 1,
+      };
+    }
+
+    index += 1;
+  }
+
+  throw new Error("Invalid HTML: unclosed tag.");
+}
+
+function tokenizeHtml(source: string): HtmlToken[] {
+  const tokens: HtmlToken[] = [];
+  let index = 0;
+
+  while (index < source.length) {
+    if (source[index] === "<") {
+      const tag = readHtmlTag(source, index);
+      tokens.push({ type: "tag", value: tag.value });
+      index = tag.nextIndex;
+      continue;
+    }
+
+    let end = index;
+    while (end < source.length && source[end] !== "<") {
+      end += 1;
+    }
+
+    const text = source.slice(index, end);
+    if (text.trim()) {
+      tokens.push({ type: "text", value: text });
+    }
+
+    index = end;
+  }
+
+  return tokens;
+}
+
+function parseHtmlTag(tag: string) {
+  const trimmed = tag.trim();
+
+  if (trimmed.startsWith("<!--")) {
+    return { kind: "comment" as const };
+  }
+
+  if (/^<!DOCTYPE/i.test(trimmed)) {
+    return { kind: "doctype" as const };
+  }
+
+  if (trimmed.startsWith("<?")) {
+    return { kind: "instruction" as const };
+  }
+
+  const closingMatch = trimmed.match(/^<\/\s*([A-Za-z][\w:-]*)/);
+  if (closingMatch) {
+    return { kind: "close" as const, name: closingMatch[1].toLowerCase() };
+  }
+
+  const openingMatch = trimmed.match(/^<\s*([A-Za-z][\w:-]*)/);
+  if (!openingMatch) {
+    return { kind: "unknown" as const };
+  }
+
+  const name = openingMatch[1].toLowerCase();
+  const selfClosing =
+    /\/\s*>$/.test(trimmed) || HTML_VOID_ELEMENTS.has(name);
+
+  return {
+    kind: selfClosing ? ("self-closing" as const) : ("open" as const),
+    name,
+  };
+}
+
 export function minifyHtml(value: string) {
   return value
     .replace(/>\s+</g, "><")
@@ -175,39 +283,55 @@ export function minifyHtml(value: string) {
     .trim();
 }
 
-export function formatHtml(value: string) {
-  const tokens = value
-    .replace(/>\s+</g, "><")
-    .replace(/</g, "\n<")
-    .replace(/\n\n+/g, "\n")
-    .trim()
-    .split("\n")
-    .filter(Boolean);
+export function formatHtml(value: string, indentSize = 2) {
+  const source = value.trim();
+  if (!source) {
+    return "";
+  }
 
-  let indentLevel = 0;
+  const indent = " ".repeat(indentSize);
+  const tokens = tokenizeHtml(source);
+  const lines: string[] = [];
+  let depth = 0;
 
-  return tokens
-    .map((token) => {
-      const trimmed = token.trim();
-      if (/^<\//.test(trimmed)) {
-        indentLevel = Math.max(indentLevel - 1, 0);
+  for (const token of tokens) {
+    if (token.type === "text") {
+      const text = token.value.replace(/\s+/g, " ").trim();
+      if (!text) {
+        continue;
       }
 
-      const line = `${"  ".repeat(indentLevel)}${trimmed}`;
+      lines.push(`${indent.repeat(depth)}${text}`);
+      continue;
+    }
 
-      if (
-        /^<[^!/][^>]*[^/]>\s*$/.test(trimmed) &&
-        !/^<[^>]+>.*<\/[^>]+>$/.test(trimmed) &&
-        !/^<input/i.test(trimmed) &&
-        !/^<img/i.test(trimmed) &&
-        !/^<br/i.test(trimmed)
-      ) {
-        indentLevel += 1;
-      }
+    const tagInfo = parseHtmlTag(token.value);
+    const tag = token.value.trim();
 
-      return line;
-    })
-    .join("\n");
+    if (
+      tagInfo.kind === "comment" ||
+      tagInfo.kind === "doctype" ||
+      tagInfo.kind === "instruction" ||
+      tagInfo.kind === "unknown"
+    ) {
+      lines.push(`${indent.repeat(depth)}${tag}`);
+      continue;
+    }
+
+    if (tagInfo.kind === "close") {
+      depth = Math.max(depth - 1, 0);
+      lines.push(`${indent.repeat(depth)}${tag}`);
+      continue;
+    }
+
+    lines.push(`${indent.repeat(depth)}${tag}`);
+
+    if (tagInfo.kind === "open") {
+      depth += 1;
+    }
+  }
+
+  return lines.join("\n");
 }
 
 export function parseTimestamp(value: string) {

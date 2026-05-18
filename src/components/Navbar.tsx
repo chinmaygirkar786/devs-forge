@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { CommandPalette } from "@/components/CommandPalette";
+import { SiteLogo } from "@/components/SiteLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { siteConfig } from "@/lib/site";
 
@@ -28,15 +29,8 @@ export function Navbar() {
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-sm font-black text-white shadow-lg shadow-primary/25">
-                DH
-              </span>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  Premium utility suite
-                </p>
-                <p className="text-lg font-bold text-foreground">{siteConfig.name}</p>
-              </div>
+              <SiteLogo />
+              <span className="text-lg font-bold text-foreground">{siteConfig.name}</span>
             </Link>
 
             <nav className="hidden items-center gap-5 text-sm text-muted-foreground lg:flex">

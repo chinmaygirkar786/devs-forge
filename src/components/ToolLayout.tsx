@@ -34,8 +34,6 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         <div className="space-y-8">{children}</div>
 
         <div className="space-y-8">
-          {/* Affiliate box intentionally hidden for now. */}
-
           <section className="surface-card rounded-3xl p-6">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
               Related tools
