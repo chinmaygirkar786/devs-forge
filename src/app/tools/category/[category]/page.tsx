@@ -5,15 +5,18 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SEOHead } from "@/components/SEOHead";
 import { categorySeoCopy } from "@/lib/category-seo";
+import {
+  buildCategoryJsonLd,
+  buildCategoryMetadata,
+} from "@/lib/seo";
 import { routes } from "@/lib/internal-links";
-import { buildCategoryJsonLd, buildCategoryMetadata } from "@/lib/seo";
 import {
   getToolsForCategory,
   isToolCategory,
   toolCategories,
 } from "@/lib/tools";
-import type { ToolCategory } from "@/tools";
 import { toolCategoryKeys } from "@/tools";
+import type { ToolCategory } from "@/tools";
 
 export const dynamic = "force-static";
 
@@ -89,9 +92,7 @@ export default async function CategoryPage({
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
                   {tool.keywordCluster.primary}
                 </p>
-                <h3 className="mt-2 text-lg font-semibold text-foreground">
-                  {tool.title}
-                </h3>
+                <h3 className="mt-2 text-lg font-semibold text-foreground">{tool.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {tool.description}
                 </p>

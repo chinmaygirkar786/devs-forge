@@ -3,8 +3,11 @@ import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SEOHead } from "@/components/SEOHead";
+import {
+  buildToolsIndexJsonLd,
+  buildToolsIndexMetadata,
+} from "@/lib/seo";
 import { routes } from "@/lib/internal-links";
-import { buildToolsIndexJsonLd, buildToolsIndexMetadata } from "@/lib/seo";
 import { getToolsByCategory } from "@/lib/tools";
 
 export const metadata: Metadata = buildToolsIndexMetadata();
@@ -17,7 +20,10 @@ export default function ToolsIndexPage() {
       <SEOHead jsonLd={buildToolsIndexJsonLd()} />
 
       <Breadcrumbs
-        items={[{ label: "Home", href: "/" }, { label: "All tools" }]}
+        items={[
+          { label: "Home", href: "/" },
+          { label: "All tools" },
+        ]}
       />
 
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
@@ -28,18 +34,15 @@ export default function ToolsIndexPage() {
           Free online developer tools
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
-          Browse browser-based utilities for formatting JSON and HTML, decoding
-          JWTs, testing regex, converting timestamps, generating UUIDs, and
-          more. Every tool runs locally with no signup and no uploads.
+          Browse browser-based utilities for formatting JSON and HTML, decoding JWTs,
+          testing regex, converting timestamps, generating UUIDs, and more. Every tool
+          runs locally with no signup and no uploads.
         </p>
       </section>
 
       <div className="mt-10 space-y-10">
         {categories.map((category) => (
-          <section
-            key={category.key}
-            className="surface-card rounded-3xl p-6 sm:p-8"
-          >
+          <section key={category.key} className="surface-card rounded-3xl p-6 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">

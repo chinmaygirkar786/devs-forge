@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { routes } from "@/lib/internal-links";
-import { siteConfig } from "@/lib/site";
 import { getToolBySlug } from "@/lib/tools";
+import { siteConfig } from "@/lib/site";
 import type { ToolCategory, ToolDefinition } from "@/tools";
 import { toolCategories, tools } from "@/tools";
 
@@ -69,7 +69,8 @@ export function buildHomeMetadata(): Metadata {
 
 export function buildToolPageTitle(tool: ToolDefinition) {
   const primary = tool.keywordCluster.primary;
-  const short = primary.charAt(0).toUpperCase() + primary.slice(1);
+  const short =
+    primary.charAt(0).toUpperCase() + primary.slice(1);
   return `${short} – ${tool.title}`;
 }
 
