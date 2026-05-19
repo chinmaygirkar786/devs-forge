@@ -1,7 +1,22 @@
-import { getRelatedToolsFromRegistry, routes } from "@/lib/internal-links";
-import { toolCategories, toolCategoryKeys, tools } from "@/tools";
+import {
+  getInternalLinksForTool,
+  getRelatedToolsFromRegistry,
+  routes,
+  toolToLink,
+} from "@/lib/internal-links";
+import {
+  toolCategories,
+  toolCategoryKeys,
+  toolSlugs,
+  tools,
+} from "@/tools";
 
-export { toolCategories, toolCategoryKeys, tools, toolSlugs } from "@/tools";
+export {
+  toolCategories,
+  toolCategoryKeys,
+  toolSlugs,
+  tools,
+} from "@/tools";
 export type {
   ToolCategory,
   ToolDefinition,
@@ -12,16 +27,8 @@ export type {
   ToolSeoBlock,
 } from "@/tools";
 
-export {
-  getInternalLinksForTool,
-  routes,
-  toolToLink,
-} from "@/lib/internal-links";
-export type {
-  InternalLink,
-  InternalLinkKind,
-  ToolInternalLinks,
-} from "@/lib/internal-links";
+export { routes, toolToLink, getInternalLinksForTool } from "@/lib/internal-links";
+export type { InternalLink, InternalLinkKind, ToolInternalLinks } from "@/lib/internal-links";
 
 export function getAllTools() {
   return tools;
@@ -51,9 +58,7 @@ export function getToolsForCategory(category: keyof typeof toolCategories) {
   return tools.filter((tool) => tool.category === category);
 }
 
-export function isToolCategory(
-  value: string,
-): value is keyof typeof toolCategories {
+export function isToolCategory(value: string): value is keyof typeof toolCategories {
   return value in toolCategories;
 }
 

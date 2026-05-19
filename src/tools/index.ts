@@ -15,9 +15,9 @@ export type {
 } from "@/tools/types";
 
 export { toolCategories, toolCategoryKeys } from "@/tools/categories";
-export { buildToolKeywords } from "@/tools/keywords";
-export { isToolSlug, toolSlugList } from "@/tools/slugs";
+export { toolSlugList, isToolSlug } from "@/tools/slugs";
 export type { ToolSlug } from "@/tools/slugs";
+export { buildToolKeywords } from "@/tools/keywords";
 
 const toolSeeds: ToolSeed[] = [
   {
@@ -209,11 +209,7 @@ const toolSeeds: ToolSeed[] = [
         title: "Create fixture IDs for local development",
       },
     ],
-    relatedSlugs: [
-      "timestamp-converter",
-      "json-to-typescript",
-      "color-palette-generator",
-    ],
+    relatedSlugs: ["timestamp-converter", "json-to-typescript", "color-palette-generator"],
     affiliateContext: ["ai-coding", "backend", "productivity"],
     loadComponent: () => import("@/tools/uuid-generator/Tool"),
   },
@@ -250,11 +246,7 @@ const toolSeeds: ToolSeed[] = [
         input: "#4F46E5",
       },
     ],
-    relatedSlugs: [
-      "gradient-generator",
-      "markdown-previewer",
-      "uuid-generator",
-    ],
+    relatedSlugs: ["gradient-generator", "markdown-previewer", "uuid-generator"],
     affiliateContext: ["design", "frontend", "productivity"],
     loadComponent: () => import("@/tools/color-palette-generator/Tool"),
   },
@@ -291,11 +283,7 @@ const toolSeeds: ToolSeed[] = [
         input: "#4F46E5 to #06B6D4",
       },
     ],
-    relatedSlugs: [
-      "color-palette-generator",
-      "markdown-previewer",
-      "html-formatter",
-    ],
+    relatedSlugs: ["color-palette-generator", "markdown-previewer", "html-formatter"],
     affiliateContext: ["design", "frontend", "productivity"],
     loadComponent: () => import("@/tools/gradient-generator/Tool"),
   },
@@ -332,11 +320,7 @@ const toolSeeds: ToolSeed[] = [
         input: "# Devs Forge\n\n- Fast\n- Browser-only\n- Free tools",
       },
     ],
-    relatedSlugs: [
-      "html-formatter",
-      "gradient-generator",
-      "color-palette-generator",
-    ],
+    relatedSlugs: ["html-formatter", "gradient-generator", "color-palette-generator"],
     affiliateContext: ["frontend", "productivity", "design"],
     loadComponent: () => import("@/tools/markdown-previewer/Tool"),
   },
@@ -481,8 +465,7 @@ const toolSeeds: ToolSeed[] = [
     examples: [
       {
         title: "Generate types from a user payload",
-        input:
-          '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
+        input: '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
       },
     ],
     relatedSlugs: ["json-formatter", "uuid-generator", "base64-encoder"],

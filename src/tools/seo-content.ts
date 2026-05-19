@@ -147,7 +147,8 @@ export const toolSeoContent = {
       },
       {
         question: "Can I copy individual swatches?",
-        answer: "Yes. Click a swatch to copy its hex value to the clipboard.",
+        answer:
+          "Yes. Click a swatch to copy its hex value to the clipboard.",
       },
       {
         question: "Does this check color contrast?",
@@ -172,8 +173,7 @@ export const toolSeoContent = {
       },
       {
         question: "Can I change the gradient angle?",
-        answer:
-          "Yes. Adjust the angle control and the preview updates instantly.",
+        answer: "Yes. Adjust the angle control and the preview updates instantly.",
       },
       {
         question: "Do I need to install anything?",
@@ -198,7 +198,8 @@ export const toolSeoContent = {
       },
       {
         question: "Is my Markdown uploaded anywhere?",
-        answer: "No. Rendering happens locally in your browser.",
+        answer:
+          "No. Rendering happens locally in your browser.",
       },
       {
         question: "Can I copy the rendered HTML?",
@@ -305,7 +306,8 @@ export const toolSeoContent = {
       },
       {
         question: "Is my JSON uploaded?",
-        answer: "No. Type generation runs entirely in your browser.",
+        answer:
+          "No. Type generation runs entirely in your browser.",
       },
     ],
   },
