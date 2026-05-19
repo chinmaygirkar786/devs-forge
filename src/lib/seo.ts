@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
-import { getToolBySlug } from "@/lib/tools";
+import { routes } from "@/lib/internal-links";
 import { siteConfig } from "@/lib/site";
+import { getToolBySlug } from "@/lib/tools";
 import type { ToolCategory, ToolDefinition } from "@/tools";
 import { toolCategories, tools } from "@/tools";
 
@@ -39,12 +40,12 @@ export function buildHomeMetadata(): Metadata {
       "regex tester online",
     ],
     alternates: {
-      canonical: absoluteUrl("/"),
+      canonical: absoluteUrl(routes.home),
     },
     openGraph: {
       title,
       description,
-      url: absoluteUrl("/"),
+      url: absoluteUrl(routes.home),
       type: "website",
       siteName: siteConfig.name,
       images: [
@@ -68,9 +69,8 @@ export function buildHomeMetadata(): Metadata {
 
 export function buildToolPageTitle(tool: ToolDefinition) {
   const primary = tool.keywordCluster.primary;
-  const short =
-    primary.charAt(0).toUpperCase() + primary.slice(1);
-  return `${short} – ${tool.name}`;
+  const short = primary.charAt(0).toUpperCase() + primary.slice(1);
+  return `${short} – ${tool.title}`;
 }
 
 export function buildToolPageDescription(tool: ToolDefinition) {
@@ -81,17 +81,13 @@ export function buildToolPageDescription(tool: ToolDefinition) {
 export function buildToolMetadata(tool: ToolDefinition): Metadata {
   const title = tool.metaTitle ?? buildToolPageTitle(tool);
   const description = tool.metaDescription ?? buildToolPageDescription(tool);
-  const url = absoluteUrl(`/tools/${tool.slug}`);
+  const url = absoluteUrl(routes.tool(tool.slug));
 
   return {
     title: absoluteTitle(`${title} | ${siteConfig.name}`),
     description,
     robots: indexableRobots,
-    keywords: [
-      tool.keywordCluster.primary,
-      ...tool.keywordCluster.secondary,
-      ...tool.keywordCluster.longTail,
-    ],
+    keywords: tool.keywords,
     alternates: {
       canonical: url,
     },
@@ -106,7 +102,7 @@ export function buildToolMetadata(tool: ToolDefinition): Metadata {
           url: absoluteUrl(`/tools/${tool.slug}/opengraph-image`),
           width: 1200,
           height: 630,
-          alt: `${tool.name} preview`,
+          alt: `${tool.title} preview`,
         },
       ],
     },
@@ -129,12 +125,12 @@ export function buildToolsIndexMetadata(): Metadata {
     title: absoluteTitle(title),
     description,
     alternates: {
-      canonical: absoluteUrl("/tools"),
+      canonical: absoluteUrl(routes.toolsIndex),
     },
     openGraph: {
       title,
       description,
-      url: absoluteUrl("/tools"),
+      url: absoluteUrl(routes.toolsIndex),
       type: "website",
       siteName: siteConfig.name,
     },
@@ -150,12 +146,12 @@ export function buildCategoryMetadata(category: ToolCategory): Metadata {
     title: absoluteTitle(title),
     description,
     alternates: {
-      canonical: absoluteUrl(`/tools/category/${category}`),
+      canonical: absoluteUrl(routes.category(category)),
     },
     openGraph: {
       title,
       description,
-      url: absoluteUrl(`/tools/category/${category}`),
+      url: absoluteUrl(routes.category(category)),
       type: "website",
       siteName: siteConfig.name,
     },
@@ -202,8 +198,8 @@ export function buildToolsIndexJsonLd() {
     itemListElement: tools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: tool.name,
-      url: absoluteUrl(`/tools/${tool.slug}`),
+      name: tool.title,
+      url: absoluteUrl(routes.tool(tool.slug)),
     })),
   };
 }
@@ -221,8 +217,8 @@ export function buildCategoryJsonLd(category: ToolCategory) {
     itemListElement: categoryTools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: tool.name,
-      url: absoluteUrl(`/tools/${tool.slug}`),
+      name: tool.title,
+      url: absoluteUrl(routes.tool(tool.slug)),
     })),
   };
 }
@@ -244,13 +240,13 @@ export function buildBreadcrumbJsonLd(
 
 export function buildToolBreadcrumbJsonLd(tool: ToolDefinition) {
   return buildBreadcrumbJsonLd([
-    { name: "Home", path: "/" },
-    { name: "Tools", path: "/tools" },
+    { name: "Home", path: routes.home },
+    { name: "Tools", path: routes.toolsIndex },
     {
       name: toolCategories[tool.category].title,
-      path: `/tools/category/${tool.category}`,
+      path: routes.category(tool.category),
     },
-    { name: tool.name, path: `/tools/${tool.slug}` },
+    { name: tool.title, path: routes.tool(tool.slug) },
   ]);
 }
 
@@ -278,7 +274,7 @@ export function buildToolJsonLd(tool: ToolDefinition) {
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: tool.name,
+      name: tool.title,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Any",
       browserRequirements: "Requires JavaScript and a modern browser.",
@@ -289,7 +285,7 @@ export function buildToolJsonLd(tool: ToolDefinition) {
         priceCurrency: "USD",
       },
       description: tool.description,
-      url: absoluteUrl(`/tools/${tool.slug}`),
+      url: absoluteUrl(routes.tool(tool.slug)),
     },
     buildToolBreadcrumbJsonLd(tool),
   ];

@@ -8,17 +8,15 @@ import {
   getToolUsageHistoryServerSnapshot,
   subscribeToToolUsageHistory,
 } from "@/lib/history";
+import { routes } from "@/lib/internal-links";
 import { toolCategories } from "@/lib/tools";
 
 type HomeExplorerTool = {
   slug: string;
-  name: string;
+  title: string;
   description: string;
   category: keyof typeof toolCategories;
-  keywordCluster: {
-    primary: string;
-    secondary: string[];
-  };
+  keywords: string[];
 };
 
 type HomeExplorerProps = {
@@ -40,12 +38,7 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
     }
 
     return tools.filter((tool) =>
-      [
-        tool.name,
-        tool.description,
-        tool.keywordCluster.primary,
-        ...tool.keywordCluster.secondary,
-      ]
+      [tool.title, tool.description, ...tool.keywords]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery),
@@ -83,13 +76,13 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
           {filteredTools.map((tool) => (
             <Link
               key={tool.slug}
-              href={`/tools/${tool.slug}`}
+              href={routes.tool(tool.slug)}
               className="surface-muted transform-gpu will-change-transform rounded-3xl p-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:shadow-lg hover:shadow-primary/10"
             >
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {toolCategories[tool.category].title}
               </span>
-              <h3 className="mt-3 text-lg font-semibold text-foreground">{tool.name}</h3>
+              <h3 className="mt-3 text-lg font-semibold text-foreground">{tool.title}</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {tool.description}
               </p>
@@ -111,10 +104,10 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
             {recent.map((entry) => (
               <Link
                 key={entry.slug}
-                href={`/tools/${entry.slug}`}
+                href={routes.tool(entry.slug)}
                 className="inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-sm font-medium whitespace-nowrap text-foreground hover:border-border-strong"
               >
-                {entry.name}
+                {entry.title}
               </Link>
             ))}
           </div>

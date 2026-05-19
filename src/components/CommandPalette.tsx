@@ -8,6 +8,7 @@ import {
   getToolUsageHistoryServerSnapshot,
   subscribeToToolUsageHistory,
 } from "@/lib/history";
+import { routes } from "@/lib/internal-links";
 import { toolCategories } from "@/lib/tools";
 import { cn } from "@/lib/utils";
 import { tools } from "@/tools";
@@ -53,11 +54,9 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     return tools
       .filter((tool) => {
         const searchable = [
-          tool.name,
+          tool.title,
           tool.description,
-          tool.keywordCluster.primary,
-          ...tool.keywordCluster.secondary,
-          ...tool.keywordCluster.longTail,
+          ...tool.keywords,
         ]
           .join(" ")
           .toLowerCase();
@@ -99,7 +98,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               results.map((tool) => (
                 <Link
                   key={tool.slug}
-                  href={`/tools/${tool.slug}`}
+                  href={routes.tool(tool.slug)}
                   onClick={onClose}
                   className={cn(
                     "block rounded-2xl border border-transparent px-4 py-3",
@@ -108,7 +107,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-foreground">{tool.name}</p>
+                      <p className="font-semibold text-foreground">{tool.title}</p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {tool.description}
                       </p>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { routes } from "@/lib/internal-links";
 import { absoluteUrl } from "@/lib/seo";
 import { toolCategoryKeys, tools } from "@/tools";
 
@@ -9,19 +10,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: absoluteUrl("/"),
+      url: absoluteUrl(routes.home),
       lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: absoluteUrl("/tools"),
+      url: absoluteUrl(routes.toolsIndex),
       lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: absoluteUrl("/about"),
+      url: absoluteUrl(routes.about),
       lastModified,
       changeFrequency: "monthly",
       priority: 0.5,
@@ -29,14 +30,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const categoryPages: MetadataRoute.Sitemap = toolCategoryKeys.map((category) => ({
-    url: absoluteUrl(`/tools/category/${category}`),
+    url: absoluteUrl(routes.category(category)),
     lastModified,
     changeFrequency: "weekly" as const,
     priority: 0.85,
   }));
 
   const toolPages: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: absoluteUrl(`/tools/${tool.slug}`),
+    url: absoluteUrl(routes.tool(tool.slug)),
     lastModified,
     changeFrequency: "weekly" as const,
     priority: 0.8,

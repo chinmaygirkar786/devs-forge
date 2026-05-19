@@ -7,10 +7,23 @@ let cachedHistory: ToolUsageEntry[] = emptyHistory;
 
 export type ToolUsageEntry = {
   slug: string;
-  name: string;
+  title: string;
   category: string;
   visitedAt: string;
 };
+
+type LegacyToolUsageEntry = ToolUsageEntry & {
+  name?: string;
+};
+
+function normalizeUsageEntry(entry: LegacyToolUsageEntry): ToolUsageEntry {
+  return {
+    slug: entry.slug,
+    title: entry.title ?? entry.name ?? entry.slug,
+    category: entry.category,
+    visitedAt: entry.visitedAt,
+  };
+}
 
 export function getToolUsageHistory() {
   if (typeof window === "undefined") {
@@ -30,9 +43,11 @@ export function getToolUsageHistory() {
       return cachedHistory;
     }
 
-    const parsed = JSON.parse(raw) as ToolUsageEntry[];
+    const parsed = JSON.parse(raw) as LegacyToolUsageEntry[];
     cachedRawHistory = raw;
-    cachedHistory = Array.isArray(parsed) ? parsed : emptyHistory;
+    cachedHistory = Array.isArray(parsed)
+      ? parsed.map(normalizeUsageEntry)
+      : emptyHistory;
     return cachedHistory;
   } catch {
     cachedRawHistory = null;

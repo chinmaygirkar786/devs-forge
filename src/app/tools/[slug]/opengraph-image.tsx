@@ -55,7 +55,7 @@ export default async function Image({
 
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ fontSize: "68px", fontWeight: 800, lineHeight: 1.05 }}>
-            {tool?.name ?? "Developer Tool"}
+            {tool?.title ?? "Developer Tool"}
           </div>
           <div style={{ fontSize: "28px", lineHeight: 1.4, color: "#CBD5E1" }}>
             {tool?.description ??
