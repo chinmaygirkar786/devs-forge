@@ -1,17 +1,27 @@
-import {
-  toolCategories,
-  toolCategoryKeys,
-  toolSlugs,
-  tools,
+import { getRelatedToolsFromRegistry, routes } from "@/lib/internal-links";
+import { toolCategories, toolCategoryKeys, tools } from "@/tools";
+
+export { toolCategories, toolCategoryKeys, tools, toolSlugs } from "@/tools";
+export type {
+  ToolCategory,
+  ToolDefinition,
+  ToolExample,
+  ToolFaq,
+  ToolKeywordCluster,
+  ToolSeed,
+  ToolSeoBlock,
 } from "@/tools";
 
 export {
-  toolCategories,
-  toolCategoryKeys,
-  toolSlugs,
-  tools,
-} from "@/tools";
-export type { ToolCategory, ToolDefinition, ToolExample, ToolFaq } from "@/tools";
+  getInternalLinksForTool,
+  routes,
+  toolToLink,
+} from "@/lib/internal-links";
+export type {
+  InternalLink,
+  InternalLinkKind,
+  ToolInternalLinks,
+} from "@/lib/internal-links";
 
 export function getAllTools() {
   return tools;
@@ -26,23 +36,7 @@ export function getToolBySlug(slug: string) {
 }
 
 export function getRelatedTools(slug: string, limit = 3) {
-  const current = getToolBySlug(slug);
-  if (!current) {
-    return [];
-  }
-
-  const explicit = current.relatedSlugs
-    .map((relatedSlug) => getToolBySlug(relatedSlug))
-    .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool));
-
-  const fallback = tools.filter(
-    (tool) =>
-      tool.slug !== slug &&
-      tool.category === current.category &&
-      !current.relatedSlugs.includes(tool.slug),
-  );
-
-  return [...explicit, ...fallback].slice(0, limit);
+  return getRelatedToolsFromRegistry(slug, tools, limit);
 }
 
 export function getToolsByCategory() {
@@ -57,6 +51,16 @@ export function getToolsForCategory(category: keyof typeof toolCategories) {
   return tools.filter((tool) => tool.category === category);
 }
 
-export function isToolCategory(value: string): value is keyof typeof toolCategories {
+export function isToolCategory(
+  value: string,
+): value is keyof typeof toolCategories {
   return value in toolCategories;
+}
+
+export function getToolHref(slug: string) {
+  return routes.tool(slug);
+}
+
+export function getCategoryHref(category: keyof typeof toolCategories) {
+  return routes.category(category);
 }

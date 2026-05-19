@@ -1,47 +1,28 @@
-import type { AffiliateContext } from "@/lib/affiliate";
-
+import { buildToolKeywords } from "@/tools/keywords";
 import { toolSeoContent } from "@/tools/seo-content";
-import type { ToolCategory, ToolDefinition } from "@/tools/types";
+import type { ToolSlug } from "@/tools/slugs";
+import type { ToolDefinition, ToolSeed } from "@/tools/types";
+import { assertToolRegistry } from "@/tools/validate";
 
 export type {
   ToolCategory,
   ToolDefinition,
   ToolExample,
   ToolFaq,
+  ToolKeywordCluster,
+  ToolSeed,
+  ToolSeoBlock,
 } from "@/tools/types";
 
-type ToolSeed = Omit<ToolDefinition, "seoIntro" | "useCases" | "faqs">;
-
-export const toolCategories: Record<
-  ToolCategory,
-  { title: string; description: string }
-> = {
-  formatting: {
-    title: "Formatting Tools",
-    description:
-      "Clean up code, content, and markup for faster debugging and readable output.",
-  },
-  conversion: {
-    title: "Conversion Tools",
-    description:
-      "Convert between common developer formats instantly without leaving the browser.",
-  },
-  generators: {
-    title: "Generators",
-    description:
-      "Generate IDs, palettes, gradients, and interfaces for day-to-day development work.",
-  },
-  utilities: {
-    title: "Developer Utilities",
-    description:
-      "Inspect tokens, validate patterns, and work through developer workflows faster.",
-  },
-};
+export { toolCategories, toolCategoryKeys } from "@/tools/categories";
+export { buildToolKeywords } from "@/tools/keywords";
+export { isToolSlug, toolSlugList } from "@/tools/slugs";
+export type { ToolSlug } from "@/tools/slugs";
 
 const toolSeeds: ToolSeed[] = [
   {
     slug: "json-formatter",
-    name: "JSON Formatter & Validator",
+    title: "JSON Formatter & Validator",
     description:
       "Format raw JSON, validate syntax, and pretty-print structured data instantly in your browser.",
     category: "formatting",
@@ -82,7 +63,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "jwt-decoder",
-    name: "JWT Decoder / Inspector",
+    title: "JWT Decoder / Inspector",
     description:
       "Decode JWT headers and payloads, inspect claims, and review token timestamps locally.",
     category: "utilities",
@@ -120,7 +101,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "regex-tester",
-    name: "Regex Tester with Explanation",
+    title: "Regex Tester with Explanation",
     description:
       "Test regular expressions, review matches, and get a lightweight explanation of common regex tokens.",
     category: "utilities",
@@ -161,7 +142,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "base64-encoder",
-    name: "Base64 Encoder / Decoder",
+    title: "Base64 Encoder / Decoder",
     description:
       "Encode plain text to Base64 or decode Base64 payloads instantly with UTF-8 support.",
     category: "conversion",
@@ -198,7 +179,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "uuid-generator",
-    name: "UUID Generator",
+    title: "UUID Generator",
     description:
       "Generate UUID v4 values in batches for seeds, fixtures, IDs, and test data.",
     category: "generators",
@@ -228,13 +209,17 @@ const toolSeeds: ToolSeed[] = [
         title: "Create fixture IDs for local development",
       },
     ],
-    relatedSlugs: ["timestamp-converter", "json-to-typescript", "color-palette-generator"],
+    relatedSlugs: [
+      "timestamp-converter",
+      "json-to-typescript",
+      "color-palette-generator",
+    ],
     affiliateContext: ["ai-coding", "backend", "productivity"],
     loadComponent: () => import("@/tools/uuid-generator/Tool"),
   },
   {
     slug: "color-palette-generator",
-    name: "Color Palette Generator",
+    title: "Color Palette Generator",
     description:
       "Generate balanced color ramps from a base color for UI themes, design systems, and dashboards.",
     category: "generators",
@@ -265,13 +250,17 @@ const toolSeeds: ToolSeed[] = [
         input: "#4F46E5",
       },
     ],
-    relatedSlugs: ["gradient-generator", "markdown-previewer", "uuid-generator"],
+    relatedSlugs: [
+      "gradient-generator",
+      "markdown-previewer",
+      "uuid-generator",
+    ],
     affiliateContext: ["design", "frontend", "productivity"],
     loadComponent: () => import("@/tools/color-palette-generator/Tool"),
   },
   {
     slug: "gradient-generator",
-    name: "Gradient Generator",
+    title: "Gradient Generator",
     description:
       "Build CSS gradients with live previews, adjustable angles, and easy copy-to-clipboard output.",
     category: "generators",
@@ -302,13 +291,17 @@ const toolSeeds: ToolSeed[] = [
         input: "#4F46E5 to #06B6D4",
       },
     ],
-    relatedSlugs: ["color-palette-generator", "markdown-previewer", "html-formatter"],
+    relatedSlugs: [
+      "color-palette-generator",
+      "markdown-previewer",
+      "html-formatter",
+    ],
     affiliateContext: ["design", "frontend", "productivity"],
     loadComponent: () => import("@/tools/gradient-generator/Tool"),
   },
   {
     slug: "markdown-previewer",
-    name: "Markdown Previewer",
+    title: "Markdown Previewer",
     description:
       "Write Markdown and preview rendered output side by side with clean typography.",
     category: "formatting",
@@ -339,13 +332,17 @@ const toolSeeds: ToolSeed[] = [
         input: "# Devs Forge\n\n- Fast\n- Browser-only\n- Free tools",
       },
     ],
-    relatedSlugs: ["html-formatter", "gradient-generator", "color-palette-generator"],
+    relatedSlugs: [
+      "html-formatter",
+      "gradient-generator",
+      "color-palette-generator",
+    ],
     affiliateContext: ["frontend", "productivity", "design"],
     loadComponent: () => import("@/tools/markdown-previewer/Tool"),
   },
   {
     slug: "url-encoder",
-    name: "URL Encoder / Decoder",
+    title: "URL Encoder / Decoder",
     description:
       "Encode and decode URLs, query strings, and path values safely for browser and API workflows.",
     category: "conversion",
@@ -382,7 +379,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "html-formatter",
-    name: "HTML Formatter / Minifier",
+    title: "HTML Formatter / Minifier",
     description:
       "Beautify messy HTML or minify markup for compact embeds and production snippets.",
     category: "formatting",
@@ -419,7 +416,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "timestamp-converter",
-    name: "Timestamp Converter",
+    title: "Timestamp Converter",
     description:
       "Convert Unix timestamps to human-readable dates and parse readable dates back to Unix values.",
     category: "conversion",
@@ -456,7 +453,7 @@ const toolSeeds: ToolSeed[] = [
   },
   {
     slug: "json-to-typescript",
-    name: "JSON to TypeScript Interface Generator",
+    title: "JSON to TypeScript Interface Generator",
     description:
       "Convert sample JSON into TypeScript interfaces for faster API typing and frontend scaffolding.",
     category: "generators",
@@ -484,7 +481,8 @@ const toolSeeds: ToolSeed[] = [
     examples: [
       {
         title: "Generate types from a user payload",
-        input: '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
+        input:
+          '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
       },
     ],
     relatedSlugs: ["json-formatter", "uuid-generator", "base64-encoder"],
@@ -493,11 +491,18 @@ const toolSeeds: ToolSeed[] = [
   },
 ];
 
-export const tools: ToolDefinition[] = toolSeeds.map((tool) => ({
-  ...tool,
-  ...toolSeoContent[tool.slug],
-}));
+const assembledTools: ToolDefinition[] = toolSeeds.map((seed) => {
+  const seo = toolSeoContent[seed.slug as ToolSlug];
+
+  return {
+    ...seed,
+    ...seo,
+    keywords: buildToolKeywords(seed.keywordCluster),
+  };
+});
+
+assertToolRegistry(assembledTools, toolSeoContent);
+
+export const tools = assembledTools;
 
 export const toolSlugs = tools.map((tool) => tool.slug);
-
-export const toolCategoryKeys = Object.keys(toolCategories) as ToolCategory[];

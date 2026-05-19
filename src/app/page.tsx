@@ -5,6 +5,7 @@ import { HomeExplorer } from "@/components/HomeExplorer";
 import { SEOHead } from "@/components/SEOHead";
 import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
+import { routes } from "@/lib/internal-links";
 import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
@@ -13,15 +14,12 @@ export default function Home() {
   const categories = getToolsByCategory();
   const popularTools = getPopularTools(6);
   const searchableTools = tools.map(
-    ({ slug, name, description, category, keywordCluster }) => ({
+    ({ slug, title, description, category, keywords }) => ({
       slug,
-      name,
+      title,
       description,
       category,
-      keywordCluster: {
-        primary: keywordCluster.primary,
-        secondary: keywordCluster.secondary,
-      },
+      keywords,
     }),
   );
 
@@ -47,13 +45,13 @@ export default function Home() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/tools"
+                href={routes.toolsIndex}
                 className="rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background"
               >
                 Browse all tools
               </Link>
               <Link
-                href="/tools/json-formatter"
+                href={routes.tool("json-formatter")}
                 className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground"
               >
                 JSON Formatter
@@ -71,14 +69,14 @@ export default function Home() {
             {popularTools.slice(0, 4).map((tool) => (
               <Link
                 key={tool.slug}
-                href={`/tools/${tool.slug}`}
+                href={routes.tool(tool.slug)}
                 className="surface-muted transform-gpu will-change-transform rounded-3xl p-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:shadow-lg hover:shadow-primary/10"
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                   {tool.keywordCluster.primary}
                 </p>
                 <h2 className="mt-3 text-xl font-semibold text-foreground">
-                  {tool.name}
+                  {tool.title}
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {tool.description}
@@ -98,7 +96,7 @@ export default function Home() {
               {category.title}
             </p>
             <h2 className="mt-3 text-2xl font-bold text-foreground">
-              <Link href={`/tools/category/${category.key}`} className="hover:text-primary">
+              <Link href={routes.category(category.key)} className="hover:text-primary">
                 {category.tools.length} tools
               </Link>
             </h2>
@@ -109,10 +107,10 @@ export default function Home() {
               {category.tools.slice(0, 4).map((tool) => (
                 <Link
                   key={tool.slug}
-                  href={`/tools/${tool.slug}`}
+                  href={routes.tool(tool.slug)}
                   className="block text-foreground hover:text-primary"
                 >
-                  {tool.name}
+                  {tool.title}
                 </Link>
               ))}
             </div>
@@ -141,13 +139,13 @@ export default function Home() {
           {popularTools.map((tool) => (
             <Link
               key={tool.slug}
-              href={`/tools/${tool.slug}`}
+              href={routes.tool(tool.slug)}
               className="transform-gpu will-change-transform rounded-3xl border border-border bg-background px-5 py-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:bg-background-soft hover:shadow-lg hover:shadow-primary/10"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {tool.keywordCluster.primary}
               </p>
-              <h3 className="mt-3 text-lg font-semibold text-foreground">{tool.name}</h3>
+              <h3 className="mt-3 text-lg font-semibold text-foreground">{tool.title}</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {tool.description}
               </p>

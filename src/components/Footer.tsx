@@ -14,6 +14,7 @@ function HeartIcon() {
     </svg>
   );
 }
+import { routes } from "@/lib/internal-links";
 import { siteConfig } from "@/lib/site";
 import { tools } from "@/tools";
 
@@ -32,10 +33,10 @@ export function Footer() {
             {siteConfig.description}
           </p>
           <div className="mt-4 flex flex-wrap gap-4 text-sm">
-            <Link href="/tools" className="font-medium text-foreground hover:text-primary">
+            <Link href={routes.toolsIndex} className="font-medium text-foreground hover:text-primary">
               All tools
             </Link>
-            <Link href="/about" className="font-medium text-foreground hover:text-primary">
+            <Link href={routes.about} className="font-medium text-foreground hover:text-primary">
               About
             </Link>
           </div>
@@ -49,10 +50,10 @@ export function Footer() {
             {footerTools.map((tool) => (
               <Link
                 key={tool.slug}
-                href={`/tools/${tool.slug}`}
+                href={routes.tool(tool.slug)}
                 className="block text-sm text-foreground hover:text-primary"
               >
-                {tool.name}
+                {tool.title}
               </Link>
             ))}
           </div>
@@ -64,17 +65,17 @@ export function Footer() {
           </h3>
           <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
             <li>
-              <Link href="/tools" className="hover:text-foreground">
+              <Link href={routes.toolsIndex} className="hover:text-foreground">
                 Full tools directory
               </Link>
             </li>
             <li>
-              <Link href="/tools/category/formatting" className="hover:text-foreground">
+              <Link href={routes.category("formatting")} className="hover:text-foreground">
                 Formatting tools
               </Link>
             </li>
             <li>
-              <Link href="/tools/category/utilities" className="hover:text-foreground">
+              <Link href={routes.category("utilities")} className="hover:text-foreground">
                 Developer utilities
               </Link>
             </li>

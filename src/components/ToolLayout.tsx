@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
 import { toolCategories } from "@/lib/tools";
 
@@ -15,20 +16,20 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
     <div className="page-fade">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Tools", href: "/tools" },
+          { label: "Home", href: routes.home },
+          { label: "Tools", href: routes.toolsIndex },
           {
             label: toolCategories[tool.category].title,
-            href: `/tools/category/${tool.category}`,
+            href: routes.category(tool.category),
           },
-          { label: tool.name },
+          { label: tool.title },
         ]}
       />
 
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
         <div className="flex flex-wrap items-start gap-3">
           <Link
-            href={`/tools/category/${tool.category}`}
+            href={routes.category(tool.category)}
             className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap text-primary hover:opacity-90"
           >
             {toolCategories[tool.category].title}
@@ -39,7 +40,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </div>
 
         <h1 className="mt-4 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-          {tool.name}
+          {tool.title}
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
           {tool.description}
@@ -58,18 +59,22 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
               Related tools
             </p>
             <div className="mt-4 space-y-3">
-              {relatedTools.map((relatedTool) => (
-                <Link
-                  key={relatedTool.slug}
-                  href={`/tools/${relatedTool.slug}`}
-                  className="block rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
-                >
-                  <p className="font-semibold text-foreground">{relatedTool.name}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {relatedTool.description}
-                  </p>
-                </Link>
-              ))}
+              {relatedTools.map((relatedTool) => {
+                const link = toolToLink(relatedTool, "related");
+
+                return (
+                  <Link
+                    key={relatedTool.slug}
+                    href={link.href}
+                    className="block rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
+                  >
+                    <p className="font-semibold text-foreground">{link.label}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {link.description}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         </div>

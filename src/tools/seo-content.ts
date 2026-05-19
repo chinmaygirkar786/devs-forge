@@ -1,12 +1,7 @@
-import type { ToolFaq } from "@/tools/types";
+import type { ToolSlug } from "@/tools/slugs";
+import type { ToolSeoBlock } from "@/tools/types";
 
-type ToolSeoContent = {
-  seoIntro: string;
-  useCases: string[];
-  faqs: ToolFaq[];
-};
-
-export const toolSeoContent: Record<string, ToolSeoContent> = {
+export const toolSeoContent = {
   "json-formatter": {
     seoIntro:
       "Use this JSON formatter when you need to validate API responses, compare payloads, or share readable configuration with your team.",
@@ -152,8 +147,7 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
       {
         question: "Can I copy individual swatches?",
-        answer:
-          "Yes. Click a swatch to copy its hex value to the clipboard.",
+        answer: "Yes. Click a swatch to copy its hex value to the clipboard.",
       },
       {
         question: "Does this check color contrast?",
@@ -178,7 +172,8 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
       {
         question: "Can I change the gradient angle?",
-        answer: "Yes. Adjust the angle control and the preview updates instantly.",
+        answer:
+          "Yes. Adjust the angle control and the preview updates instantly.",
       },
       {
         question: "Do I need to install anything?",
@@ -203,8 +198,7 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
       {
         question: "Is my Markdown uploaded anywhere?",
-        answer:
-          "No. Rendering happens locally in your browser.",
+        answer: "No. Rendering happens locally in your browser.",
       },
       {
         question: "Can I copy the rendered HTML?",
@@ -311,9 +305,8 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
       {
         question: "Is my JSON uploaded?",
-        answer:
-          "No. Type generation runs entirely in your browser.",
+        answer: "No. Type generation runs entirely in your browser.",
       },
     ],
   },
-};
+} satisfies Record<ToolSlug, ToolSeoBlock>;

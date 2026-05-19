@@ -78,7 +78,7 @@ export function ToolPageClient({ slug }: ToolPageClientProps) {
 
     recordToolUsage({
       slug: tool.slug,
-      name: tool.name,
+      title: tool.title,
       category: tool.category,
     });
   }, [tool]);
