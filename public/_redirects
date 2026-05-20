@@ -1,0 +1,2 @@
+# Cloudflare static asset redirects (see Workers static assets docs).
+/cdn-cgi/rum / 302

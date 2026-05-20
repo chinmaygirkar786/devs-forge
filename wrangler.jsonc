@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  "main": "cloudflare/entry.worker.ts",
   "name": "devs-forge",
   "compatibility_date": "2026-05-17",
   "compatibility_flags": [
