@@ -15,15 +15,11 @@ function isProtectedAssetPath(pathname: string) {
   );
 }
 
-/** Block opening compiled JS chunks in a browser tab; normal script loads still work. */
 function isProtectedChunkPath(pathname: string) {
   return (
-    pathname.startsWith("/_next/static/chunks/") && pathname.endsWith(".js")
+    pathname.startsWith("/_next/static/chunks/") &&
+    (pathname.endsWith(".js") || pathname.endsWith(".js.map"))
   );
-}
-
-function isProtectedPath(pathname: string) {
-  return isProtectedAssetPath(pathname) || isProtectedChunkPath(pathname);
 }
 
 /** True when someone opened the URL in a browser tab (not a PWA / SW fetch). */
@@ -36,11 +32,47 @@ function isDirectBrowserNavigation(request: NextRequest) {
   }
 
   if (fetchMode === "navigate") {
-    const pwaFetchDests = new Set(["manifest", "worker", "serviceworker", "script"]);
+    const pwaFetchDests = new Set([
+      "manifest",
+      "worker",
+      "serviceworker",
+      "script",
+    ]);
     return !pwaFetchDests.has(fetchDest);
   }
 
   return false;
+}
+
+/**
+ * Only allow chunk files when loaded as scripts from this site (Sec-Fetch-*).
+ * Blocks direct URL visits, curl/wget, and cross-site hotlinking.
+ */
+function isAllowedChunkRequest(request: NextRequest) {
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    return false;
+  }
+
+  const fetchDest = request.headers.get("sec-fetch-dest") ?? "";
+  const fetchSite = request.headers.get("sec-fetch-site") ?? "";
+
+  if (
+    fetchDest === "script" &&
+    (fetchSite === "same-origin" || fetchSite === "same-site")
+  ) {
+    return true;
+  }
+
+  const referer = request.headers.get("referer");
+  if (!referer) {
+    return false;
+  }
+
+  try {
+    return new URL(referer).origin === request.nextUrl.origin;
+  } catch {
+    return false;
+  }
 }
 
 export function middleware(request: NextRequest) {
@@ -50,7 +82,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (!isProtectedPath(pathname)) {
+  if (isProtectedChunkPath(pathname)) {
+    if (!isAllowedChunkRequest(request)) {
+      return new NextResponse(null, { status: 403 });
+    }
+
+    return NextResponse.next();
+  }
+
+  if (!isProtectedAssetPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -72,6 +112,6 @@ export const config = {
     "/pwa/icon-192",
     "/pwa/icon-512",
     "/pwa/icon-512-maskable",
-    "/_next/static/chunks/:path*.js",
+    "/_next/static/chunks/:path*",
   ],
 };
