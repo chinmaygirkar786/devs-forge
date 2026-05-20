@@ -36,12 +36,28 @@ function detectStandalone() {
   );
 }
 
+function getInitialIosHint() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return detectIos() && !detectStandalone();
+}
+
+function getInitialInstalled() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return detectStandalone();
+}
+
 export function PwaProvider() {
   const [installEvent, setInstallEvent] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [showIosHint, setShowIosHint] = useState(false);
+  const [showIosHint, setShowIosHint] = useState(getInitialIosHint);
   const [dismissed, setDismissed] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(getInitialInstalled);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) {
@@ -60,14 +76,8 @@ export function PwaProvider() {
       setIsInstalled(detectStandalone());
     };
 
-    updateInstalled();
-
     const media = window.matchMedia("(display-mode: standalone)");
     media.addEventListener("change", updateInstalled);
-
-    if (detectIos() && !detectStandalone()) {
-      setShowIosHint(true);
-    }
 
     const onBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
