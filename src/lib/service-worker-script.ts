@@ -1,6 +1,7 @@
-const CACHE_VERSION = "devs-forge-v1";
-const STATIC_CACHE = `${CACHE_VERSION}-static`;
-const PAGES_CACHE = `${CACHE_VERSION}-pages`;
+/** Service worker source served at /sw.js (browser install only, not for direct viewing). */
+export const serviceWorkerScript = `const CACHE_VERSION = "devs-forge-v1";
+const STATIC_CACHE = \`\${CACHE_VERSION}-static\`;
+const PAGES_CACHE = \`\${CACHE_VERSION}-pages\`;
 
 const PRECACHE_URLS = ["/", "/tools"];
 
@@ -111,3 +112,4 @@ async function networkFirst(request, cacheName) {
     });
   }
 }
+`;
