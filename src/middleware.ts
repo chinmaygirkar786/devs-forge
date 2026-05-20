@@ -15,6 +15,17 @@ function isProtectedAssetPath(pathname: string) {
   );
 }
 
+/** Block opening compiled JS chunks in a browser tab; normal script loads still work. */
+function isProtectedChunkPath(pathname: string) {
+  return (
+    pathname.startsWith("/_next/static/chunks/") && pathname.endsWith(".js")
+  );
+}
+
+function isProtectedPath(pathname: string) {
+  return isProtectedAssetPath(pathname) || isProtectedChunkPath(pathname);
+}
+
 /** True when someone opened the URL in a browser tab (not a PWA / SW fetch). */
 function isDirectBrowserNavigation(request: NextRequest) {
   const fetchDest = request.headers.get("sec-fetch-dest") ?? "";
@@ -33,7 +44,13 @@ function isDirectBrowserNavigation(request: NextRequest) {
 }
 
 export function middleware(request: NextRequest) {
-  if (!isProtectedAssetPath(request.nextUrl.pathname)) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname === "/cdn-cgi/rum") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (!isProtectedPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -46,6 +63,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/cdn-cgi/rum",
     "/sw.js",
     "/manifest.webmanifest",
     "/apple-icon",
@@ -54,5 +72,6 @@ export const config = {
     "/pwa/icon-192",
     "/pwa/icon-512",
     "/pwa/icon-512-maskable",
+    "/_next/static/chunks/:path*.js",
   ],
 };
