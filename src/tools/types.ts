@@ -25,10 +25,18 @@ export type ToolKeywordCluster = {
   longTail: string[];
 };
 
+export type ToolContentSection = {
+  heading: string;
+  paragraphs: string[];
+};
+
 export type ToolSeoBlock = {
   seoIntro: string;
+  contentSections?: ToolContentSection[];
   useCases: string[];
   faqs: ToolFaq[];
+  /** Slugs highlighted in the in-page internal links section (defaults to relatedSlugs). */
+  internalLinkSlugs?: string[];
 };
 
 export type ToolDefinition = {
@@ -46,12 +54,14 @@ export type ToolDefinition = {
   relatedSlugs: string[];
   affiliateContext: AffiliateContext[];
   seoIntro: string;
+  contentSections: ToolContentSection[];
   useCases: string[];
   faqs: ToolFaq[];
+  internalLinkSlugs: string[];
   loadComponent: () => Promise<{ default: ComponentType }>;
 };
 
 export type ToolSeed = Omit<
   ToolDefinition,
-  "seoIntro" | "useCases" | "faqs" | "keywords"
+  "seoIntro" | "contentSections" | "useCases" | "faqs" | "internalLinkSlugs" | "keywords"
 >;

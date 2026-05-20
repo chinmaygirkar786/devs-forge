@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
-import { toolCategories } from "@/lib/tools";
+import { getToolBySlug, toolCategories } from "@/lib/tools";
 
 type ToolLayoutProps = {
   tool: ToolDefinition;
@@ -12,6 +12,11 @@ type ToolLayoutProps = {
 };
 
 export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
+  const featuredLinks = tool.internalLinkSlugs
+    .map((slug) => getToolBySlug(slug))
+    .filter((related): related is ToolDefinition => Boolean(related))
+    .slice(0, 6);
+
   return (
     <div className="page-fade">
       <Breadcrumbs
@@ -79,6 +84,60 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
           </section>
         </div>
       </div>
+
+      {tool.contentSections.length > 0 ? (
+        <article className="surface-card mt-8 rounded-3xl p-6 sm:p-8">
+          {tool.contentSections.map((section) => (
+            <section key={section.heading} className="mt-10 first:mt-0">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 48)}
+                  className="mt-4 text-base leading-8 text-muted-foreground"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </section>
+          ))}
+        </article>
+      ) : null}
+
+      {featuredLinks.length > 0 ? (
+        <section className="surface-card mt-8 rounded-3xl p-6">
+          <h2 className="text-2xl font-bold text-foreground">Related developer tools</h2>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+            Continue your workflow with these free utilities on {toolCategories[tool.category].title.toLowerCase()}{" "}
+            and adjacent tasks—all browser-based, no upload required.
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {featuredLinks.map((related) => {
+              const link = toolToLink(related, "related");
+
+              return (
+                <li key={related.slug}>
+                  <Link
+                    href={link.href}
+                    className="block rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
+                  >
+                    <span className="font-semibold text-foreground">{link.label}</span>
+                    <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                      {link.description}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-5 text-sm text-muted-foreground">
+            <Link href={routes.toolsIndex} className="font-semibold text-primary hover:opacity-90">
+              Browse all developer tools →
+            </Link>
+          </p>
+        </section>
+      ) : null}
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <section className="surface-card rounded-3xl p-6">
