@@ -151,12 +151,20 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </section>
       ) : null}
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-        <section className="surface-card rounded-3xl p-6">
+      <div className="mt-8 space-y-6">
+        <section className="surface-card rounded-3xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-foreground">How it works</h2>
-          <ol className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+          <ol
+            className={`mt-4 grid gap-4 text-sm leading-6 text-muted-foreground ${
+              tool.howItWorks.length <= 3
+                ? "md:grid-cols-3"
+                : tool.howItWorks.length === 4
+                  ? "sm:grid-cols-2"
+                  : "grid-cols-1"
+            }`}
+          >
             {tool.howItWorks.map((step, index) => (
-              <li key={step} className="flex gap-4">
+              <li key={step} className="flex gap-3">
                 <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-xs font-bold text-primary">
                   {index + 1}
                 </span>
@@ -166,19 +174,19 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
           </ol>
         </section>
 
-        <section className="surface-card rounded-3xl p-6">
+        <section className="surface-card rounded-3xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-foreground">Examples</h2>
-          <div className="mt-5 space-y-4">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {tool.examples.map((example) => (
               <div key={example.title} className="surface-muted rounded-2xl p-4">
                 <h3 className="font-semibold text-foreground">{example.title}</h3>
                 {example.input ? (
-                  <div className="mt-3 overflow-hidden rounded-2xl bg-background px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap text-muted-foreground">
+                  <div className="mt-2 overflow-hidden rounded-2xl bg-background px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap text-muted-foreground">
                     {example.input}
                   </div>
                 ) : null}
                 {example.output ? (
-                  <div className="mt-3 overflow-hidden rounded-2xl bg-background px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap text-muted-foreground">
+                  <div className="mt-2 overflow-hidden rounded-2xl bg-background px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap text-muted-foreground">
                     {example.output}
                   </div>
                 ) : null}
