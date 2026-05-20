@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, Copy } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -266,7 +267,7 @@ export function ActionButton({
     <button
       {...props}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed",
+        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed",
         variants[variant],
         className,
       )}
@@ -298,15 +299,40 @@ export function CopyButton({
 
   return (
     <ActionButton
-      variant="ghost"
-      className={className}
+      variant={copied ? "ghost" : "secondary"}
+      className={cn(
+        "transform-gpu transition-[transform,box-shadow,background-color,filter] duration-200 ease-out will-change-transform",
+        ...(copied
+          ? [
+              "border border-success/40 bg-success/10 text-success ring-2 ring-success/20",
+              "hover:bg-success/15 hover:ring-success/40 hover:shadow-md hover:shadow-success/15",
+              "active:scale-[0.97] active:bg-success/20",
+            ]
+          : [
+              "shadow-lg shadow-primary/25 ring-2 ring-primary/30",
+              "hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-xl hover:shadow-primary/40 hover:ring-primary/50 hover:brightness-110",
+              "active:translate-y-0 active:scale-[0.98] active:shadow-md active:shadow-primary/20 active:brightness-95",
+            ]),
+        "disabled:pointer-events-none disabled:translate-y-0 disabled:scale-100 disabled:shadow-none disabled:ring-0 disabled:brightness-100",
+        className,
+      )}
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
       }}
       disabled={!value}
     >
-      {copied ? "Copied" : label}
+      {copied ? (
+        <>
+          <Check className="h-4 w-4 shrink-0" strokeWidth={2.25} aria-hidden />
+          Copied
+        </>
+      ) : (
+        <>
+          <Copy className="h-4 w-4 shrink-0" strokeWidth={2.25} aria-hidden />
+          {label}
+        </>
+      )}
     </ActionButton>
   );
 }

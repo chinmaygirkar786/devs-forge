@@ -38,7 +38,6 @@ export const siteConfig = {
   navigation: [
     { href: "/", label: "Home" },
     { href: "/tools", label: "All Tools" },
-    { href: "/#popular-tools", label: "Popular Tools" },
     { href: "/#categories", label: "Categories" },
   ],
 };

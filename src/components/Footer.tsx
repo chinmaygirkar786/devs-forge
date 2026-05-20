@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { SiteLogo } from "@/components/SiteLogo";
+import { ToolIcon } from "@/components/ToolIcon";
 
 function HeartIcon() {
   return (
@@ -51,8 +52,9 @@ export function Footer() {
               <Link
                 key={tool.slug}
                 href={routes.tool(tool.slug)}
-                className="block text-sm text-foreground hover:text-primary"
+                className="flex items-center gap-2.5 text-sm text-foreground hover:text-primary"
               >
+                <ToolIcon slug={tool.slug} size="sm" className="h-8 w-8 rounded-lg" />
                 {tool.title}
               </Link>
             ))}

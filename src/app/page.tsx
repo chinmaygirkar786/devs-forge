@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { HomeExplorer } from "@/components/HomeExplorer";
+import { RecentlyUsedTools } from "@/components/RecentlyUsedTools";
+import { ToolCardLink } from "@/components/ToolCardLink";
+import { ToolIcon } from "@/components/ToolIcon";
 import { SEOHead } from "@/components/SEOHead";
 import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
@@ -13,15 +16,12 @@ export const metadata: Metadata = buildHomeMetadata();
 export default function Home() {
   const categories = getToolsByCategory();
   const popularTools = getPopularTools(6);
-  const searchableTools = tools.map(
-    ({ slug, title, description, category, keywords }) => ({
-      slug,
-      title,
-      description,
-      category,
-      keywords,
-    }),
-  );
+  const searchableTools = tools.map(({ slug, title, description, keywords }) => ({
+    slug,
+    title,
+    description,
+    keywords,
+  }));
 
   return (
     <div className="page-fade space-y-10">
@@ -67,25 +67,20 @@ export default function Home() {
 
           <div className="grid gap-4">
             {popularTools.slice(0, 4).map((tool) => (
-              <Link
+              <ToolCardLink
                 key={tool.slug}
                 href={routes.tool(tool.slug)}
+                slug={tool.slug}
+                title={tool.title}
+                description={tool.description}
                 className="surface-muted transform-gpu will-change-transform rounded-3xl p-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:shadow-lg hover:shadow-primary/10"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                  {tool.keywordCluster.primary}
-                </p>
-                <h2 className="mt-3 text-xl font-semibold text-foreground">
-                  {tool.title}
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {tool.description}
-                </p>
-              </Link>
+              />
             ))}
           </div>
         </div>
       </section>
+
+      <RecentlyUsedTools />
 
       <HomeExplorer tools={searchableTools} />
 
@@ -108,50 +103,15 @@ export default function Home() {
                 <Link
                   key={tool.slug}
                   href={routes.tool(tool.slug)}
-                  className="block text-foreground hover:text-primary"
+                  className="flex items-center gap-3 text-foreground hover:text-primary"
                 >
-                  {tool.title}
+                  <ToolIcon slug={tool.slug} size="sm" />
+                  <span className="font-medium">{tool.title}</span>
                 </Link>
               ))}
             </div>
           </div>
         ))}
-      </section>
-
-      <section id="popular-tools" className="surface-card rounded-[2rem] p-6 sm:p-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              Popular tools
-            </p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">
-              High-intent online developer utilities that rank and convert.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-muted-foreground">
-            These tools target evergreen searches like JSON formatter online, JWT
-            decoder online, regex tester online, and UUID generator online while
-            staying fast enough for daily use.
-          </p>
-        </div>
-
-        <div className="mt-6 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-          {popularTools.map((tool) => (
-            <Link
-              key={tool.slug}
-              href={routes.tool(tool.slug)}
-              className="transform-gpu will-change-transform rounded-3xl border border-border bg-background px-5 py-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:bg-background-soft hover:shadow-lg hover:shadow-primary/10"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                {tool.keywordCluster.primary}
-              </p>
-              <h3 className="mt-3 text-lg font-semibold text-foreground">{tool.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {tool.description}
-              </p>
-            </Link>
-          ))}
-        </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">

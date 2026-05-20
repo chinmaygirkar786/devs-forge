@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import {
   ActionButton,
+  CopyButton,
   FieldLabel,
   InputField,
   SectionCard,
@@ -12,11 +13,43 @@ import {
 import { generatePalette, getReadableTextColor } from "@/lib/tool-helpers";
 
 const starterColors = ["#4F46E5", "#06B6D4", "#14B8A6", "#F97316"];
+const defaultColorName = "primary";
+
+function normalizeSwatchColorName(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function formatSwatchToken(colorName: string, shade: string) {
+  return colorName ? `${colorName}-${shade}` : shade;
+}
+
+function formatCssVariable(colorName: string, shade: string, hex: string) {
+  return `--color-${formatSwatchToken(colorName, shade)}: ${hex};`;
+}
 
 export default function ColorPaletteGeneratorTool() {
   const [color, setColor] = useState("#4F46E5");
+  const [colorName, setColorName] = useState(defaultColorName);
   const [toastMessage, setToastMessage] = useState("");
   const palette = useMemo(() => generatePalette(color), [color]);
+  const normalizedColorName = useMemo(
+    () => normalizeSwatchColorName(colorName),
+    [colorName],
+  );
+  const paletteListOutput = useMemo(
+    () =>
+      palette
+        .map((swatch) =>
+          formatCssVariable(normalizedColorName, swatch.label, swatch.value),
+        )
+        .join("\n"),
+    [normalizedColorName, palette],
+  );
 
   useEffect(() => {
     if (!toastMessage) {
@@ -27,12 +60,15 @@ export default function ColorPaletteGeneratorTool() {
     return () => window.clearTimeout(timer);
   }, [toastMessage]);
 
-  async function copySwatchColor(value: string, label: string) {
+  async function copySwatchColor(value: string, shade: string) {
+    const cssVariable = formatCssVariable(normalizedColorName, shade, value);
+    const swatchName = formatSwatchToken(normalizedColorName, shade);
+
     try {
-      await navigator.clipboard.writeText(value);
-      setToastMessage(`Copied ${label} color swatch (${value}) to your clipboard.`);
+      await navigator.clipboard.writeText(cssVariable);
+      setToastMessage(`Copied ${swatchName} (${cssVariable}) to your clipboard.`);
     } catch {
-      setToastMessage(`Couldn't copy color swatch ${value}. Please try again.`);
+      setToastMessage(`Couldn't copy ${swatchName}. Please try again.`);
     }
   }
 
@@ -54,6 +90,15 @@ export default function ColorPaletteGeneratorTool() {
             <InputField
               value={color}
               onChange={(event) => setColor(event.target.value.toUpperCase())}
+            />
+          </div>
+
+          <div className="mt-4">
+            <FieldLabel label="Swatch color name" />
+            <InputField
+              value={colorName}
+              onChange={(event) => setColorName(event.target.value)}
+              placeholder={defaultColorName}
             />
           </div>
 
@@ -85,8 +130,12 @@ export default function ColorPaletteGeneratorTool() {
 
         <SectionCard
           title="Generated palette"
-          description="Click any swatch to copy its hex value."
+          description="Click a swatch to copy one CSS variable, or copy the full list."
         >
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <FieldLabel label="CSS variables" />
+            <CopyButton value={paletteListOutput} label="Copy list" />
+          </div>
           <div className="grid gap-3">
             {palette.map((swatch) => (
               <button
@@ -99,7 +148,9 @@ export default function ColorPaletteGeneratorTool() {
                   color: getReadableTextColor(swatch.value),
                 }}
               >
-                <span className="font-semibold">{swatch.label}</span>
+                <span className="font-semibold">
+                  {formatSwatchToken(normalizedColorName, swatch.label)}
+                </span>
                 <span className="font-mono text-sm">{swatch.value}</span>
               </button>
             ))}

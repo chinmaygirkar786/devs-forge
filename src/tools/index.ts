@@ -6,6 +6,7 @@ import { assertToolRegistry } from "@/tools/validate";
 
 export type {
   ToolCategory,
+  ToolContentSection,
   ToolDefinition,
   ToolExample,
   ToolFaq,
@@ -51,10 +52,23 @@ const toolSeeds: ToolSeed[] = [
       {
         title: "Format a compact API response",
         input: '{"name":"Ava","roles":["admin","editor"],"active":true}',
+        output: `{
+  "name": "Ava",
+  "roles": ["admin", "editor"],
+  "active": true
+}`,
       },
       {
-        title: "Validate a payload before debugging a request",
-        input: '{"id":42,"settings":{"theme":"dark"}}',
+        title: "Validate nested configuration JSON",
+        input: '{"id":42,"settings":{"theme":"dark","notifications":true}}',
+      },
+      {
+        title: "Catch invalid JSON before deployment",
+        input: '{"status":"ok","items":[1,2,3,]}',
+      },
+      {
+        title: "Pretty-print a webhook payload",
+        input: '{"event":"order.created","id":"ord_9f2","total":129.5}',
       },
     ],
     relatedSlugs: [
@@ -65,6 +79,7 @@ const toolSeeds: ToolSeed[] = [
       "regex-tester",
       "url-encoder",
       "timestamp-converter",
+      "uuid-generator",
     ],
     affiliateContext: ["backend", "api", "hosting"],
     loadComponent: () => import("@/tools/json-formatter/Tool"),
@@ -102,8 +117,24 @@ const toolSeeds: ToolSeed[] = [
         input:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzEyMyIsIm5hbWUiOiJEZXYgVXNlciIsImlhdCI6MTcxNTYxOTYwMCwiZXhwIjoxNzE1NjIzMjAwLCJpc3MiOiJkZXZlbG9wZXItdG9vbHMtaHViIn0.signature",
       },
+      {
+        title: "Review OAuth scope and audience fields",
+        input:
+          "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQIjoiYXBpLmV4YW1wbGUuY29tIiwic2NvcGUiOiJyZWFkIHdyaXRlIiwiZXhwIjoxNzE1NjIzMjAwfQ.signature",
+      },
+      {
+        title: "Compare header algorithm values",
+        input:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
+      },
     ],
-    relatedSlugs: ["base64-encoder", "json-formatter", "timestamp-converter"],
+    relatedSlugs: [
+      "base64-encoder",
+      "json-formatter",
+      "timestamp-converter",
+      "regex-tester",
+      "uuid-generator",
+    ],
     affiliateContext: ["ai-coding", "api", "backend"],
     loadComponent: () => import("@/tools/jwt-decoder/Tool"),
   },
@@ -137,14 +168,29 @@ const toolSeeds: ToolSeed[] = [
     examples: [
       {
         title: "Capture issue keys from commit messages",
-        input: "[A-Z]{2,}-\\d+",
+        input: "Pattern: [A-Z]{2,}-\\d+  |  Sample: Fix API-1024 timeout",
       },
       {
         title: "Validate email-like text",
-        input: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+        input: "Pattern: ^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$  |  Sample: dev@example.com",
+      },
+      {
+        title: "Extract semver from a release tag",
+        input: "Pattern: v?(\\d+\\.\\d+\\.\\d+)  |  Sample: release/v2.4.1",
+      },
+      {
+        title: "Find UUIDs inside log lines",
+        input:
+          "Pattern: [0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}  |  Sample: user=550e8400-e29b-41d4-a716-446655440000",
       },
     ],
-    relatedSlugs: ["url-encoder", "json-formatter", "html-formatter"],
+    relatedSlugs: [
+      "url-encoder",
+      "json-formatter",
+      "html-formatter",
+      "base64-encoder",
+      "jwt-decoder",
+    ],
     affiliateContext: ["ai-coding", "frontend", "backend"],
     loadComponent: () => import("@/tools/regex-tester/Tool"),
   },
@@ -179,9 +225,31 @@ const toolSeeds: ToolSeed[] = [
       {
         title: "Encode a credential string",
         input: "developer:super-secret-token",
+        output: "ZGV2ZWxvcGVyOnN1cGVyLXNlY3JldC10b2tlbg==",
+      },
+      {
+        title: "Decode a Base64 JSON attachment",
+        input: "eyJuYW1lIjoiQXZhIiwicm9sZSI6ImFkbWluIn0=",
+        output: '{"name":"Ava","role":"admin"}',
+      },
+      {
+        title: "Encode Unicode text safely",
+        input: "Hello 世界 🚀",
+      },
+      {
+        title: "Decode a URL-safe Base64 sample",
+        input: "dGV4dC13aXRoLWh5cGhlbnM",
       },
     ],
-    relatedSlugs: ["jwt-decoder", "json-formatter", "url-encoder", "json-to-typescript"],
+    relatedSlugs: [
+      "jwt-decoder",
+      "json-formatter",
+      "url-encoder",
+      "json-to-typescript",
+      "regex-tester",
+      "uuid-generator",
+      "timestamp-converter",
+    ],
     affiliateContext: ["api", "backend", "productivity"],
     loadComponent: () => import("@/tools/base64-encoder/Tool"),
   },
@@ -215,9 +283,30 @@ const toolSeeds: ToolSeed[] = [
     examples: [
       {
         title: "Create fixture IDs for local development",
+        output: "550e8400-e29b-41d4-a716-446655440000",
+      },
+      {
+        title: "Generate a batch for seed scripts",
+        output:
+          "f47ac10b-58cc-4372-a567-0e02b2c3d479\n6ba7b810-9dad-11d1-80b4-00c04fd430c8\n6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+      },
+      {
+        title: "Mock a user id in API examples",
+        output: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      },
+      {
+        title: "Correlation id for tracing docs",
+        output: "2ff7bde8-7c28-4f3f-b3b1-9f4e6d0a8c21",
       },
     ],
-    relatedSlugs: ["timestamp-converter", "json-to-typescript", "color-palette-generator"],
+    relatedSlugs: [
+      "timestamp-converter",
+      "json-to-typescript",
+      "json-formatter",
+      "jwt-decoder",
+      "base64-encoder",
+      "color-palette-generator",
+    ],
     affiliateContext: ["ai-coding", "backend", "productivity"],
     loadComponent: () => import("@/tools/uuid-generator/Tool"),
   },
@@ -445,7 +534,13 @@ const toolSeeds: ToolSeed[] = [
         input: "1715619600",
       },
     ],
-    relatedSlugs: ["jwt-decoder", "uuid-generator", "json-formatter"],
+    relatedSlugs: [
+      "jwt-decoder",
+      "uuid-generator",
+      "json-formatter",
+      "json-to-typescript",
+      "base64-encoder",
+    ],
     affiliateContext: ["api", "backend", "productivity"],
     loadComponent: () => import("@/tools/timestamp-converter/Tool"),
   },
@@ -482,7 +577,12 @@ const toolSeeds: ToolSeed[] = [
         input: '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
       },
     ],
-    relatedSlugs: ["json-formatter", "uuid-generator", "base64-encoder"],
+    relatedSlugs: [
+      "json-formatter",
+      "uuid-generator",
+      "base64-encoder",
+      "timestamp-converter",
+    ],
     affiliateContext: ["ai-coding", "backend", "frontend"],
     loadComponent: () => import("@/tools/json-to-typescript/Tool"),
   },
@@ -494,6 +594,8 @@ const assembledTools: ToolDefinition[] = toolSeeds.map((seed) => {
   return {
     ...seed,
     ...seo,
+    contentSections: seo.contentSections ?? [],
+    internalLinkSlugs: seo.internalLinkSlugs ?? seed.relatedSlugs,
     keywords: buildToolKeywords(seed.keywordCluster),
   };
 });

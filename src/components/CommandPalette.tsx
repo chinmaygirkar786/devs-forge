@@ -8,6 +8,7 @@ import {
   getToolUsageHistoryServerSnapshot,
   subscribeToToolUsageHistory,
 } from "@/lib/history";
+import { ToolIcon } from "@/components/ToolIcon";
 import { routes } from "@/lib/internal-links";
 import { toolCategories } from "@/lib/tools";
 import { cn } from "@/lib/utils";
@@ -106,6 +107,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   )}
                 >
                   <div className="flex items-start justify-between gap-3">
+                    <ToolIcon slug={tool.slug} size="sm" />
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-foreground">{tool.title}</p>
                       <p className="mt-1 text-sm text-muted-foreground">

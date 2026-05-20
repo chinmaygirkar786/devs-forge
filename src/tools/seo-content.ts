@@ -1,137 +1,24 @@
 import type { ToolSlug } from "@/tools/slugs";
 import type { ToolSeoBlock } from "@/tools/types";
+import { base64EncoderSeo } from "@/tools/seo/base64-encoder";
+import { jsonFormatterSeo } from "@/tools/seo/json-formatter";
+import { jwtDecoderSeo } from "@/tools/seo/jwt-decoder";
+import { regexTesterSeo } from "@/tools/seo/regex-tester";
+import { uuidGeneratorSeo } from "@/tools/seo/uuid-generator";
 
-export const toolSeoContent = {
-  "json-formatter": {
-    seoIntro:
-      "Use this JSON formatter when you need to validate API responses, compare payloads, or share readable configuration with your team.",
-    useCases: [
-      "Pretty-print JSON from network tabs before pasting into tickets or docs.",
-      "Validate configuration files before deploying to staging.",
-      "Fix trailing commas and syntax issues highlighted by the parser.",
-    ],
-    faqs: [
-      {
-        question: "Does this JSON formatter send my data to a server?",
-        answer:
-          "No. Parsing and formatting happen entirely in your browser. Your JSON never leaves your device.",
-      },
-      {
-        question: "Can I format minified JSON from an API response?",
-        answer:
-          "Yes. Paste compact JSON and the tool will expand it with consistent indentation for easier reading.",
-      },
-      {
-        question: "What happens if my JSON is invalid?",
-        answer:
-          "The tool surfaces a syntax error so you can locate and fix malformed structure before formatting.",
-      },
-    ],
-  },
-  "jwt-decoder": {
-    seoIntro:
-      "Decode JWT access tokens and ID tokens locally to inspect claims, expiration, and issuer details during auth debugging.",
-    useCases: [
-      "Verify exp and iat claims when debugging session timeouts.",
-      "Inspect roles and subject IDs without opening a separate CLI.",
-      "Review header algorithm values before trusting a token.",
-    ],
-    faqs: [
-      {
-        question: "Is it safe to paste production JWTs here?",
-        answer:
-          "Decoding runs locally with no network calls, but avoid sharing sensitive tokens on shared machines. This tool does not verify signatures.",
-      },
-      {
-        question: "Can this tool validate JWT signatures?",
-        answer:
-          "No. It decodes header and payload segments only. Use your identity provider or backend to verify signatures.",
-      },
-      {
-        question: "What JWT formats are supported?",
-        answer:
-          "Standard three-segment JWT strings (header.payload.signature) using Base64url encoding.",
-      },
-    ],
-  },
-  "regex-tester": {
-    seoIntro:
-      "Test regular expressions against sample text and review matches before adding patterns to production code or validation rules.",
-    useCases: [
-      "Prototype regex for log parsing and input validation.",
-      "Compare global and case-insensitive flag behavior on real samples.",
-      "Learn common tokens with plain-English explanations.",
-    ],
-    faqs: [
-      {
-        question: "Which regex flavor does this tester use?",
-        answer:
-          "It uses JavaScript regular expressions, matching the same behavior as RegExp in browsers and Node.js.",
-      },
-      {
-        question: "Can I test capture groups?",
-        answer:
-          "Yes. Matches show grouped captures when your pattern defines them.",
-      },
-      {
-        question: "Why does my pattern fail?",
-        answer:
-          "Invalid syntax or unsupported features will surface as errors. Simplify the pattern and add tokens incrementally.",
-      },
-    ],
-  },
-  "base64-encoder": {
-    seoIntro:
-      "Encode and decode Base64 strings with UTF-8 support for API debugging, token inspection, and data conversion workflows.",
-    useCases: [
-      "Decode Base64 payloads embedded in JWT segments or config.",
-      "Encode credentials or binary-safe text for transport.",
-      "Switch between encode and decode without leaving the browser.",
-    ],
-    faqs: [
-      {
-        question: "Does this support Unicode text?",
-        answer:
-          "Yes. The tool encodes and decodes UTF-8 text safely before applying Base64 conversion.",
-      },
-      {
-        question: "Is URL-safe Base64 supported?",
-        answer:
-          "The decoder tolerates common URL-safe variants by normalizing characters before decoding.",
-      },
-      {
-        question: "Where is my input processed?",
-        answer:
-          "All conversion runs locally in your browser. Nothing is uploaded to a server.",
-      },
-    ],
-  },
-  "uuid-generator": {
-    seoIntro:
-      "Generate UUID v4 values for test fixtures, database seeds, and local development without installing extra packages.",
-    useCases: [
-      "Create batches of IDs for mock APIs and seed scripts.",
-      "Copy a single UUID into environment variables or forms.",
-      "Refresh lists quickly when you need unique values.",
-    ],
-    faqs: [
-      {
-        question: "What UUID version is generated?",
-        answer: "This tool generates random UUID version 4 (v4) identifiers.",
-      },
-      {
-        question: "How random are the UUIDs?",
-        answer:
-          "UUIDs use the browser crypto API for cryptographically strong random values when available.",
-      },
-      {
-        question: "Can I generate multiple UUIDs at once?",
-        answer:
-          "Yes. Choose a count and copy the full list for fixtures or test data.",
-      },
-    ],
-  },
+const defaultSeoFields: Pick<ToolSeoBlock, "contentSections" | "internalLinkSlugs"> = {
+  contentSections: [],
+  internalLinkSlugs: undefined,
+};
+
+export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
+  "json-formatter": jsonFormatterSeo,
+  "jwt-decoder": jwtDecoderSeo,
+  "regex-tester": regexTesterSeo,
+  "base64-encoder": base64EncoderSeo,
+  "uuid-generator": uuidGeneratorSeo,
   "color-palette-generator": {
+    ...defaultSeoFields,
     seoIntro:
       "Build a full color scale from a single brand hex for design systems, dashboards, and Tailwind-style token ramps.",
     useCases: [
@@ -158,6 +45,7 @@ export const toolSeoContent = {
     ],
   },
   "gradient-generator": {
+    ...defaultSeoFields,
     seoIntro:
       "Create CSS linear gradients with live preview and copy-ready code for heroes, buttons, and backgrounds.",
     useCases: [
@@ -183,6 +71,7 @@ export const toolSeoContent = {
     ],
   },
   "markdown-previewer": {
+    ...defaultSeoFields,
     seoIntro:
       "Write Markdown and preview rendered output side by side before publishing README files, docs, or changelog entries.",
     useCases: [
@@ -209,6 +98,7 @@ export const toolSeoContent = {
     ],
   },
   "url-encoder": {
+    ...defaultSeoFields,
     seoIntro:
       "Encode and decode URL components, query strings, and path segments for API requests and redirect debugging.",
     useCases: [
@@ -234,6 +124,7 @@ export const toolSeoContent = {
     ],
   },
   "html-formatter": {
+    ...defaultSeoFields,
     seoIntro:
       "Beautify or minify HTML markup for templates, email snippets, and embed codes with local-only processing.",
     useCases: [
@@ -260,6 +151,7 @@ export const toolSeoContent = {
     ],
   },
   "timestamp-converter": {
+    ...defaultSeoFields,
     seoIntro:
       "Convert Unix epoch timestamps to readable dates and back—useful for JWT exp claims, logs, and API debugging.",
     useCases: [
@@ -286,6 +178,7 @@ export const toolSeoContent = {
     ],
   },
   "json-to-typescript": {
+    ...defaultSeoFields,
     seoIntro:
       "Turn sample JSON API responses into TypeScript interfaces to bootstrap typings for frontend and backend projects.",
     useCases: [
@@ -311,4 +204,4 @@ export const toolSeoContent = {
       },
     ],
   },
-} satisfies Record<ToolSlug, ToolSeoBlock>;
+};

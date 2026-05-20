@@ -143,7 +143,7 @@ export default function RegexTesterTool() {
           <StatPill label="Pattern length" value={pattern.length} />
         </div>
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="mb-5 flex items-center justify-between gap-3">
           <FieldLabel label="Match output" />
           <CopyButton value={matchesOutput} />
         </div>
