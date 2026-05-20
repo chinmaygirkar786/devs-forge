@@ -4,6 +4,11 @@ import openNextWorker, {
   DOQueueHandler,
   DOShardedTagCache,
 } from "../.open-next/worker.js";
+import {
+  chunkResponseHeaders,
+  isAllowedChunkRequest,
+  isProtectedChunkPath,
+} from "../src/lib/chunk-access-guard.js";
 
 export { BucketCachePurge, DOQueueHandler, DOShardedTagCache };
 
@@ -17,10 +22,6 @@ type FetchHandler = {
 
 const openNext = openNextWorker as FetchHandler;
 
-/**
- * Cloudflare Web Analytics posts to `/cdn-cgi/rum`. When RUM is not enabled for the
- * zone, Cloudflare can surface a 404. Handle it in the worker instead.
- */
 function respondToCdnCgiRum(request: Request): Response {
   if (request.method === "GET" || request.method === "HEAD") {
     return Response.redirect(new URL("/", request.url), 302);
@@ -38,7 +39,26 @@ function respondToCdnCgiRum(request: Request): Response {
   return new Response(null, { status: 204 });
 }
 
-export default {
+function denyChunkRequest(): Response {
+  return new Response(null, {
+    status: 403,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
+function withChunkVary(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("Vary", chunkResponseHeaders.vary);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+const entryWorker = {
   async fetch(
     request: Request,
     env: unknown,
@@ -50,6 +70,18 @@ export default {
       return respondToCdnCgiRum(request);
     }
 
-    return openNext.fetch(request, env, ctx);
+    if (isProtectedChunkPath(pathname) && !isAllowedChunkRequest(request)) {
+      return denyChunkRequest();
+    }
+
+    const response = await openNext.fetch(request, env, ctx);
+
+    if (isProtectedChunkPath(pathname) && response.ok) {
+      return withChunkVary(response);
+    }
+
+    return response;
   },
 };
+
+export default entryWorker;

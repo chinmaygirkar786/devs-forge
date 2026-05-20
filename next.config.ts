@@ -10,6 +10,19 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/_next/static/chunks/:path*",
+        headers: [
+          {
+            key: "Vary",
+            value: "Sec-Fetch-Dest, Sec-Fetch-Site, Sec-Fetch-Mode",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

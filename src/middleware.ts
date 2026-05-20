@@ -1,5 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import {
+  chunkResponseHeaders,
+  isAllowedChunkRequest,
+  isProtectedChunkPath,
+} from "@/lib/chunk-access-guard";
+
 /** App-internal assets that should not be opened as standalone pages in a browser tab. */
 const PROTECTED_EXACT_PATHS = new Set([
   "/sw.js",
@@ -12,13 +18,6 @@ const PROTECTED_EXACT_PATHS = new Set([
 function isProtectedAssetPath(pathname: string) {
   return (
     PROTECTED_EXACT_PATHS.has(pathname) || pathname.startsWith("/pwa/icon-")
-  );
-}
-
-function isProtectedChunkPath(pathname: string) {
-  return (
-    pathname.startsWith("/_next/static/chunks/") &&
-    (pathname.endsWith(".js") || pathname.endsWith(".js.map"))
   );
 }
 
@@ -44,37 +43,6 @@ function isDirectBrowserNavigation(request: NextRequest) {
   return false;
 }
 
-/**
- * Only allow chunk files when loaded as scripts from this site (Sec-Fetch-*).
- * Blocks direct URL visits, curl/wget, and cross-site hotlinking.
- */
-function isAllowedChunkRequest(request: NextRequest) {
-  if (request.method !== "GET" && request.method !== "HEAD") {
-    return false;
-  }
-
-  const fetchDest = request.headers.get("sec-fetch-dest") ?? "";
-  const fetchSite = request.headers.get("sec-fetch-site") ?? "";
-
-  if (
-    fetchDest === "script" &&
-    (fetchSite === "same-origin" || fetchSite === "same-site")
-  ) {
-    return true;
-  }
-
-  const referer = request.headers.get("referer");
-  if (!referer) {
-    return false;
-  }
-
-  try {
-    return new URL(referer).origin === request.nextUrl.origin;
-  } catch {
-    return false;
-  }
-}
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -84,10 +52,17 @@ export function middleware(request: NextRequest) {
 
   if (isProtectedChunkPath(pathname)) {
     if (!isAllowedChunkRequest(request)) {
-      return new NextResponse(null, { status: 403 });
+      return new NextResponse(null, {
+        status: 403,
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      });
     }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set("Vary", chunkResponseHeaders.vary);
+    return response;
   }
 
   if (!isProtectedAssetPath(pathname)) {
