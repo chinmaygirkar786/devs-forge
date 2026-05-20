@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
 import { categorySeoCopy } from "@/lib/category-seo";
 import {
@@ -85,18 +85,14 @@ export default async function CategoryPage({
         <ul className="mt-6 grid gap-4 md:grid-cols-2">
           {categoryTools.map((tool) => (
             <li key={tool.slug}>
-              <Link
+              <ToolCardLink
                 href={routes.tool(tool.slug)}
+                slug={tool.slug}
+                title={tool.title}
+                description={tool.description}
+                eyebrow={tool.keywordCluster.primary}
                 className="block rounded-2xl border border-border p-5 hover:border-border-strong hover:bg-background-soft"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-                  {tool.keywordCluster.primary}
-                </p>
-                <h3 className="mt-2 text-lg font-semibold text-foreground">{tool.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {tool.description}
-                </p>
-              </Link>
+              />
             </li>
           ))}
         </ul>

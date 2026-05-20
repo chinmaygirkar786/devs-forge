@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { ToolIcon } from "@/components/ToolIcon";
 import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
 import { getToolBySlug, toolCategories } from "@/lib/tools";
@@ -32,27 +33,32 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
       />
 
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
-        <div className="flex flex-wrap items-start gap-3">
-          <Link
-            href={routes.category(tool.category)}
-            className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap text-primary hover:opacity-90"
-          >
-            {toolCategories[tool.category].title}
-          </Link>
-          <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-accent">
-            {tool.keywordCluster.primary}
-          </span>
-        </div>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+          <ToolIcon slug={tool.slug} size="lg" className="shadow-sm shadow-primary/10" />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-start gap-3">
+              <Link
+                href={routes.category(tool.category)}
+                className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap text-primary hover:opacity-90"
+              >
+                {toolCategories[tool.category].title}
+              </Link>
+              <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-accent">
+                {tool.keywordCluster.primary}
+              </span>
+            </div>
 
-        <h1 className="mt-4 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-          {tool.title}
-        </h1>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
-          {tool.description}
-        </p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
-          {tool.seoIntro}
-        </p>
+            <h1 className="mt-4 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
+              {tool.title}
+            </h1>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
+              {tool.description}
+            </p>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
+              {tool.seoIntro}
+            </p>
+          </div>
+        </div>
       </section>
 
       <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -71,12 +77,15 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
                   <Link
                     key={relatedTool.slug}
                     href={link.href}
-                    className="block rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
+                    className="flex gap-3 rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
                   >
-                    <p className="font-semibold text-foreground">{link.label}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {link.description}
-                    </p>
+                    <ToolIcon slug={relatedTool.slug} size="sm" />
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-foreground">{link.label}</span>
+                      <span className="mt-1 block text-sm text-muted-foreground">
+                        {link.description}
+                      </span>
+                    </span>
                   </Link>
                 );
               })}
@@ -120,11 +129,14 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
                 <li key={related.slug}>
                   <Link
                     href={link.href}
-                    className="block rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
+                    className="flex gap-3 rounded-2xl border border-border p-4 hover:border-border-strong hover:bg-background-soft"
                   >
-                    <span className="font-semibold text-foreground">{link.label}</span>
-                    <span className="mt-1 block text-sm leading-6 text-muted-foreground">
-                      {link.description}
+                    <ToolIcon slug={related.slug} size="sm" />
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-foreground">{link.label}</span>
+                      <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                        {link.description}
+                      </span>
                     </span>
                   </Link>
                 </li>
