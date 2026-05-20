@@ -46,14 +46,13 @@ export default function UuidGeneratorTool() {
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 sm:pt-9">
+          <div className="sm:pt-9">
             <ActionButton
               variant="secondary"
               onClick={() => setUuids(generateUuids(Number(count)))}
             >
               Generate fresh UUIDs
             </ActionButton>
-            <CopyButton value={output} label="Copy list" />
           </div>
         </div>
       </SectionCard>
@@ -74,6 +73,10 @@ export default function UuidGeneratorTool() {
           title="Generated values"
           description="Copy one by one or use the full list for test data and seed content."
         >
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <FieldLabel label="UUID list" />
+            <CopyButton value={output} label="Copy list" />
+          </div>
           <TextareaField value={output} readOnly spellCheck={false} />
         </SectionCard>
       </div>

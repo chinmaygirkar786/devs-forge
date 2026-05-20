@@ -459,9 +459,11 @@ export function generatePalette(baseHex: string) {
     { label: "900", lightness: 0.16 },
   ];
   const hsl = rgbToHsl(hexToRgb(baseHex));
+  const isAchromatic = hsl.s < 0.01;
+  const saturation = isAchromatic ? 0 : clamp(hsl.s, 0.25, 0.8);
 
   return steps.map((step) => ({
     label: step.label,
-    value: rgbToHex(hslToRgb(hsl.h, clamp(hsl.s, 0.25, 0.8), step.lightness)),
+    value: rgbToHex(hslToRgb(hsl.h, saturation, step.lightness)),
   }));
 }
