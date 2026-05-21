@@ -11,7 +11,12 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS",
     // Route chunk requests through the worker so middleware can enforce Sec-Fetch rules.
-    "run_worker_first": ["/_next/static/chunks/*"]
+    "run_worker_first": [
+      "/_next/static/chunks/*",
+      "/BUILD_ID",
+      "/_routes.json",
+      "/_redirects"
+    ]
   },
   "services": [
     {

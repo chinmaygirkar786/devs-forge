@@ -5,42 +5,22 @@ import {
   isAllowedChunkRequest,
   isProtectedChunkPath,
 } from "@/lib/chunk-access-guard";
+import { getInternalRouteDenyReason } from "@/lib/route-access-policy";
 
-/** App-internal assets that should not be opened as standalone pages in a browser tab. */
-const PROTECTED_EXACT_PATHS = new Set([
-  "/sw.js",
-  "/manifest.webmanifest",
-  "/apple-icon",
-  "/icon",
-  "/favicon.ico",
-]);
-
-function isProtectedAssetPath(pathname: string) {
-  return (
-    PROTECTED_EXACT_PATHS.has(pathname) || pathname.startsWith("/pwa/icon-")
-  );
-}
-
-/** True when someone opened the URL in a browser tab (not a PWA / SW fetch). */
-function isDirectBrowserNavigation(request: NextRequest) {
-  const fetchDest = request.headers.get("sec-fetch-dest") ?? "";
-  const fetchMode = request.headers.get("sec-fetch-mode") ?? "";
-
-  if (fetchDest === "document" || fetchDest === "iframe") {
-    return true;
+function denyInternalRoute(
+  request: NextRequest,
+  reason: "redirect" | "forbidden",
+) {
+  if (reason === "redirect") {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (fetchMode === "navigate") {
-    const pwaFetchDests = new Set([
-      "manifest",
-      "worker",
-      "serviceworker",
-      "script",
-    ]);
-    return !pwaFetchDests.has(fetchDest);
-  }
-
-  return false;
+  return new NextResponse(null, {
+    status: 403,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
 }
 
 export function middleware(request: NextRequest) {
@@ -50,27 +30,20 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  const denyReason = getInternalRouteDenyReason(pathname, request);
+
+  if (denyReason) {
+    return denyInternalRoute(request, denyReason);
+  }
+
   if (isProtectedChunkPath(pathname)) {
     if (!isAllowedChunkRequest(request)) {
-      return new NextResponse(null, {
-        status: 403,
-        headers: {
-          "Cache-Control": "no-store",
-        },
-      });
+      return denyInternalRoute(request, "forbidden");
     }
 
     const response = NextResponse.next();
     response.headers.set("Vary", chunkResponseHeaders.vary);
     return response;
-  }
-
-  if (!isProtectedAssetPath(pathname)) {
-    return NextResponse.next();
-  }
-
-  if (isDirectBrowserNavigation(request)) {
-    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
@@ -79,6 +52,12 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/cdn-cgi/rum",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/BUILD_ID",
+    "/_routes.json",
+    "/_redirects",
+    "/opengraph-image",
     "/sw.js",
     "/manifest.webmanifest",
     "/apple-icon",

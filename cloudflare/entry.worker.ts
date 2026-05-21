@@ -9,6 +9,7 @@ import {
   isAllowedChunkRequest,
   isProtectedChunkPath,
 } from "../src/lib/chunk-access-guard.js";
+import { getInternalRouteDenyReason } from "../src/lib/route-access-policy.js";
 
 export { BucketCachePurge, DOQueueHandler, DOShardedTagCache };
 
@@ -37,6 +38,22 @@ function respondToCdnCgiRum(request: Request): Response {
   }
 
   return new Response(null, { status: 204 });
+}
+
+function denyInternalRoute(
+  request: Request,
+  reason: "redirect" | "forbidden",
+): Response {
+  if (reason === "redirect") {
+    return Response.redirect(new URL("/", request.url), 302);
+  }
+
+  return new Response(null, {
+    status: 403,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
 }
 
 function denyChunkRequest(): Response {
@@ -68,6 +85,12 @@ const entryWorker = {
 
     if (pathname === "/cdn-cgi/rum") {
       return respondToCdnCgiRum(request);
+    }
+
+    const denyReason = getInternalRouteDenyReason(pathname, request);
+
+    if (denyReason) {
+      return denyInternalRoute(request, denyReason);
     }
 
     if (isProtectedChunkPath(pathname) && !isAllowedChunkRequest(request)) {
