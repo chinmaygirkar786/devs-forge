@@ -5,9 +5,10 @@ import { useMemo, useState } from "react";
 import {
   ActionButton,
   CopyButton,
+  DropdownField,
   Field,
+  FieldLabel,
   SectionCard,
-  SelectField,
   StatusBanner,
   TextareaField,
   ToolGrid,
@@ -65,19 +66,13 @@ export default function JsonFormatterTool() {
 
         <div className="mt-4 flex flex-wrap items-end gap-3">
           <div className="w-full sm:w-44">
-            <Field label="Indent">
-              <SelectField
-                value={space}
-                onChange={(event) => setSpace(event.target.value)}
-                aria-label="Indent"
-              >
-                {indentOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </SelectField>
-            </Field>
+            <FieldLabel label="Indent" />
+            <DropdownField
+              value={space}
+              options={[...indentOptions]}
+              onChange={setSpace}
+              placeholder="Indent"
+            />
           </div>
           <ActionButton
             className="self-end"
