@@ -51,11 +51,16 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="surface-muted inline-flex rounded-full p-1">
+    <div
+      role="group"
+      aria-label="Color theme"
+      className="surface-muted inline-flex rounded-full p-1"
+    >
       {options.map((option) => (
         <button
           key={option.value}
           type="button"
+          aria-pressed={preference === option.value}
           onClick={() => onChange(option.value)}
           className={cn(
             "cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold",

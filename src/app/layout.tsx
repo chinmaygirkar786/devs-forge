@@ -3,7 +3,7 @@ import { Geist } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { PwaProviderLazy } from "@/components/PwaProviderLazy";
+import { PwaProviderDeferred } from "@/components/PwaProviderDeferred";
 import { siteConfig } from "@/lib/site";
 import { toolSearchIndex } from "@/lib/tool-search-index";
 import { themeScript } from "@/lib/theme";
@@ -13,7 +13,7 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -70,7 +70,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <PwaProviderLazy />
+        <PwaProviderDeferred />
       </body>
     </html>
   );

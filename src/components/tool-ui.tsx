@@ -1,7 +1,14 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -34,13 +41,33 @@ export function SectionCard({
 type FieldLabelProps = {
   label: string;
   hint?: string;
+  htmlFor?: string;
 };
 
-export function FieldLabel({ label, hint }: FieldLabelProps) {
+export function FieldLabel({ label, hint, htmlFor }: FieldLabelProps) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3">
-      <label className="text-sm font-semibold text-foreground">{label}</label>
+      <label htmlFor={htmlFor} className="text-sm font-semibold text-foreground">
+        {label}
+      </label>
       {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
+    </div>
+  );
+}
+
+type FieldProps = {
+  label: string;
+  hint?: string;
+  children: React.ReactElement<{ id?: string }>;
+};
+
+export function Field({ label, hint, children }: FieldProps) {
+  const id = useId();
+
+  return (
+    <div>
+      <FieldLabel label={label} hint={hint} htmlFor={id} />
+      {isValidElement(children) ? cloneElement(children, { id }) : children}
     </div>
   );
 }
@@ -148,6 +175,7 @@ export function DropdownField({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
+        aria-label={placeholder}
         onClick={() => setOpen((current) => !current)}
         className={cn(
           "flex w-full cursor-pointer items-center justify-between gap-3 rounded-2xl border border-border bg-background px-4 py-3 text-left text-sm outline-none",
@@ -301,21 +329,14 @@ export function CopyButton({
     <ActionButton
       variant={copied ? "ghost" : "secondary"}
       className={cn(
-        "transform-gpu transition-[transform,box-shadow,background-color,filter] duration-200 ease-out will-change-transform",
-        ...(copied
-          ? [
-              "border border-success/40 bg-success/10 text-success ring-2 ring-success/20",
-              "hover:bg-success/15 hover:ring-success/40 hover:shadow-md hover:shadow-success/15",
-              "active:scale-[0.97] active:bg-success/20",
-            ]
-          : [
-              "shadow-lg shadow-primary/25 ring-2 ring-primary/30",
-              "hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-xl hover:shadow-primary/40 hover:ring-primary/50 hover:brightness-110",
-              "active:translate-y-0 active:scale-[0.98] active:shadow-md active:shadow-primary/20 active:brightness-95",
-            ]),
-        "disabled:pointer-events-none disabled:translate-y-0 disabled:scale-100 disabled:shadow-none disabled:ring-0 disabled:brightness-100",
+        "transition-[background-color,border-color,color] duration-200 ease-out",
+        copied
+          ? "border border-success/40 bg-success/10 text-success"
+          : "bg-primary text-white hover:opacity-90",
+        "disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
+      aria-label={label}
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);

@@ -3,10 +3,15 @@
 import { lazy, Suspense, useEffect } from "react";
 
 import { recordToolUsage } from "@/lib/history";
-import { getToolBySlug } from "@/lib/tools";
+
+type ToolUsageMeta = {
+  title: string;
+  category: string;
+};
 
 type ToolPageClientProps = {
   slug: string;
+  usageMeta: ToolUsageMeta;
 };
 
 function ToolLoadingFallback() {
@@ -32,23 +37,18 @@ const toolComponentMap = {
   "json-to-typescript": lazy(() => import("@/tools/json-to-typescript/Tool")),
 } as const;
 
-export function ToolPageClient({ slug }: ToolPageClientProps) {
-  const tool = getToolBySlug(slug);
+export function ToolPageClient({ slug, usageMeta }: ToolPageClientProps) {
   const ToolComponent = toolComponentMap[slug as keyof typeof toolComponentMap];
 
   useEffect(() => {
-    if (!tool) {
-      return;
-    }
-
     recordToolUsage({
-      slug: tool.slug,
-      title: tool.title,
-      category: tool.category,
+      slug,
+      title: usageMeta.title,
+      category: usageMeta.category,
     });
-  }, [tool]);
+  }, [slug, usageMeta]);
 
-  if (!tool || !ToolComponent) {
+  if (!ToolComponent) {
     return null;
   }
 

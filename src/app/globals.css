@@ -67,6 +67,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.content-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 480px;
+}
+
 body {
   min-height: 100vh;
   background:

@@ -6,6 +6,7 @@ import {
   ActionButton,
   CopyButton,
   DropdownField,
+  Field,
   FieldLabel,
   SectionCard,
   StatusBanner,
@@ -55,12 +56,13 @@ export default function JsonFormatterTool() {
         title="Input JSON"
         description="Paste a JSON payload, then use Ctrl + Shift + C to copy formatted output or Ctrl + Backspace to clear."
       >
-        <FieldLabel label="Raw JSON" hint="Client-side only" />
-        <TextareaField
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          spellCheck={false}
-        />
+        <Field label="Raw JSON" hint="Client-side only">
+          <TextareaField
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            spellCheck={false}
+          />
+        </Field>
 
         <div className="mt-4 flex flex-wrap items-end gap-3">
           <div className="w-full sm:w-44">
@@ -69,6 +71,7 @@ export default function JsonFormatterTool() {
               value={space}
               options={[...indentOptions]}
               onChange={setSpace}
+              placeholder="Indent"
             />
           </div>
           <ActionButton
@@ -89,10 +92,16 @@ export default function JsonFormatterTool() {
         description="Syntax is validated before formatting so you can spot malformed payloads quickly."
       >
         <div className="mb-3 flex items-center justify-between gap-3">
-          <FieldLabel label="Pretty JSON" />
+          <FieldLabel label="Pretty JSON" htmlFor="json-formatter-output" />
           <CopyButton value={result.output} />
         </div>
-        <TextareaField value={result.output} readOnly spellCheck={false} />
+        <TextareaField
+          id="json-formatter-output"
+          value={result.output}
+          readOnly
+          spellCheck={false}
+          aria-label="Pretty JSON output"
+        />
         <div className="mt-4">
           {result.error ? (
             <StatusBanner tone="danger" text={result.error} />

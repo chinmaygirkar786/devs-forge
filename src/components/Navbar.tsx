@@ -4,7 +4,7 @@ import Link from "next/link";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 import { SiteLogo } from "@/components/SiteLogo";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggleLazy } from "@/components/ThemeToggleLazy";
 import type { ToolSearchEntry } from "@/lib/tool-search-index";
 import { siteConfig } from "@/lib/site";
 
@@ -63,7 +63,7 @@ export function Navbar({ searchIndex }: NavbarProps) {
                 Ctrl + K
               </span>
             </button>
-            <ThemeToggle />
+            <ThemeToggleLazy />
           </div>
         </div>
       </header>

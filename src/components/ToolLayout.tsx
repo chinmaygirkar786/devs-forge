@@ -64,7 +64,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
       <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="space-y-8">{children}</div>
 
-        <div className="space-y-8">
+        <div className="content-deferred space-y-8">
           <section className="surface-card rounded-3xl p-6">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
               Related tools
@@ -95,7 +95,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
       </div>
 
       {tool.contentSections.length > 0 ? (
-        <article className="surface-card mt-8 rounded-3xl p-6 sm:p-8">
+        <article className="content-deferred surface-card mt-8 rounded-3xl p-6 sm:p-8">
           {tool.contentSections.map((section) => (
             <section key={section.heading} className="mt-10 first:mt-0">
               <h2 className="text-2xl font-bold tracking-tight text-foreground">
@@ -115,7 +115,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
       ) : null}
 
       {featuredLinks.length > 0 ? (
-        <section className="surface-card mt-8 rounded-3xl p-6">
+        <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
           <h2 className="text-2xl font-bold text-foreground">Related developer tools</h2>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Continue your workflow with these free utilities on {toolCategories[tool.category].title.toLowerCase()}{" "}
@@ -151,7 +151,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </section>
       ) : null}
 
-      <div className="mt-8 space-y-6">
+      <div className="content-deferred mt-8 space-y-6">
         <section className="surface-card rounded-3xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-foreground">How it works</h2>
           <ol
@@ -196,7 +196,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </section>
       </div>
 
-      <section className="surface-card mt-8 rounded-3xl p-6">
+      <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
         <h2 className="text-2xl font-bold text-foreground">When to use this tool</h2>
         <ul className="mt-5 space-y-3 text-sm leading-7 text-muted-foreground">
           {tool.useCases.map((useCase) => (
@@ -208,7 +208,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </ul>
       </section>
 
-      <section className="surface-card mt-8 rounded-3xl p-6">
+      <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
         <h2 className="text-2xl font-bold text-foreground">Frequently asked questions</h2>
         <div className="mt-5 space-y-6">
           {tool.faqs.map((faq) => (

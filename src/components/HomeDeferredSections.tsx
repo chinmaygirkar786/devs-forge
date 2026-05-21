@@ -2,6 +2,7 @@
 
 import { lazy, Suspense } from "react";
 
+import { LazyWhenVisible } from "@/components/LazyWhenVisible";
 import { SectionSkeleton } from "@/components/SectionSkeleton";
 
 const RecentlyUsedTools = lazy(() =>
@@ -29,13 +30,17 @@ type HomeDeferredSectionsProps = {
 
 export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProps) {
   return (
-    <>
+    <LazyWhenVisible
+      fallback={<SectionSkeleton minHeight="min-h-[620px]" />}
+      minHeight="620px"
+      rootMargin="280px 0px"
+    >
       <Suspense fallback={<SectionSkeleton minHeight="min-h-[200px]" />}>
         <RecentlyUsedTools />
       </Suspense>
       <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
         <HomeExplorer tools={explorerTools} />
       </Suspense>
-    </>
+    </LazyWhenVisible>
   );
 }
