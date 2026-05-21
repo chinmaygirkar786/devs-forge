@@ -7,9 +7,17 @@ export function isProtectedChunkPath(pathname: string) {
   );
 }
 
+function isSameOriginReferer(referer: string, origin: string) {
+  try {
+    return new URL(referer).origin === origin;
+  } catch {
+    return false;
+  }
+}
+
 /**
- * Allow only in-page <script> loads from this origin.
- * No referer fallback — that let browser tab visits show bundle source.
+ * Allow in-page script/module loads from this origin.
+ * Blocks opening chunk URLs directly in the browser tab (document navigation).
  */
 export function isAllowedChunkRequest(request: Request) {
   if (request.method !== "GET" && request.method !== "HEAD") {
@@ -25,6 +33,9 @@ export function isAllowedChunkRequest(request: Request) {
   const fetchDest = request.headers.get("sec-fetch-dest") ?? "";
   const fetchSite = request.headers.get("sec-fetch-site") ?? "";
   const fetchMode = request.headers.get("sec-fetch-mode") ?? "";
+  const accept = request.headers.get("accept") ?? "";
+  const referer = request.headers.get("referer") ?? "";
+  const origin = new URL(request.url).origin;
 
   if (
     fetchDest === "document" ||
@@ -34,11 +45,32 @@ export function isAllowedChunkRequest(request: Request) {
     return false;
   }
 
-  return (
-    fetchDest === "script" &&
-    (fetchSite === "same-origin" || fetchSite === "same-site") &&
-    (fetchMode === "no-cors" || fetchMode === "cors")
-  );
+  const sameSite = fetchSite === "same-origin" || fetchSite === "same-site";
+  const allowedMode = fetchMode === "no-cors" || fetchMode === "cors";
+
+  // Classic <script src="..."> chunk loads
+  if (fetchDest === "script" && sameSite && allowedMode) {
+    return true;
+  }
+
+  // dynamic import() / modulepreload — Chrome sends dest "empty", not "script"
+  if (fetchDest === "empty" && fetchMode === "cors" && sameSite) {
+    return true;
+  }
+
+  // Some clients omit Sec-Fetch-*; allow only when clearly requesting JS from our pages
+  if (
+    !fetchDest &&
+    !fetchMode &&
+    (accept.includes("application/javascript") ||
+      accept.includes("text/javascript") ||
+      accept.includes("*/*")) &&
+    isSameOriginReferer(referer, origin)
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 export const chunkResponseHeaders = {

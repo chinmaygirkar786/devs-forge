@@ -43,7 +43,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
               >
                 {toolCategories[tool.category].title}
               </Link>
-              <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-accent">
+              <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-foreground">
                 {tool.keywordCluster.primary}
               </span>
             </div>
@@ -58,7 +58,12 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
         </div>
       </section>
 
-      <div className="mt-8">{children}</div>
+      <section className="mt-8" aria-labelledby="tool-workspace-heading">
+        <h2 id="tool-workspace-heading" className="sr-only">
+          {tool.title} workspace
+        </h2>
+        {children}
+      </section>
 
       <div className="content-deferred mt-8">
         <p className="max-w-3xl text-base leading-8 text-muted-foreground">{tool.seoIntro}</p>
