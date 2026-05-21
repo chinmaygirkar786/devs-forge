@@ -10,7 +10,8 @@
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",
@@ -20,6 +21,7 @@
     "react-markdown": "^10.1.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "16.2.6",
     "@opennextjs/cloudflare": "^1.19.11",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

@@ -1,7 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import { recordToolUsage } from "@/lib/history";
 import { getToolBySlug } from "@/lib/tools";
@@ -10,61 +9,27 @@ type ToolPageClientProps = {
   slug: string;
 };
 
-const loadingFallback = () => (
-  <div className="surface-card min-h-[280px] rounded-3xl p-6 text-sm text-muted-foreground">
-    Loading interactive tool...
-  </div>
-);
+function ToolLoadingFallback() {
+  return (
+    <div className="surface-card min-h-[280px] rounded-3xl p-6 text-sm text-muted-foreground">
+      Loading interactive tool...
+    </div>
+  );
+}
 
 const toolComponentMap = {
-  "json-formatter": dynamic(() => import("@/tools/json-formatter/Tool"), {
-    loading: loadingFallback,
-  }),
-  "jwt-decoder": dynamic(() => import("@/tools/jwt-decoder/Tool"), {
-    loading: loadingFallback,
-  }),
-  "regex-tester": dynamic(() => import("@/tools/regex-tester/Tool"), {
-    loading: loadingFallback,
-  }),
-  "base64-encoder": dynamic(() => import("@/tools/base64-encoder/Tool"), {
-    loading: loadingFallback,
-  }),
-  "uuid-generator": dynamic(() => import("@/tools/uuid-generator/Tool"), {
-    loading: loadingFallback,
-  }),
-  "color-palette-generator": dynamic(
-    () => import("@/tools/color-palette-generator/Tool"),
-    {
-      loading: loadingFallback,
-    },
-  ),
-  "gradient-generator": dynamic(() => import("@/tools/gradient-generator/Tool"), {
-    loading: loadingFallback,
-  }),
-  "markdown-previewer": dynamic(
-    () => import("@/tools/markdown-previewer/Tool"),
-    {
-      loading: loadingFallback,
-    },
-  ),
-  "url-encoder": dynamic(() => import("@/tools/url-encoder/Tool"), {
-    loading: loadingFallback,
-  }),
-  "html-formatter": dynamic(() => import("@/tools/html-formatter/Tool"), {
-    loading: loadingFallback,
-  }),
-  "timestamp-converter": dynamic(
-    () => import("@/tools/timestamp-converter/Tool"),
-    {
-      loading: loadingFallback,
-    },
-  ),
-  "json-to-typescript": dynamic(
-    () => import("@/tools/json-to-typescript/Tool"),
-    {
-      loading: loadingFallback,
-    },
-  ),
+  "json-formatter": lazy(() => import("@/tools/json-formatter/Tool")),
+  "jwt-decoder": lazy(() => import("@/tools/jwt-decoder/Tool")),
+  "regex-tester": lazy(() => import("@/tools/regex-tester/Tool")),
+  "base64-encoder": lazy(() => import("@/tools/base64-encoder/Tool")),
+  "uuid-generator": lazy(() => import("@/tools/uuid-generator/Tool")),
+  "color-palette-generator": lazy(() => import("@/tools/color-palette-generator/Tool")),
+  "gradient-generator": lazy(() => import("@/tools/gradient-generator/Tool")),
+  "markdown-previewer": lazy(() => import("@/tools/markdown-previewer/Tool")),
+  "url-encoder": lazy(() => import("@/tools/url-encoder/Tool")),
+  "html-formatter": lazy(() => import("@/tools/html-formatter/Tool")),
+  "timestamp-converter": lazy(() => import("@/tools/timestamp-converter/Tool")),
+  "json-to-typescript": lazy(() => import("@/tools/json-to-typescript/Tool")),
 } as const;
 
 export function ToolPageClient({ slug }: ToolPageClientProps) {
@@ -87,5 +52,9 @@ export function ToolPageClient({ slug }: ToolPageClientProps) {
     return null;
   }
 
-  return <ToolComponent />;
+  return (
+    <Suspense fallback={<ToolLoadingFallback />}>
+      <ToolComponent />
+    </Suspense>
+  );
 }
