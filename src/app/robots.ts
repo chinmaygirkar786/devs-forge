@@ -9,6 +9,9 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [
         "/api/",
+        "/BUILD_ID",
+        "/_routes.json",
+        "/_redirects",
         "/sw.js",
         "/manifest.webmanifest",
         "/apple-icon",
