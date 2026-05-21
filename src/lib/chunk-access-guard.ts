@@ -1,3 +1,5 @@
+import { isSearchCrawler } from "@/lib/route-access-policy";
+
 export function isProtectedChunkPath(pathname: string) {
   return (
     pathname.startsWith("/_next/static/chunks/") &&
@@ -12,6 +14,12 @@ export function isProtectedChunkPath(pathname: string) {
 export function isAllowedChunkRequest(request: Request) {
   if (request.method !== "GET" && request.method !== "HEAD") {
     return false;
+  }
+
+  const userAgent = request.headers.get("user-agent") ?? "";
+
+  if (isSearchCrawler(userAgent)) {
+    return true;
   }
 
   const fetchDest = request.headers.get("sec-fetch-dest") ?? "";

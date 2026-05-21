@@ -100,7 +100,7 @@ export function buildToolMetadata(tool: ToolDefinition): Metadata {
       siteName: siteConfig.name,
       images: [
         {
-          url: absoluteUrl(`/tools/${tool.slug}/opengraph-image`),
+          url: absoluteUrl("/opengraph-image"),
           width: 1200,
           height: 630,
           alt: `${tool.title} preview`,
@@ -112,7 +112,7 @@ export function buildToolMetadata(tool: ToolDefinition): Metadata {
       title,
       description,
       creator: siteConfig.socialHandle,
-      images: [absoluteUrl(`/tools/${tool.slug}/opengraph-image`)],
+      images: [absoluteUrl("/opengraph-image")],
     },
   };
 }
