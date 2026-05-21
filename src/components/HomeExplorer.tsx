@@ -67,7 +67,7 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
             slug={tool.slug}
             title={tool.title}
             description={tool.description}
-            className="surface-muted transform-gpu will-change-transform rounded-3xl p-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:shadow-lg hover:shadow-primary/10"
+            className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
           />
         ))}
       </div>

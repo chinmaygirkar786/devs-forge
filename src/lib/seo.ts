@@ -25,8 +25,7 @@ function absoluteTitle(title: string): Metadata["title"] {
 
 export function buildHomeMetadata(): Metadata {
   const title = `${siteConfig.heroTitle} | ${siteConfig.name}`;
-  const description =
-    "Free developer tools online for formatting JSON and HTML, decoding JWTs, testing regex, converting timestamps, generating UUIDs, and more. All utilities run locally in your browser.";
+  const description = siteConfig.heroDescription;
 
   return {
     title: absoluteTitle(title),
@@ -170,6 +169,26 @@ export function buildOrganizationJsonLd() {
   };
 }
 
+export function buildHomeWebApplicationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript and a modern browser.",
+    isAccessibleForFree: true,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    description: siteConfig.description,
+    featureList: tools.map((tool) => tool.title),
+  };
+}
+
 export function buildHomeJsonLd() {
   return [
     {
@@ -185,6 +204,8 @@ export function buildHomeJsonLd() {
       },
     },
     buildOrganizationJsonLd(),
+    buildHomeWebApplicationJsonLd(),
+    buildToolsIndexJsonLd(),
   ];
 }
 

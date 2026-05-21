@@ -1,14 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
-import { CommandPalette } from "@/components/CommandPalette";
 import { SiteLogo } from "@/components/SiteLogo";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggleLazy } from "@/components/ThemeToggleLazy";
+import type { ToolSearchEntry } from "@/lib/tool-search-index";
 import { siteConfig } from "@/lib/site";
 
-export function Navbar() {
+const CommandPalette = lazy(() =>
+  import("@/components/CommandPalette").then((module) => ({
+    default: module.CommandPalette,
+  })),
+);
+
+type NavbarProps = {
+  searchIndex: ToolSearchEntry[];
+};
+
+export function Navbar({ searchIndex }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   useEffect(() => {
@@ -53,12 +63,20 @@ export function Navbar() {
                 Ctrl + K
               </span>
             </button>
-            <ThemeToggle />
+            <ThemeToggleLazy />
           </div>
         </div>
       </header>
 
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      {paletteOpen ? (
+        <Suspense fallback={null}>
+          <CommandPalette
+            open={paletteOpen}
+            onClose={() => setPaletteOpen(false)}
+            searchIndex={searchIndex}
+          />
+        </Suspense>
+      ) : null}
     </>
   );
 }

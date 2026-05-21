@@ -44,7 +44,10 @@ export default async function ToolPage({
     <>
       <SEOHead jsonLd={buildToolPageJsonLd(tool)} />
       <ToolLayout tool={tool} relatedTools={getRelatedTools(slug)}>
-        <ToolPageClient slug={slug} />
+        <ToolPageClient
+          slug={slug}
+          usageMeta={{ title: tool.title, category: tool.category }}
+        />
       </ToolLayout>
     </>
   );

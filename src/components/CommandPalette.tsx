@@ -10,16 +10,16 @@ import {
 } from "@/lib/history";
 import { ToolIcon } from "@/components/ToolIcon";
 import { routes } from "@/lib/internal-links";
-import { toolCategories } from "@/lib/tools";
 import { cn } from "@/lib/utils";
-import { tools } from "@/tools";
+import type { ToolSearchEntry } from "@/lib/tool-search-index";
 
 type CommandPaletteProps = {
   open: boolean;
   onClose: () => void;
+  searchIndex: ToolSearchEntry[];
 };
 
-export function CommandPalette({ open, onClose }: CommandPaletteProps) {
+export function CommandPalette({ open, onClose, searchIndex }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
   const recent = useSyncExternalStore(
     subscribeToToolUsageHistory,
@@ -47,12 +47,12 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
     if (!normalizedQuery) {
       return recent
-        .map((entry) => tools.find((tool) => tool.slug === entry.slug))
-        .filter((tool): tool is NonNullable<typeof tool> => Boolean(tool))
+        .map((entry) => searchIndex.find((tool) => tool.slug === entry.slug))
+        .filter((tool): tool is ToolSearchEntry => Boolean(tool))
         .slice(0, 5);
     }
 
-    return tools
+    return searchIndex
       .filter((tool) => {
         const searchable = [
           tool.title,
@@ -65,7 +65,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         return searchable.includes(normalizedQuery);
       })
       .slice(0, 8);
-  }, [query, recent]);
+  }, [query, recent, searchIndex]);
 
   if (!open) {
     return null;
@@ -115,7 +115,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                       </p>
                     </div>
                     <span className="inline-flex shrink-0 items-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-medium whitespace-nowrap text-accent">
-                      {toolCategories[tool.category].title}
+                      {tool.categoryTitle}
                     </span>
                   </div>
                 </Link>

@@ -56,7 +56,8 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 * {
@@ -65,6 +66,11 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+.content-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 480px;
 }
 
 body {

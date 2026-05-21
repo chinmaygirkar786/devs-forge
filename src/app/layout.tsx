@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { PwaProvider } from "@/components/PwaProvider";
+import { PwaProviderDeferred } from "@/components/PwaProviderDeferred";
 import { siteConfig } from "@/lib/site";
+import { toolSearchIndex } from "@/lib/tool-search-index";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -12,14 +13,7 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
-  preload: false,
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -65,18 +59,18 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${geistSans.className} min-h-full flex flex-col`}>
-        <Navbar />
+        <Navbar searchIndex={toolSearchIndex} />
         <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
           {children}
         </main>
         <Footer />
-        <PwaProvider />
+        <PwaProviderDeferred />
       </body>
     </html>
   );

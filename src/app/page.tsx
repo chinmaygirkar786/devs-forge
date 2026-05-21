@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { HomeExplorer } from "@/components/HomeExplorer";
-import { RecentlyUsedTools } from "@/components/RecentlyUsedTools";
+import { HomeDeferredSections } from "@/components/HomeDeferredSections";
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { ToolIcon } from "@/components/ToolIcon";
 import { SEOHead } from "@/components/SEOHead";
@@ -37,11 +36,16 @@ export default function Home() {
               {siteConfig.heroTitle}
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
-              {siteConfig.name} is a free hub of browser-based coding utilities for
-              JSON formatting, JWT decoding, regex testing, Base64 conversion, UUID
-              generation, color systems, timestamps, Markdown preview, and more. Every
-              tool runs locally for speed, privacy, and zero setup.
+              {siteConfig.heroDescription}
             </p>
+            <ul className="mt-5 flex max-w-3xl flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
+              {siteConfig.heroHighlights.map((highlight) => (
+                <li key={highlight} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -73,45 +77,98 @@ export default function Home() {
                 slug={tool.slug}
                 title={tool.title}
                 description={tool.description}
-                className="surface-muted transform-gpu will-change-transform rounded-3xl p-5 transition-[transform,box-shadow,border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.015] hover:border-border-strong hover:shadow-lg hover:shadow-primary/10"
+                className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
               />
             ))}
           </div>
         </div>
       </section>
 
-      <RecentlyUsedTools />
+      <HomeDeferredSections explorerTools={searchableTools} />
 
-      <HomeExplorer tools={searchableTools} />
+      <section id="categories" className="space-y-8">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+            Browse by category
+          </p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+            Developer tools categories
+          </h2>
+          <p className="mt-4 text-base leading-8 text-muted-foreground">
+            Explore free browser-based developer tools grouped by formatting,
+            conversion, generators, and utilities—each category links to every tool
+            in that workflow.
+          </p>
+        </div>
 
-      <section id="categories" className="grid gap-6 xl:grid-cols-4">
-        {categories.map((category) => (
-          <div key={category.key} className="surface-card rounded-3xl p-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              {category.title}
-            </p>
-            <h2 className="mt-3 text-2xl font-bold text-foreground">
-              <Link href={routes.category(category.key)} className="hover:text-primary">
-                {category.tools.length} tools
-              </Link>
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              {category.description}
-            </p>
-            <div className="mt-5 space-y-3 text-sm">
-              {category.tools.slice(0, 4).map((tool) => (
+        <div className="grid gap-6 xl:grid-cols-4">
+          {categories.map((category) => (
+            <div key={category.key} className="surface-card rounded-3xl p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                {category.title}
+              </p>
+              <h3 className="mt-3 text-2xl font-bold text-foreground">
                 <Link
-                  key={tool.slug}
-                  href={routes.tool(tool.slug)}
-                  className="flex items-center gap-3 text-foreground hover:text-primary"
+                  href={routes.category(category.key)}
+                  className="hover:text-primary"
                 >
-                  <ToolIcon slug={tool.slug} size="sm" />
-                  <span className="font-medium">{tool.title}</span>
+                  {category.tools.length} tools
                 </Link>
-              ))}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                {category.description}
+              </p>
+              <div className="mt-5 space-y-3 text-sm">
+                {category.tools.map((tool) => (
+                  <Link
+                    key={tool.slug}
+                    href={routes.tool(tool.slug)}
+                    className="flex items-center gap-3 text-foreground hover:text-primary"
+                  >
+                    <ToolIcon slug={tool.slug} size="sm" />
+                    <span className="font-medium">{tool.title}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="surface-card rounded-[2rem] p-6 sm:p-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+              Full directory
+            </p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+              All developer tools
+            </h2>
+            <p className="mt-4 text-base leading-8 text-muted-foreground">
+              Every free online coding utility on {siteConfig.name}, with direct links
+              for faster navigation and stronger internal discovery.
+            </p>
           </div>
-        ))}
+          <Link
+            href={routes.toolsIndex}
+            className="shrink-0 rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground hover:text-primary"
+          >
+            View full tools index
+          </Link>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {tools.map((tool) => (
+            <ToolCardLink
+              key={tool.slug}
+              href={routes.tool(tool.slug)}
+              slug={tool.slug}
+              title={tool.title}
+              description={tool.description}
+              className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
+            />
+          ))}
+        </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">

@@ -32,9 +32,15 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   creator: "Devs Forge",
   socialHandle: "@devsforge",
-  heroTitle: "Developer Tools Built for Everyday Work",
+  heroTitle: "Free Developer Tools Online for Everyday Work",
   heroDescription:
-    "Use instant online utilities for JSON, JWTs, regex, timestamps, HTML, Markdown, colors, UUIDs, URLs, and more without leaving your workflow.",
+    "Free developer tools online for formatting JSON and HTML, decoding JWTs, testing regex, converting timestamps, generating UUIDs, and more. All browser-based coding utilities run locally in your browser.",
+  heroHighlights: [
+    "JSON formatter and HTML formatter",
+    "JWT decoder and regex tester",
+    "Base64 encoder and UUID generator",
+    "Color palette, timestamp, and Markdown tools",
+  ],
   navigation: [
     { href: "/", label: "Home" },
     { href: "/tools", label: "All Tools" },
