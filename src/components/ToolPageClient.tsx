@@ -1,8 +1,10 @@
 "use client";
 
-import { lazy, Suspense, useEffect } from "react";
+import type { ComponentType } from "react";
+import { useEffect, useState } from "react";
 
 import { recordToolUsage } from "@/lib/history";
+import { loadToolModule } from "@/lib/load-tool-module";
 
 type ToolUsageMeta = {
   title: string;
@@ -22,39 +24,49 @@ function ToolLoadingFallback() {
   );
 }
 
-const toolComponentMap = {
-  "json-formatter": lazy(() => import("@/tools/json-formatter/Tool")),
-  "jwt-decoder": lazy(() => import("@/tools/jwt-decoder/Tool")),
-  "regex-tester": lazy(() => import("@/tools/regex-tester/Tool")),
-  "base64-encoder": lazy(() => import("@/tools/base64-encoder/Tool")),
-  "uuid-generator": lazy(() => import("@/tools/uuid-generator/Tool")),
-  "color-palette-generator": lazy(() => import("@/tools/color-palette-generator/Tool")),
-  "gradient-generator": lazy(() => import("@/tools/gradient-generator/Tool")),
-  "markdown-previewer": lazy(() => import("@/tools/markdown-previewer/Tool")),
-  "url-encoder": lazy(() => import("@/tools/url-encoder/Tool")),
-  "html-formatter": lazy(() => import("@/tools/html-formatter/Tool")),
-  "timestamp-converter": lazy(() => import("@/tools/timestamp-converter/Tool")),
-  "json-to-typescript": lazy(() => import("@/tools/json-to-typescript/Tool")),
-} as const;
-
 export function ToolPageClient({ slug, usageMeta }: ToolPageClientProps) {
-  const ToolComponent = toolComponentMap[slug as keyof typeof toolComponentMap];
+  const [Tool, setTool] = useState<ComponentType | null>(null);
 
   useEffect(() => {
-    recordToolUsage({
-      slug,
-      title: usageMeta.title,
-      category: usageMeta.category,
+    let cancelled = false;
+
+    const loader = loadToolModule(slug);
+    if (!loader) {
+      return;
+    }
+
+    void loader().then((module) => {
+      if (!cancelled) {
+        setTool(() => module.default);
+      }
     });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  useEffect(() => {
+    const record = () => {
+      recordToolUsage({
+        slug,
+        title: usageMeta.title,
+        category: usageMeta.category,
+      });
+    };
+
+    if (typeof requestIdleCallback === "function") {
+      const idleId = requestIdleCallback(record);
+      return () => cancelIdleCallback(idleId);
+    }
+
+    const timerId = window.setTimeout(record, 0);
+    return () => window.clearTimeout(timerId);
   }, [slug, usageMeta]);
 
-  if (!ToolComponent) {
-    return null;
+  if (!Tool) {
+    return <ToolLoadingFallback />;
   }
 
-  return (
-    <Suspense fallback={<ToolLoadingFallback />}>
-      <ToolComponent />
-    </Suspense>
-  );
+  return <Tool />;
 }

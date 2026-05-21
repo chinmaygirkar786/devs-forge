@@ -1,6 +1,5 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
 import {
   cloneElement,
   isValidElement,
@@ -58,7 +57,7 @@ export function FieldLabel({ label, hint, htmlFor }: FieldLabelProps) {
 type FieldProps = {
   label: string;
   hint?: string;
-  children: React.ReactElement<{ id?: string }>;
+  children: React.ReactElement<{ id?: string; "aria-label"?: string }>;
 };
 
 export function Field({ label, hint, children }: FieldProps) {
@@ -67,7 +66,12 @@ export function Field({ label, hint, children }: FieldProps) {
   return (
     <div>
       <FieldLabel label={label} hint={hint} htmlFor={id} />
-      {isValidElement(children) ? cloneElement(children, { id }) : children}
+      {isValidElement(children)
+        ? cloneElement(children, {
+            id,
+            "aria-label": children.props["aria-label"] ?? label,
+          })
+        : children}
     </div>
   );
 }
@@ -343,17 +347,7 @@ export function CopyButton({
       }}
       disabled={!value}
     >
-      {copied ? (
-        <>
-          <Check className="h-4 w-4 shrink-0" strokeWidth={2.25} aria-hidden />
-          Copied
-        </>
-      ) : (
-        <>
-          <Copy className="h-4 w-4 shrink-0" strokeWidth={2.25} aria-hidden />
-          {label}
-        </>
-      )}
+      {copied ? "Copied" : label}
     </ActionButton>
   );
 }
