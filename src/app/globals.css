@@ -10,7 +10,7 @@
   --card: #ffffff;
   --card-muted: #f8fafc;
   --foreground: #111827;
-  --muted-foreground: #6b7280;
+  --muted-foreground: #4b5563;
   --border: #e5e7eb;
   --border-strong: #d1d5db;
   --primary: #4f46e5;
@@ -28,7 +28,7 @@
   --card: #111827;
   --card-muted: #172032;
   --foreground: #e5e7eb;
-  --muted-foreground: #94a3b8;
+  --muted-foreground: #a8b4c7;
   --border: #1f2937;
   --border-strong: #334155;
   --primary: #818cf8;
@@ -71,6 +71,18 @@ html {
 .content-deferred {
   content-visibility: auto;
   contain-intrinsic-size: auto 480px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 body {
