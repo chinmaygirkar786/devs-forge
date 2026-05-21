@@ -5,6 +5,10 @@ import {
   isAllowedChunkRequest,
   isProtectedChunkPath,
 } from "@/lib/chunk-access-guard";
+import {
+  isAllowedMetadataImageRequest,
+  isProtectedMetadataImagePath,
+} from "@/lib/metadata-image-access-guard";
 
 /** App-internal assets that should not be opened as standalone pages in a browser tab. */
 const PROTECTED_EXACT_PATHS = new Set([
@@ -50,6 +54,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  if (isProtectedMetadataImagePath(pathname)) {
+    if (!isAllowedMetadataImageRequest(request)) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    return NextResponse.next();
+  }
+
   if (isProtectedChunkPath(pathname)) {
     if (!isAllowedChunkRequest(request)) {
       return new NextResponse(null, {
@@ -79,6 +91,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/cdn-cgi/rum",
+    "/opengraph-image",
     "/sw.js",
     "/manifest.webmanifest",
     "/apple-icon",
