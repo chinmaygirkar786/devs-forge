@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import posthog from "posthog-js";
 
 import { SiteLogo } from "@/components/SiteLogo";
 import { ThemeToggleLazy } from "@/components/ThemeToggleLazy";
@@ -21,11 +22,21 @@ type NavbarProps = {
 export function Navbar({ searchIndex }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
+  const openPalette = useCallback((trigger: "button" | "keyboard") => {
+    setPaletteOpen(true);
+    posthog.capture("command_palette_opened", { trigger });
+  }, []);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setPaletteOpen((current) => !current);
+        setPaletteOpen((current) => {
+          if (!current) {
+            posthog.capture("command_palette_opened", { trigger: "keyboard" });
+          }
+          return !current;
+        });
       }
     }
 
@@ -55,7 +66,7 @@ export function Navbar({ searchIndex }: NavbarProps) {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setPaletteOpen(true)}
+              onClick={() => openPalette("button")}
               className="surface-muted hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground sm:flex"
             >
               <span>Search tools</span>

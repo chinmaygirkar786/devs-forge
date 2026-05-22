@@ -3,6 +3,8 @@
 import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 
+import posthog from "posthog-js";
+
 import { recordToolUsage } from "@/lib/history";
 import { loadToolModule } from "@/lib/load-tool-module";
 
@@ -52,6 +54,11 @@ export function ToolPageClient({ slug, usageMeta }: ToolPageClientProps) {
         slug,
         title: usageMeta.title,
         category: usageMeta.category,
+      });
+      posthog.capture("tool_used", {
+        tool_slug: slug,
+        tool_title: usageMeta.title,
+        tool_category: usageMeta.category,
       });
     };
 
