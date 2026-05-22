@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import posthog from "posthog-js";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
 import {
@@ -101,7 +102,15 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
                 <Link
                   key={tool.slug}
                   href={routes.tool(tool.slug)}
-                  onClick={onClose}
+                  onClick={() => {
+                    posthog.capture("command_palette_tool_selected", {
+                      tool_slug: tool.slug,
+                      tool_title: tool.title,
+                      search_query: query.trim() || null,
+                      source: query.trim() ? "search" : "recent",
+                    });
+                    onClose();
+                  }}
                   className={cn(
                     "block rounded-2xl border border-transparent px-4 py-3",
                     "hover:border-border-strong hover:bg-background-soft",

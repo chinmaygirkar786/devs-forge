@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import posthog from "posthog-js";
+
 import { cn } from "@/lib/utils";
 
 type SectionCardProps = {
@@ -344,6 +346,7 @@ export function CopyButton({
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
+        posthog.capture("tool_output_copied", { method: "button", output_length: value.length });
       }}
       disabled={!value}
     >
@@ -422,6 +425,7 @@ export function useToolShortcuts({ onCopy, onClear }: ToolShortcutsOptions) {
       ) {
         event.preventDefault();
         onCopy?.();
+        posthog.capture("tool_output_copied", { method: "keyboard_shortcut" });
       }
 
       if ((event.ctrlKey || event.metaKey) && event.key === "Backspace") {

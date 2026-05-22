@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import posthog from "posthog-js";
+import { useMemo, useRef, useState } from "react";
 
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { routes } from "@/lib/internal-links";
@@ -19,6 +20,7 @@ type HomeExplorerProps = {
 
 export function HomeExplorer({ tools }: HomeExplorerProps) {
   const [query, setQuery] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const filteredTools = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -54,7 +56,25 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
         <div className="w-full max-w-xl">
           <input
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              const nextQuery = event.target.value;
+              setQuery(nextQuery);
+              if (debounceRef.current) clearTimeout(debounceRef.current);
+              if (nextQuery.trim().length >= 2) {
+                debounceRef.current = setTimeout(() => {
+                  posthog.capture("home_explorer_searched", {
+                    query: nextQuery.trim(),
+                    results_count: tools.filter((tool) =>
+                      [tool.title, tool.cardTitle, tool.description, ...tool.keywords]
+                        .filter((v): v is string => Boolean(v))
+                        .join(" ")
+                        .toLowerCase()
+                        .includes(nextQuery.trim().toLowerCase()),
+                    ).length,
+                  });
+                }, 600);
+              }
+            }}
             placeholder="Search JSON, JWT, regex, UUID, markdown, gradients..."
             className="w-full rounded-[1.75rem] border border-border bg-background px-5 py-4 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary-soft"
           />

@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { useMemo, useState } from "react";
 
 import {
@@ -68,10 +69,22 @@ export default function JwtDecoderTool() {
           spellCheck={false}
         />
         <div className="mt-4 flex flex-wrap gap-3">
-          <ActionButton variant="ghost" onClick={() => setInput(sampleToken)}>
+          <ActionButton
+            variant="ghost"
+            onClick={() => {
+              setInput(sampleToken);
+              posthog.capture("jwt_example_loaded");
+            }}
+          >
             Load example
           </ActionButton>
-          <ActionButton variant="ghost" onClick={() => setInput("")}>
+          <ActionButton
+            variant="ghost"
+            onClick={() => {
+              setInput("");
+              posthog.capture("jwt_input_cleared");
+            }}
+          >
             Clear
           </ActionButton>
         </div>
