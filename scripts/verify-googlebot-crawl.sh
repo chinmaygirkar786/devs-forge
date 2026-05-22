@@ -44,9 +44,9 @@ check_status "robots.txt" "$BASE/robots.txt"
 check_status "sitemap.xml" "$BASE/sitemap.xml"
 
 loc_count=$(curl -s -A "$UA" "$BASE/sitemap.xml" | grep -c "<loc>" || true)
-echo "INFO sitemap <loc> count: $loc_count (expected 19)"
-if [[ "$loc_count" != "19" ]]; then
-  echo "FAIL sitemap URL count: expected 19, got $loc_count"
+echo "INFO sitemap <loc> count: $loc_count (expected 26)"
+if [[ "$loc_count" != "26" ]]; then
+  echo "FAIL sitemap URL count: expected 26, got $loc_count"
   failures=$((failures + 1))
 fi
 

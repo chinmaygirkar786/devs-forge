@@ -1,3 +1,4 @@
+import { assertToolLoadersRegistered } from "@/lib/load-tool-module";
 import { toolCategoryKeys } from "@/tools/categories";
 import type { ToolDefinition, ToolSeoBlock } from "@/tools/types";
 
@@ -91,5 +92,6 @@ export function assertToolRegistry(
 
   validateInternalLinks(tools);
   warnAsymmetricRelatedLinks(tools);
+  assertToolLoadersRegistered(slugs);
 }
 

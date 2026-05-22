@@ -9,6 +9,13 @@ export const toolSlugList = [
   "markdown-previewer",
   "url-encoder",
   "html-formatter",
+  "xml-formatter",
+  "yaml-formatter",
+  "css-formatter",
+  "case-converter",
+  "hash-generator",
+  "cron-parser",
+  "query-string-parser",
   "timestamp-converter",
   "json-to-typescript",
 ] as const;

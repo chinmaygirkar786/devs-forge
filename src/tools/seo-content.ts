@@ -5,6 +5,13 @@ import { jsonFormatterSeo } from "@/tools/seo/json-formatter";
 import { jwtDecoderSeo } from "@/tools/seo/jwt-decoder";
 import { regexTesterSeo } from "@/tools/seo/regex-tester";
 import { uuidGeneratorSeo } from "@/tools/seo/uuid-generator";
+import { caseConverterSeo } from "@/tools/seo/case-converter";
+import { cronParserSeo } from "@/tools/seo/cron-parser";
+import { cssFormatterSeo } from "@/tools/seo/css-formatter";
+import { hashGeneratorSeo } from "@/tools/seo/hash-generator";
+import { queryStringParserSeo } from "@/tools/seo/query-string-parser";
+import { xmlFormatterSeo } from "@/tools/seo/xml-formatter";
+import { yamlFormatterSeo } from "@/tools/seo/yaml-formatter";
 
 const defaultSeoFields: Pick<ToolSeoBlock, "contentSections" | "internalLinkSlugs"> = {
   contentSections: [],
@@ -150,6 +157,13 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
     ],
   },
+  "xml-formatter": xmlFormatterSeo,
+  "yaml-formatter": yamlFormatterSeo,
+  "css-formatter": cssFormatterSeo,
+  "case-converter": caseConverterSeo,
+  "hash-generator": hashGeneratorSeo,
+  "cron-parser": cronParserSeo,
+  "query-string-parser": queryStringParserSeo,
   "timestamp-converter": {
     ...defaultSeoFields,
     seoIntro:

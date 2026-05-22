@@ -2,14 +2,20 @@ import {
   Binary,
   Blend,
   Braces,
+  CalendarClock,
+  CaseSensitive,
   Clock,
   CodeXml,
+  Hash,
+  FileCode,
   FileJson2,
   FileText,
   Fingerprint,
   KeyRound,
   Link2,
+  ListFilter,
   Palette,
+  ScrollText,
   SearchCode,
   Wrench,
 } from "lucide-react";
@@ -57,6 +63,20 @@ export function ToolIconGlyph({
       return <Link2 {...props} />;
     case "html-formatter":
       return <CodeXml {...props} />;
+    case "xml-formatter":
+      return <FileCode {...props} />;
+    case "yaml-formatter":
+      return <ScrollText {...props} />;
+    case "css-formatter":
+      return <Palette {...props} />;
+    case "case-converter":
+      return <CaseSensitive {...props} />;
+    case "hash-generator":
+      return <Hash {...props} />;
+    case "cron-parser":
+      return <CalendarClock {...props} />;
+    case "query-string-parser":
+      return <ListFilter {...props} />;
     case "timestamp-converter":
       return <Clock {...props} />;
     case "json-to-typescript":
