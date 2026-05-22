@@ -22,6 +22,7 @@
 
 # misc
 .DS_Store
+.gsc-verify-results.txt
 *.pem
 
 # debug

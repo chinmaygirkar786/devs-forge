@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "verify:crawl": "bash scripts/verify-googlebot-crawl.sh"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",
