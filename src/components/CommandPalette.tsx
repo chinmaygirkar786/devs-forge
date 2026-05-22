@@ -56,6 +56,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
       .filter((tool) => {
         const searchable = [
           tool.title,
+          tool.primaryKeyword,
           tool.description,
           ...tool.keywords,
         ]

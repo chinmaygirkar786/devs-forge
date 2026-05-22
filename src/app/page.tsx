@@ -15,12 +15,15 @@ export const metadata: Metadata = buildHomeMetadata();
 export default function Home() {
   const categories = getToolsByCategory();
   const popularTools = getPopularTools(6);
-  const searchableTools = tools.map(({ slug, title, description, keywords }) => ({
-    slug,
-    title,
-    description,
-    keywords,
-  }));
+  const searchableTools = tools.map(
+    ({ slug, title, description, keywords, seoLinkLabel, keywordCluster }) => ({
+      slug,
+      title: seoLinkLabel,
+      cardTitle: title,
+      description,
+      keywords: [keywordCluster.primary, ...keywords],
+    }),
+  );
 
   return (
     <div className="page-fade space-y-10">
@@ -77,7 +80,8 @@ export default function Home() {
                 slug={tool.slug}
                 title={tool.title}
                 description={tool.description}
-                className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
+                className="surface-muted rounded-3xl p-5"
+                interactive
               />
             ))}
           </div>
@@ -123,10 +127,11 @@ export default function Home() {
                   <Link
                     key={tool.slug}
                     href={routes.tool(tool.slug)}
+                    title={tool.title}
                     className="flex items-center gap-3 text-foreground hover:text-primary"
                   >
                     <ToolIcon slug={tool.slug} size="sm" />
-                    <span className="font-medium">{tool.title}</span>
+                    <span className="font-medium">{tool.seoLinkLabel}</span>
                   </Link>
                 ))}
               </div>
@@ -163,9 +168,11 @@ export default function Home() {
               key={tool.slug}
               href={routes.tool(tool.slug)}
               slug={tool.slug}
-              title={tool.title}
+              title={tool.seoLinkLabel}
               description={tool.description}
-              className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
+              tooltip={tool.title}
+              className="surface-muted rounded-3xl p-5"
+              interactive
             />
           ))}
         </div>

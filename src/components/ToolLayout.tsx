@@ -43,14 +43,12 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
               >
                 {toolCategories[tool.category].title}
               </Link>
-              <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-foreground">
-                {tool.keywordCluster.primary}
-              </span>
             </div>
 
             <h1 className="mt-4 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
-              {tool.title}
+              {tool.pageHeading}
             </h1>
+            <p className="mt-2 text-sm font-medium text-muted-foreground">{tool.title}</p>
             <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
               {tool.description}
             </p>
@@ -60,7 +58,7 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
 
       <section className="mt-8" aria-labelledby="tool-workspace-heading">
         <h2 id="tool-workspace-heading" className="sr-only">
-          {tool.title} workspace
+          {tool.pageHeading} workspace
         </h2>
         {children}
       </section>

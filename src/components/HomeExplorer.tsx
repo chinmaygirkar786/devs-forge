@@ -8,6 +8,7 @@ import { routes } from "@/lib/internal-links";
 type HomeExplorerTool = {
   slug: string;
   title: string;
+  cardTitle?: string;
   description: string;
   keywords: string[];
 };
@@ -26,7 +27,8 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
     }
 
     return tools.filter((tool) =>
-      [tool.title, tool.description, ...tool.keywords]
+      [tool.title, tool.cardTitle, tool.description, ...tool.keywords]
+        .filter((value): value is string => Boolean(value))
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery),
@@ -66,8 +68,10 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
             href={routes.tool(tool.slug)}
             slug={tool.slug}
             title={tool.title}
+            tooltip={tool.cardTitle}
             description={tool.description}
-            className="surface-muted rounded-3xl p-5 transition-[border-color,background-color] hover:border-border-strong"
+            className="surface-muted rounded-3xl p-5"
+            interactive
           />
         ))}
       </div>

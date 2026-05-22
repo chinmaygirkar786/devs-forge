@@ -9,8 +9,11 @@ type ToolCardLinkProps = ComponentProps<typeof Link> & {
   title: string;
   description?: string;
   eyebrow?: string;
+  tooltip?: string;
   iconSize?: "sm" | "md" | "lg";
   layout?: "horizontal" | "stacked";
+  /** Perceptible hover lift on home-style tool cards (no scale/will-change). */
+  interactive?: boolean;
 };
 
 export function ToolCardLink({
@@ -18,16 +21,20 @@ export function ToolCardLink({
   title,
   description,
   eyebrow,
+  tooltip,
   iconSize = "md",
   layout = "horizontal",
+  interactive = false,
   className,
   children,
   ...props
 }: ToolCardLinkProps) {
   return (
     <Link
+      title={tooltip}
       className={cn(
         layout === "horizontal" && "flex gap-4",
+        interactive && "home-card-interactive",
         className,
       )}
       {...props}

@@ -29,7 +29,7 @@ export function toolToLink(
 ): InternalLink {
   return {
     href: routes.tool(tool.slug),
-    label: tool.title,
+    label: tool.seoLinkLabel,
     description: tool.description,
     kind,
   };
