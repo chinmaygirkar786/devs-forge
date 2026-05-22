@@ -36,9 +36,11 @@ export function RecentlyUsedTools() {
           <Link
             key={entry.slug}
             href={routes.tool(entry.slug)}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm font-medium whitespace-nowrap text-foreground hover:border-border-strong"
+            className="recent-tool-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm font-medium whitespace-nowrap text-foreground"
           >
-            <ToolIcon slug={entry.slug} size="sm" className="h-7 w-7 rounded-lg" />
+            <span className="recent-tool-chip-icon rounded-lg">
+              <ToolIcon slug={entry.slug} size="sm" className="h-7 w-7 rounded-lg" />
+            </span>
             {entry.title}
           </Link>
         ))}

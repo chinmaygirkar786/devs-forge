@@ -1,4 +1,5 @@
 import { buildToolKeywords } from "@/tools/keywords";
+import { toolSerpMeta } from "@/tools/seo-meta";
 import { toolSeoContent } from "@/tools/seo-content";
 import type { ToolSlug } from "@/tools/slugs";
 import type { ToolDefinition, ToolSeed } from "@/tools/types";
@@ -590,10 +591,12 @@ const toolSeeds: ToolSeed[] = [
 
 const assembledTools: ToolDefinition[] = toolSeeds.map((seed) => {
   const seo = toolSeoContent[seed.slug as ToolSlug];
+  const serp = toolSerpMeta[seed.slug as ToolSlug];
 
   return {
     ...seed,
     ...seo,
+    ...serp,
     contentSections: seo.contentSections ?? [],
     internalLinkSlugs: seo.internalLinkSlugs ?? seed.relatedSlugs,
     keywords: buildToolKeywords(seed.keywordCluster),

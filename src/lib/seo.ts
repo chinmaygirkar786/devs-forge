@@ -66,11 +66,15 @@ export function buildHomeMetadata(): Metadata {
   };
 }
 
+export function formatKeywordTitle(keyword: string) {
+  return keyword
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export function buildToolPageTitle(tool: ToolDefinition) {
-  const primary = tool.keywordCluster.primary;
-  const short =
-    primary.charAt(0).toUpperCase() + primary.slice(1);
-  return `${short} – ${tool.title}`;
+  return `${formatKeywordTitle(tool.keywordCluster.primary)} – ${tool.title}`;
 }
 
 export function buildToolPageDescription(tool: ToolDefinition) {
@@ -79,8 +83,8 @@ export function buildToolPageDescription(tool: ToolDefinition) {
 }
 
 export function buildToolMetadata(tool: ToolDefinition): Metadata {
-  const title = tool.metaTitle ?? buildToolPageTitle(tool);
-  const description = tool.metaDescription ?? buildToolPageDescription(tool);
+  const title = tool.metaTitle || buildToolPageTitle(tool);
+  const description = tool.metaDescription || buildToolPageDescription(tool);
   const url = absoluteUrl(routes.tool(tool.slug));
 
   return {
@@ -102,7 +106,7 @@ export function buildToolMetadata(tool: ToolDefinition): Metadata {
           url: absoluteUrl("/opengraph-image"),
           width: 1200,
           height: 630,
-          alt: `${tool.title} preview`,
+          alt: `${tool.pageHeading} preview`,
         },
       ],
     },
@@ -220,7 +224,7 @@ export function buildToolsIndexJsonLd() {
     itemListElement: tools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: tool.title,
+      name: tool.pageHeading,
       url: absoluteUrl(routes.tool(tool.slug)),
     })),
   };
@@ -239,7 +243,7 @@ export function buildCategoryJsonLd(category: ToolCategory) {
     itemListElement: categoryTools.map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: tool.title,
+      name: tool.pageHeading,
       url: absoluteUrl(routes.tool(tool.slug)),
     })),
   };
@@ -268,7 +272,7 @@ export function buildToolBreadcrumbJsonLd(tool: ToolDefinition) {
       name: toolCategories[tool.category].title,
       path: routes.category(tool.category),
     },
-    { name: tool.title, path: routes.tool(tool.slug) },
+    { name: tool.pageHeading, path: routes.tool(tool.slug) },
   ]);
 }
 
@@ -296,7 +300,7 @@ export function buildToolJsonLd(tool: ToolDefinition) {
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: tool.title,
+      name: tool.pageHeading,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "Any",
       browserRequirements: "Requires JavaScript and a modern browser.",

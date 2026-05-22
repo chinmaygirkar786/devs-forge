@@ -46,8 +46,10 @@ export type ToolDefinition = {
   category: ToolCategory;
   keywords: string[];
   popular?: boolean;
-  metaTitle?: string;
-  metaDescription?: string;
+  metaTitle: string;
+  metaDescription: string;
+  pageHeading: string;
+  seoLinkLabel: string;
   keywordCluster: ToolKeywordCluster;
   howItWorks: string[];
   examples: ToolExample[];
@@ -63,5 +65,14 @@ export type ToolDefinition = {
 
 export type ToolSeed = Omit<
   ToolDefinition,
-  "seoIntro" | "contentSections" | "useCases" | "faqs" | "internalLinkSlugs" | "keywords"
+  | "seoIntro"
+  | "contentSections"
+  | "useCases"
+  | "faqs"
+  | "internalLinkSlugs"
+  | "keywords"
+  | "metaTitle"
+  | "metaDescription"
+  | "pageHeading"
+  | "seoLinkLabel"
 >;

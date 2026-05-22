@@ -25,8 +25,10 @@ export function LazyWhenVisible({
     }
 
     if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
+      const frameId = requestAnimationFrame(() => {
+        setVisible(true);
+      });
+      return () => cancelAnimationFrame(frameId);
     }
 
     const observer = new IntersectionObserver(
