@@ -35,12 +35,14 @@ export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProp
       minHeight="620px"
       rootMargin="280px 0px"
     >
-      <Suspense fallback={<SectionSkeleton minHeight="min-h-[200px]" />}>
-        <RecentlyUsedTools />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
-        <HomeExplorer tools={explorerTools} />
-      </Suspense>
+      <div className="space-y-10">
+        <Suspense fallback={<SectionSkeleton minHeight="min-h-[200px]" />}>
+          <RecentlyUsedTools />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
+          <HomeExplorer tools={explorerTools} />
+        </Suspense>
+      </div>
     </LazyWhenVisible>
   );
 }
