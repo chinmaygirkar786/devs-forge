@@ -21,6 +21,23 @@
   --danger: #dc2626;
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --shadow-hover: 0 16px 40px rgba(79, 70, 229, 0.2), 0 8px 22px rgba(6, 182, 212, 0.14);
+  /* Copy output button — light mode: bright violet/cyan (dark mode tokens in .dark) */
+  --copy-btn-from: #6366f1;
+  --copy-btn-via: #8b5cf6;
+  --copy-btn-to: #06b6d4;
+  --copy-btn-border: #818cf8;
+  --copy-btn-shadow: rgba(99, 102, 241, 0.42);
+  --copy-btn-shadow-hover: rgba(139, 92, 246, 0.55);
+  --copy-btn-ring: rgba(99, 102, 241, 0.5);
+  --copy-btn-success-from: #059669;
+  --copy-btn-success-via: #10b981;
+  --copy-btn-success-to: #14b8a6;
+  --copy-btn-success-border: #34d399;
+  --copy-btn-success-shadow: rgba(16, 185, 129, 0.45);
+  --copy-btn-glow-1: #818cf8;
+  --copy-btn-glow-2: #22d3ee;
+  --copy-btn-glow-3: #c084fc;
+  --copy-btn-depth: #4f46e5;
 }
 
 .dark {
@@ -40,6 +57,22 @@
   --danger: #f87171;
   --shadow: 0 16px 40px rgba(2, 6, 23, 0.35);
   --shadow-hover: 0 18px 44px rgba(129, 140, 248, 0.32), 0 10px 26px rgba(34, 211, 238, 0.2);
+  --copy-btn-from: #4f46e5;
+  --copy-btn-via: #7c3aed;
+  --copy-btn-to: #0891b2;
+  --copy-btn-border: #a5b4fc;
+  --copy-btn-shadow: rgba(79, 70, 229, 0.65);
+  --copy-btn-shadow-hover: rgba(124, 58, 237, 0.75);
+  --copy-btn-ring: rgba(165, 180, 252, 0.55);
+  --copy-btn-success-from: #059669;
+  --copy-btn-success-via: #10b981;
+  --copy-btn-success-to: #14b8a6;
+  --copy-btn-success-border: #6ee7b7;
+  --copy-btn-success-shadow: rgba(16, 185, 129, 0.55);
+  --copy-btn-glow-1: #818cf8;
+  --copy-btn-glow-2: #22d3ee;
+  --copy-btn-glow-3: #c084fc;
+  --copy-btn-depth: #4338ca;
 }
 
 @theme inline {
@@ -280,5 +313,309 @@ select {
   to {
     opacity: 1;
     transform: translate(0, 0);
+  }
+}
+
+/* Copy output button — inspired by dev.to/css button animations (glow, border, 3D, ripple) */
+@layer components {
+  .copy-output-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-from) 0%,
+      var(--copy-btn-via) 52%,
+      var(--copy-btn-to) 100%
+    );
+    box-shadow:
+      0 4px 0 var(--copy-btn-depth),
+      0 6px 22px var(--copy-btn-shadow);
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 200ms ease;
+  }
+
+  .copy-output-btn:focus-visible {
+    outline: 2px solid var(--copy-btn-ring);
+    outline-offset: 3px;
+  }
+
+  .copy-output-btn:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+  }
+
+  /* #1 Hover glow — soft aura behind the button */
+  .copy-output-btn__glow {
+    position: absolute;
+    inset: -6px;
+    z-index: -2;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-glow-1),
+      var(--copy-btn-glow-3),
+      var(--copy-btn-glow-2)
+    );
+    filter: blur(14px);
+    opacity: 0.45;
+    transition:
+      opacity 280ms ease,
+      filter 280ms ease,
+      transform 280ms ease;
+    pointer-events: none;
+  }
+
+  /* #22 Animated gradient ring on hover */
+  .copy-output-btn__ring {
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from var(--copy-btn-ring-angle, 0deg),
+      var(--copy-btn-glow-1),
+      var(--copy-btn-glow-2),
+      var(--copy-btn-glow-3),
+      var(--copy-btn-glow-1)
+    );
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Shimmer sweep on hover */
+  .copy-output-btn__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgb(255 255 255 / 0.42) 50%,
+      transparent 62%
+    );
+    transform: translateX(-130%) skewX(-12deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* #29 Bubble ripple on click */
+  .copy-output-btn__ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 120%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.38);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .copy-output-btn__ripple--active {
+    animation: copy-btn-ripple 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .copy-output-btn__content {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.28);
+  }
+
+  .copy-output-btn__icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) {
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) {
+      transform: translateY(-3px);
+      box-shadow:
+        0 7px 0 var(--copy-btn-depth),
+        0 10px 32px var(--copy-btn-shadow-hover),
+        0 0 36px color-mix(in srgb, var(--copy-btn-glow-2) 45%, transparent);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__glow {
+      opacity: 0.95;
+      filter: blur(20px);
+      transform: scale(1.06);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__ring {
+      opacity: 1;
+      animation: copy-btn-ring-spin 2.2s linear infinite;
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__shine {
+      opacity: 1;
+      animation: copy-btn-shine 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__icon {
+      transform: scale(1.12) rotate(-8deg);
+    }
+  }
+
+  /* #3 3D touch — press down */
+  .copy-output-btn:active:not(:disabled):not(.copy-output-btn--copied) {
+    transform: translateY(2px);
+    box-shadow:
+      0 2px 0 var(--copy-btn-depth),
+      0 4px 14px var(--copy-btn-shadow);
+  }
+
+  .copy-output-btn--copied {
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-success-from) 0%,
+      var(--copy-btn-success-via) 50%,
+      var(--copy-btn-success-to) 100%
+    );
+    box-shadow:
+      0 4px 0 var(--copy-btn-success-border),
+      0 8px 24px var(--copy-btn-success-shadow),
+      0 0 28px color-mix(in srgb, var(--copy-btn-success-via) 40%, transparent);
+    animation: copy-btn-success-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .copy-output-btn--copied .copy-output-btn__glow {
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-success-from),
+      var(--copy-btn-success-to),
+      var(--copy-btn-success-via)
+    );
+    opacity: 0.75;
+    filter: blur(16px);
+  }
+
+  .copy-output-btn--copied .copy-output-btn__ring {
+    opacity: 0;
+    animation: none;
+  }
+
+  .copy-output-btn--copied .copy-output-btn__icon {
+    animation: copy-btn-icon-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@property --copy-btn-ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes copy-btn-ring-spin {
+  to {
+    --copy-btn-ring-angle: 360deg;
+  }
+}
+
+@keyframes copy-btn-shine {
+  from {
+    transform: translateX(-130%) skewX(-12deg);
+  }
+
+  to {
+    transform: translateX(130%) skewX(-12deg);
+  }
+}
+
+@keyframes copy-btn-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes copy-btn-success-pop {
+  0% {
+    transform: scale(0.94);
+  }
+
+  45% {
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes copy-btn-icon-pop {
+  0% {
+    transform: scale(0.5) rotate(-16deg);
+  }
+
+  65% {
+    transform: scale(1.18) rotate(5deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-output-btn__ring,
+  .copy-output-btn__shine,
+  .copy-output-btn__ripple--active,
+  .copy-output-btn--copied,
+  .copy-output-btn--copied .copy-output-btn__icon {
+    animation: none !important;
+  }
+
+  @media (hover: hover) {
+    .copy-output-btn:hover:not(:disabled) {
+      transform: none;
+    }
+
+    .copy-output-btn:hover:not(:disabled) .copy-output-btn__icon {
+      transform: none;
+    }
+  }
+
+  .copy-output-btn:active:not(:disabled) {
+    transform: none;
   }
 }

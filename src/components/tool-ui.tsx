@@ -1,6 +1,7 @@
 "use client";
 
 import { cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
+import { Check, Copy } from "lucide-react";
 
 import posthog from "posthog-js";
 
@@ -292,37 +293,52 @@ type CopyButtonProps = {
 
 export function CopyButton({ value, label = "Copy output", className }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const [ripple, setRipple] = useState(false);
 
   useEffect(() => {
     if (!copied) {
       return;
     }
 
-    const timer = window.setTimeout(() => setCopied(false), 1400);
+    const timer = window.setTimeout(() => setCopied(false), 1600);
     return () => window.clearTimeout(timer);
   }, [copied]);
 
+  function triggerRipple() {
+    setRipple(false);
+    requestAnimationFrame(() => setRipple(true));
+  }
+
   return (
-    <ActionButton
-      variant={copied ? "ghost" : "secondary"}
-      className={cn(
-        "transition-[background-color,border-color,color] duration-200 ease-out",
-        copied
-          ? "border-success/40 bg-success/10 text-success border"
-          : "bg-primary text-white hover:opacity-90",
-        "disabled:pointer-events-none disabled:opacity-50",
-        className,
-      )}
-      aria-label={label}
+    <button
+      type="button"
+      className={cn("copy-output-btn", copied && "copy-output-btn--copied", className)}
+      aria-label={copied ? "Copied to clipboard" : label}
+      disabled={!value}
       onClick={async () => {
+        triggerRipple();
         await navigator.clipboard.writeText(value);
         setCopied(true);
         posthog.capture("tool_output_copied", { method: "button", output_length: value.length });
       }}
-      disabled={!value}
     >
-      {copied ? "Copied" : label}
-    </ActionButton>
+      <span className="copy-output-btn__glow" aria-hidden />
+      <span className="copy-output-btn__ring" aria-hidden />
+      <span
+        className={cn("copy-output-btn__ripple", ripple && "copy-output-btn__ripple--active")}
+        aria-hidden
+        onAnimationEnd={() => setRipple(false)}
+      />
+      {!copied ? <span className="copy-output-btn__shine" aria-hidden /> : null}
+      <span className="copy-output-btn__content">
+        {copied ? (
+          <Check className="copy-output-btn__icon" strokeWidth={2.5} aria-hidden />
+        ) : (
+          <Copy className="copy-output-btn__icon" strokeWidth={2.25} aria-hidden />
+        )}
+        <span>{copied ? "Copied!" : label}</span>
+      </span>
+    </button>
   );
 }
 
