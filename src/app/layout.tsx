@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import { headers } from "next/headers";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { PlatformProvider } from "@/components/PlatformProvider";
 import { PwaProviderDeferred } from "@/components/PwaProviderDeferred";
+import { isMacUserAgent } from "@/lib/platform";
 import { siteConfig } from "@/lib/site";
 import { toolSearchIndex } from "@/lib/tool-search-index";
 import { themeScript } from "@/lib/theme";
@@ -49,11 +52,14 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userAgent = (await headers()).get("user-agent") ?? "";
+  const isMac = isMacUserAgent(userAgent);
+
   return (
     <html
       lang="en"
@@ -65,12 +71,14 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${geistSans.className} flex min-h-full flex-col`}>
-        <Navbar searchIndex={toolSearchIndex} />
-        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
-          {children}
-        </main>
-        <Footer />
-        <PwaProviderDeferred />
+        <PlatformProvider isMac={isMac}>
+          <Navbar searchIndex={toolSearchIndex} />
+          <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
+            {children}
+          </main>
+          <Footer />
+          <PwaProviderDeferred />
+        </PlatformProvider>
       </body>
     </html>
   );

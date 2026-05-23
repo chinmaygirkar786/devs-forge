@@ -9,6 +9,7 @@ import {
   getToolUsageHistoryServerSnapshot,
   subscribeToToolUsageHistory,
 } from "@/lib/history";
+import { SearchShortcutHint } from "@/components/SearchShortcutHint";
 import { ToolIcon } from "@/components/ToolIcon";
 import { routes } from "@/lib/internal-links";
 import { cn } from "@/lib/utils";
@@ -74,7 +75,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
         <div className="border-border border-b px-5 py-4">
           <div className="flex items-center gap-3">
             <span className="bg-primary-soft text-primary inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
-              Ctrl + K
+              <SearchShortcutHint />
             </span>
             <input
               autoFocus
