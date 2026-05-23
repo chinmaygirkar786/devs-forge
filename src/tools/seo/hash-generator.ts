@@ -52,9 +52,9 @@ export const hashGeneratorSeo: ToolSeoBlock = {
     },
   ],
   internalLinkSlugs: [
-    "base64-encoder",
     "jwt-decoder",
     "uuid-generator",
+    "base64-encoder",
     "json-formatter",
     "regex-tester",
     "url-encoder",

@@ -4,15 +4,22 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolIcon } from "@/components/ToolIcon";
 import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
-import { getToolBySlug, toolCategories } from "@/lib/tools";
+import {
+  getEffectiveRelatedCluster,
+  getRelatedClusterLabel,
+  getToolBySlug,
+  toolCategories,
+} from "@/lib/tools";
 
 type ToolLayoutProps = {
   tool: ToolDefinition;
-  relatedTools: ToolDefinition[];
   children: React.ReactNode;
 };
 
-export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
+export function ToolLayout({ tool, children }: ToolLayoutProps) {
+  const relatedClusterId = getEffectiveRelatedCluster(tool.slug);
+  const relatedClusterLabel = relatedClusterId ? getRelatedClusterLabel(relatedClusterId) : null;
+
   const featuredLinks = tool.internalLinkSlugs
     .map((slug) => getToolBySlug(slug))
     .filter((related): related is ToolDefinition => Boolean(related))
@@ -66,58 +73,12 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
       <div className="content-deferred mt-8">
         <p className="text-muted-foreground max-w-3xl text-base leading-8">{tool.seoIntro}</p>
 
-        {relatedTools.length > 0 ? (
-          <section className="surface-card mt-8 rounded-3xl p-6">
-            <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-              Related tools
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {relatedTools.map((relatedTool) => {
-                const link = toolToLink(relatedTool, "related");
-
-                return (
-                  <Link
-                    key={relatedTool.slug}
-                    href={link.href}
-                    className="border-border hover:border-border-strong hover:bg-background-soft flex gap-3 rounded-2xl border p-4"
-                  >
-                    <ToolIcon slug={relatedTool.slug} size="sm" />
-                    <span className="min-w-0">
-                      <span className="text-foreground block font-semibold">{link.label}</span>
-                      <span className="text-muted-foreground mt-1 block text-sm">
-                        {link.description}
-                      </span>
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
-        ) : null}
-
-        {tool.contentSections.length > 0 ? (
-          <article className="content-deferred surface-card mt-8 rounded-3xl p-6 sm:p-8">
-            {tool.contentSections.map((section) => (
-              <section key={section.heading} className="mt-10 first:mt-0">
-                <h2 className="text-foreground text-2xl font-bold tracking-tight">
-                  {section.heading}
-                </h2>
-                {section.paragraphs.map((paragraph) => (
-                  <p
-                    key={paragraph.slice(0, 48)}
-                    className="text-muted-foreground mt-4 text-base leading-8"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </section>
-            ))}
-          </article>
-        ) : null}
-
         {featuredLinks.length > 0 ? (
-          <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
+          <section className="surface-card mt-8 rounded-3xl p-6">
             <h2 className="text-foreground text-2xl font-bold">Related developer tools</h2>
+            {relatedClusterLabel ? (
+              <p className="text-primary mt-2 text-sm font-semibold">{relatedClusterLabel}</p>
+            ) : null}
             <p className="text-muted-foreground mt-3 text-sm leading-7">
               Continue your workflow with these free utilities on{" "}
               {toolCategories[tool.category].title.toLowerCase()} and adjacent tasks—all
@@ -154,6 +115,26 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
               </Link>
             </p>
           </section>
+        ) : null}
+
+        {tool.contentSections.length > 0 ? (
+          <article className="content-deferred surface-card mt-8 rounded-3xl p-6 sm:p-8">
+            {tool.contentSections.map((section) => (
+              <section key={section.heading} className="mt-10 first:mt-0">
+                <h2 className="text-foreground text-2xl font-bold tracking-tight">
+                  {section.heading}
+                </h2>
+                {section.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph.slice(0, 48)}
+                    className="text-muted-foreground mt-4 text-base leading-8"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </section>
+            ))}
+          </article>
         ) : null}
 
         <div className="content-deferred mt-8 space-y-6">

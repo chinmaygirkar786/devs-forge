@@ -89,10 +89,11 @@ export const regexTesterSeo: ToolSeoBlock = {
     },
   ],
   internalLinkSlugs: [
-    "url-encoder",
-    "json-formatter",
-    "html-formatter",
-    "base64-encoder",
     "jwt-decoder",
+    "hash-generator",
+    "uuid-generator",
+    "json-formatter",
+    "url-encoder",
+    "base64-encoder",
   ],
 };

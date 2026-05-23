@@ -89,10 +89,11 @@ export const base64EncoderSeo: ToolSeoBlock = {
     },
   ],
   internalLinkSlugs: [
-    "jwt-decoder",
-    "json-formatter",
     "url-encoder",
+    "query-string-parser",
+    "jwt-decoder",
+    "hash-generator",
+    "json-formatter",
     "json-to-typescript",
-    "regex-tester",
   ],
 };

@@ -58,6 +58,6 @@ export const queryStringParserSeo: ToolSeoBlock = {
     "jwt-decoder",
     "json-formatter",
     "regex-tester",
-    "html-formatter",
+    "hash-generator",
   ],
 };
