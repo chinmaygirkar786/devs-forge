@@ -1,9 +1,8 @@
-import { createHash } from "node:crypto";
-
-import { themeScript } from "./theme";
-
-/** SHA-256 (base64) of the inline theme bootstrap script in `layout.tsx`. */
-export const themeScriptSha256 = createHash("sha256").update(themeScript.trim()).digest("base64");
+/**
+ * SHA-256 (base64) of the inline theme bootstrap in `src/lib/theme.ts`.
+ * Recompute when `themeScript` changes: `node -e "..."` or update `public/_headers` too.
+ */
+export const themeScriptSha256 = "oo3FANOraHvAaybf9nQ/2E6O07se9p9X/uLTT5PVox8=";
 
 const permissionsPolicy = [
   "accelerometer=()",
@@ -61,7 +60,7 @@ function shouldApplyCsp() {
   return process.env.NODE_ENV === "production";
 }
 
-function useEnforcingCsp() {
+function isEnforcingCsp() {
   return process.env.SECURITY_CSP_ENFORCE === "true";
 }
 
@@ -86,7 +85,7 @@ export function getSecurityHeaderRows(): SecurityHeaderRow[] {
   if (shouldApplyCsp()) {
     const policy = buildContentSecurityPolicy();
     rows.push({
-      key: useEnforcingCsp() ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
+      key: isEnforcingCsp() ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
       value: policy,
     });
   }
