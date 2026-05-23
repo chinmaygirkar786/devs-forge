@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
+import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { ToolIcon } from "@/components/ToolIcon";
 import { SEOHead } from "@/components/SEOHead";
@@ -67,7 +68,7 @@ export default function Home() {
                 type="button"
                 className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
               >
-                Press Ctrl + K to search
+                <SearchShortcutPhrase template="press-to-search" />
               </button>
             </div>
           </div>
@@ -206,7 +207,7 @@ export default function Home() {
             <div className="surface-muted rounded-2xl p-4">
               <h3 className="text-foreground font-semibold">Command palette</h3>
               <p className="text-muted-foreground mt-2 text-sm leading-6">
-                Open tool search anywhere with Ctrl + K for fast navigation.
+                <SearchShortcutPhrase template="open-anywhere" />
               </p>
             </div>
             <div className="surface-muted rounded-2xl p-4">

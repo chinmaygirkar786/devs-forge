@@ -10,6 +10,7 @@ import {
   isProtectedChunkPath,
 } from "../src/lib/chunk-access-guard.js";
 import { getInternalRouteDenyReason } from "../src/lib/route-access-policy.js";
+import { applySecurityHeaders } from "../src/lib/security-headers.js";
 
 export { BucketCachePurge, DOQueueHandler, DOShardedTagCache };
 
@@ -38,24 +39,28 @@ function respondToCdnCgiRum(request: Request): Response {
 
 function denyInternalRoute(request: Request, reason: "redirect" | "forbidden"): Response {
   if (reason === "redirect") {
-    return Response.redirect(new URL("/", request.url), 302);
+    return applySecurityHeaders(Response.redirect(new URL("/", request.url), 302));
   }
 
-  return new Response(null, {
-    status: 403,
-    headers: {
-      "Cache-Control": "no-store",
-    },
-  });
+  return applySecurityHeaders(
+    new Response(null, {
+      status: 403,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    }),
+  );
 }
 
 function denyChunkRequest(): Response {
-  return new Response(null, {
-    status: 403,
-    headers: {
-      "Cache-Control": "no-store",
-    },
-  });
+  return applySecurityHeaders(
+    new Response(null, {
+      status: 403,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    }),
+  );
 }
 
 function withChunkVary(response: Response): Response {
@@ -89,10 +94,10 @@ const entryWorker = {
     const response = await openNext.fetch(request, env, ctx);
 
     if (isProtectedChunkPath(pathname) && response.ok) {
-      return withChunkVary(response);
+      return applySecurityHeaders(withChunkVary(response));
     }
 
-    return response;
+    return applySecurityHeaders(response);
   },
 };
 

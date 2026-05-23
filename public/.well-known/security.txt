@@ -1,0 +1,8 @@
+Contact: mailto:security@devs-forge.com
+Expires: 2027-05-19T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://devs-forge.com/.well-known/security.txt
+Policy: https://devs-forge.com/
+
+# Devs Forge — browser-based developer tools. Report suspected vulnerabilities
+# responsibly; we aim to respond within a few business days.

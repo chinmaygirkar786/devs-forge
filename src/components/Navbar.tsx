@@ -4,6 +4,7 @@ import Link from "next/link";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import posthog from "posthog-js";
 
+import { SearchShortcutHint } from "@/components/SearchShortcutHint";
 import { SiteLogo } from "@/components/SiteLogo";
 import { ThemeToggleLazy } from "@/components/ThemeToggleLazy";
 import type { ToolSearchEntry } from "@/lib/tool-search-index";
@@ -71,7 +72,7 @@ export function Navbar({ searchIndex }: NavbarProps) {
             >
               <span>Search tools</span>
               <span className="border-border inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold whitespace-nowrap">
-                Ctrl + K
+                <SearchShortcutHint />
               </span>
             </button>
             <ThemeToggleLazy />
