@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolIcon } from "@/components/ToolIcon";
 import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
-import { getToolBySlug, toolCategories } from "@/lib/tools";
+import { getEffectiveRelatedCluster, getRelatedClusterLabel, getToolBySlug, toolCategories } from "@/lib/tools";
 
 type ToolLayoutProps = {
   tool: ToolDefinition;
@@ -13,6 +13,9 @@ type ToolLayoutProps = {
 };
 
 export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
+  const relatedClusterId = getEffectiveRelatedCluster(tool.slug);
+  const relatedClusterLabel = relatedClusterId ? getRelatedClusterLabel(relatedClusterId) : null;
+
   const featuredLinks = tool.internalLinkSlugs
     .map((slug) => getToolBySlug(slug))
     .filter((related): related is ToolDefinition => Boolean(related))
@@ -71,6 +74,9 @@ export function ToolLayout({ tool, relatedTools, children }: ToolLayoutProps) {
             <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
               Related tools
             </p>
+            {relatedClusterLabel ? (
+              <p className="text-muted-foreground mt-1 text-sm">{relatedClusterLabel}</p>
+            ) : null}
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {relatedTools.map((relatedTool) => {
                 const link = toolToLink(relatedTool, "related");

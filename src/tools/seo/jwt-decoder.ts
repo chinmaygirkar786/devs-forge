@@ -91,10 +91,11 @@ export const jwtDecoderSeo: ToolSeoBlock = {
     },
   ],
   internalLinkSlugs: [
+    "hash-generator",
+    "uuid-generator",
     "base64-encoder",
     "json-formatter",
     "timestamp-converter",
-    "json-to-typescript",
-    "regex-tester",
+    "query-string-parser",
   ],
 };

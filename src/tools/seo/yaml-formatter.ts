@@ -55,10 +55,10 @@ export const yamlFormatterSeo: ToolSeoBlock = {
   ],
   internalLinkSlugs: [
     "json-formatter",
-    "xml-formatter",
-    "html-formatter",
     "json-to-typescript",
+    "xml-formatter",
+    "cron-parser",
     "timestamp-converter",
-    "url-encoder",
+    "base64-encoder",
   ],
 };

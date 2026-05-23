@@ -12,8 +12,19 @@ export type {
   ToolSeoBlock,
 } from "@/tools";
 
-export { routes, toolToLink, getInternalLinksForTool } from "@/lib/internal-links";
-export type { InternalLink, InternalLinkKind, ToolInternalLinks } from "@/lib/internal-links";
+export {
+  routes,
+  toolToLink,
+  getInternalLinksForTool,
+  getEffectiveRelatedCluster,
+  getRelatedClusterForSlug,
+} from "@/lib/internal-links";
+export type { InternalLink, InternalLinkKind, ToolInternalLinks, RelatedClusterId } from "@/lib/internal-links";
+export {
+  getRelatedClusterLabel,
+  getNearestClusterForSlug,
+  toolRelatedClusters,
+} from "@/tools/related-clusters";
 
 export function getAllTools() {
   return tools;

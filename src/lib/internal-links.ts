@@ -1,4 +1,5 @@
 import { toolCategories } from "@/tools/categories";
+import { getClusterSlugs, getEffectiveRelatedCluster } from "@/tools/related-clusters";
 import type { ToolCategory, ToolDefinition } from "@/tools/types";
 
 export const routes = {
@@ -93,6 +94,29 @@ export function getInternalLinksForTool(
   };
 }
 
+function resolveToolsBySlugs(
+  slugs: string[],
+  allTools: ToolDefinition[],
+  exclude: Set<string>,
+): ToolDefinition[] {
+  const resolved: ToolDefinition[] = [];
+
+  for (const relatedSlug of slugs) {
+    if (exclude.has(relatedSlug)) {
+      continue;
+    }
+
+    const tool = allTools.find((entry) => entry.slug === relatedSlug);
+
+    if (tool) {
+      resolved.push(tool);
+      exclude.add(relatedSlug);
+    }
+  }
+
+  return resolved;
+}
+
 export function getRelatedToolsFromRegistry(
   slug: string,
   allTools: ToolDefinition[],
@@ -104,16 +128,31 @@ export function getRelatedToolsFromRegistry(
     return [];
   }
 
-  const explicit = current.relatedSlugs
-    .map((relatedSlug) => allTools.find((tool) => tool.slug === relatedSlug))
-    .filter((tool): tool is ToolDefinition => Boolean(tool));
+  const seen = new Set<string>([slug]);
+  const ordered: ToolDefinition[] = [];
 
-  const fallback = allTools.filter(
-    (tool) =>
-      tool.slug !== slug &&
-      tool.category === current.category &&
-      !current.relatedSlugs.includes(tool.slug),
+  const clusterId = getEffectiveRelatedCluster(slug);
+
+  if (clusterId) {
+    ordered.push(
+      ...resolveToolsBySlugs(getClusterSlugs(clusterId, slug), allTools, seen),
+    );
+  }
+
+  ordered.push(...resolveToolsBySlugs(current.relatedSlugs, allTools, seen));
+
+  const categoryFallback = allTools.filter(
+    (tool) => tool.slug !== slug && tool.category === current.category && !seen.has(tool.slug),
   );
 
-  return [...explicit, ...fallback].slice(0, limit);
+  ordered.push(...resolveToolsBySlugs(
+    categoryFallback.map((tool) => tool.slug),
+    allTools,
+    seen,
+  ));
+
+  return ordered.slice(0, limit);
 }
+
+export { getEffectiveRelatedCluster, getRelatedClusterForSlug } from "@/tools/related-clusters";
+export type { RelatedClusterId } from "@/tools/related-clusters";

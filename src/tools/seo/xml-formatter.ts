@@ -91,10 +91,10 @@ export const xmlFormatterSeo: ToolSeoBlock = {
   ],
   internalLinkSlugs: [
     "json-formatter",
+    "json-to-typescript",
+    "yaml-formatter",
     "html-formatter",
     "base64-encoder",
-    "url-encoder",
-    "regex-tester",
     "jwt-decoder",
   ],
 };

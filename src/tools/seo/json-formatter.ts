@@ -92,10 +92,10 @@ export const jsonFormatterSeo: ToolSeoBlock = {
   ],
   internalLinkSlugs: [
     "json-to-typescript",
+    "yaml-formatter",
     "xml-formatter",
-    "html-formatter",
     "jwt-decoder",
     "base64-encoder",
-    "regex-tester",
+    "hash-generator",
   ],
 };

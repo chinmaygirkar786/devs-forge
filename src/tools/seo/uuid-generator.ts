@@ -89,10 +89,11 @@ export const uuidGeneratorSeo: ToolSeoBlock = {
     },
   ],
   internalLinkSlugs: [
-    "json-to-typescript",
-    "json-formatter",
-    "timestamp-converter",
     "jwt-decoder",
+    "hash-generator",
+    "timestamp-converter",
+    "json-formatter",
+    "json-to-typescript",
     "base64-encoder",
   ],
 };
