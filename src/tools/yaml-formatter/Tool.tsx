@@ -15,7 +15,9 @@ import {
 } from "@/components/tool-ui";
 import { formatYaml, minifyYaml } from "@/lib/tool-helpers";
 
-const sampleYaml = `apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  DEBUG: "true"\n  RETRIES: 3`;
+/** Compact / flow-style YAML — formatting expands nested maps into indented blocks. */
+const sampleYaml =
+  'apiVersion: v1\nkind: ConfigMap\nmetadata: { name: app-config }\ndata: { DEBUG: "true", RETRIES: 3 }';
 
 const yamlModeOptions = [
   { label: "Format YAML", value: "format" },
@@ -60,7 +62,7 @@ export default function YamlFormatterTool() {
     <ToolGrid>
       <SectionCard
         title="Source YAML"
-        description="Format Kubernetes manifests, Compose files, and CI configs locally."
+        description="Format expands indentation; minify compacts nested blocks into inline { } and [ ] flow style."
       >
         <FieldLabel label="Mode" />
         <DropdownField
@@ -91,7 +93,14 @@ export default function YamlFormatterTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Output" description="Copy formatted YAML into repos or tickets.">
+      <SectionCard
+        title="Output"
+        description={
+          mode === "format"
+            ? "Indented block-style YAML for reading and review."
+            : "Compact flow-style YAML with less nesting whitespace."
+        }
+      >
         <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Result" />
           <CopyButton value={result.output} />
@@ -101,7 +110,14 @@ export default function YamlFormatterTool() {
           {result.error ? (
             <StatusBanner tone="danger" text={result.error} />
           ) : (
-            <StatusBanner tone="success" text="YAML transformed successfully." />
+            <StatusBanner
+              tone="success"
+              text={
+                mode === "format"
+                  ? "YAML formatted with block indentation."
+                  : "YAML minified with compact flow style."
+              }
+            />
           )}
         </div>
       </SectionCard>

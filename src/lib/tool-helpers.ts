@@ -1,4 +1,11 @@
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import {
+  Document as YamlDocument,
+  isMap as isYamlMap,
+  isSeq as isYamlSeq,
+  parse as parseYaml,
+  stringify as stringifyYaml,
+  visit as visitYaml,
+} from "yaml";
 import cronstrue from "cronstrue";
 
 type JwtDecodedPart = Record<string, unknown> | null;
@@ -473,9 +480,32 @@ export function formatYaml(value: string, indent = 2) {
   return stringifyYaml(parsed, { indent, lineWidth: 0 });
 }
 
+function nestedYamlMapDepth(path: readonly unknown[]) {
+  return path.filter(isYamlMap).length;
+}
+
 export function minifyYaml(value: string) {
-  const parsed = parseYaml(value);
-  return stringifyYaml(parsed, { indent: 0, lineWidth: 0 });
+  const doc = new YamlDocument(parseYaml(value));
+
+  visitYaml(doc, {
+    Map(_key, node, path) {
+      if (!isYamlMap(node)) {
+        return;
+      }
+
+      // Keep top-level keys on separate lines; inline nested maps (flow style).
+      if (nestedYamlMapDepth(path) > 0) {
+        node.flow = true;
+      }
+    },
+    Seq(_key, node, path) {
+      if (isYamlSeq(node) && nestedYamlMapDepth(path) > 0) {
+        node.flow = true;
+      }
+    },
+  });
+
+  return doc.toString({ indent: 2, lineWidth: 0 }).trimEnd();
 }
 
 export function formatCss(value: string, indentSize = 2) {

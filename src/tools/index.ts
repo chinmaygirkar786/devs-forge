@@ -595,14 +595,21 @@ const toolSeeds: ToolSeed[] = [
     },
     howItWorks: [
       "Paste YAML and choose format or minify—the parser validates structure before output updates.",
-      "Formatting uses consistent indentation; minifying compacts whitespace while keeping values intact.",
-      "Everything runs locally so cluster secrets in manifests never leave your browser.",
+      "Format expands nested maps into indented block style for readability.",
+      "Minify uses flow style ({ key: value }) on nested structures to reduce whitespace while keeping top-level keys separate.",
     ],
     examples: [
       {
-        title: "Format a Kubernetes ConfigMap",
+        title: "Format compact Kubernetes YAML",
         input:
-          'apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  DEBUG: "true"',
+          'apiVersion: v1\nkind: ConfigMap\nmetadata: { name: app-config }\ndata: { DEBUG: "true", RETRIES: 3 }',
+        output: `apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  DEBUG: "true"
+  RETRIES: 3`,
       },
       {
         title: "Validate docker-compose services block",
