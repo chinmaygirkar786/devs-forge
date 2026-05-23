@@ -4,7 +4,12 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolIcon } from "@/components/ToolIcon";
 import { routes, toolToLink } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
-import { getEffectiveRelatedCluster, getRelatedClusterLabel, getToolBySlug, toolCategories } from "@/lib/tools";
+import {
+  getEffectiveRelatedCluster,
+  getRelatedClusterLabel,
+  getToolBySlug,
+  toolCategories,
+} from "@/lib/tools";
 
 type ToolLayoutProps = {
   tool: ToolDefinition;

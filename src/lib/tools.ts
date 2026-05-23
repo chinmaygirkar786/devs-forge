@@ -19,7 +19,12 @@ export {
   getEffectiveRelatedCluster,
   getRelatedClusterForSlug,
 } from "@/lib/internal-links";
-export type { InternalLink, InternalLinkKind, ToolInternalLinks, RelatedClusterId } from "@/lib/internal-links";
+export type {
+  InternalLink,
+  InternalLinkKind,
+  ToolInternalLinks,
+  RelatedClusterId,
+} from "@/lib/internal-links";
 export {
   getRelatedClusterLabel,
   getNearestClusterForSlug,

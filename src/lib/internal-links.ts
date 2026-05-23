@@ -134,9 +134,7 @@ export function getRelatedToolsFromRegistry(
   const clusterId = getEffectiveRelatedCluster(slug);
 
   if (clusterId) {
-    ordered.push(
-      ...resolveToolsBySlugs(getClusterSlugs(clusterId, slug), allTools, seen),
-    );
+    ordered.push(...resolveToolsBySlugs(getClusterSlugs(clusterId, slug), allTools, seen));
   }
 
   ordered.push(...resolveToolsBySlugs(current.relatedSlugs, allTools, seen));
@@ -145,11 +143,13 @@ export function getRelatedToolsFromRegistry(
     (tool) => tool.slug !== slug && tool.category === current.category && !seen.has(tool.slug),
   );
 
-  ordered.push(...resolveToolsBySlugs(
-    categoryFallback.map((tool) => tool.slug),
-    allTools,
-    seen,
-  ));
+  ordered.push(
+    ...resolveToolsBySlugs(
+      categoryFallback.map((tool) => tool.slug),
+      allTools,
+      seen,
+    ),
+  );
 
   return ordered.slice(0, limit);
 }

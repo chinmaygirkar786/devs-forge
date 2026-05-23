@@ -51,9 +51,7 @@ export function assertRelatedClusters(tools: ToolDefinition[]) {
 
   for (const [slug, clusterId] of Object.entries(nearestMap)) {
     if (!slugSet.has(slug)) {
-      throw new Error(
-        `[tool registry] Nearest cluster map references unknown slug "${slug}".`,
-      );
+      throw new Error(`[tool registry] Nearest cluster map references unknown slug "${slug}".`);
     }
 
     if (getRelatedClusterForSlug(slug)) {
@@ -65,7 +63,9 @@ export function assertRelatedClusters(tools: ToolDefinition[]) {
     const cluster = toolRelatedClusters.find((entry) => entry.id === clusterId);
 
     if (!cluster) {
-      throw new Error(`[tool registry] Nearest cluster map references unknown cluster "${clusterId}".`);
+      throw new Error(
+        `[tool registry] Nearest cluster map references unknown cluster "${clusterId}".`,
+      );
     }
   }
 
