@@ -261,16 +261,108 @@ export function DropdownField({
 
 type ActionButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "ghost";
+  /** Ghost only: accent for Load example vs Clear (auto-detected from label when omitted). */
+  intent?: "load" | "clear";
 };
 
-export function ActionButton({ variant = "secondary", className, ...props }: ActionButtonProps) {
+function getButtonLabel(children: React.ReactNode, ariaLabel?: string): string {
+  if (typeof children === "string") {
+    return children;
+  }
+
+  if (Array.isArray(children)) {
+    return children.map((child) => getButtonLabel(child)).join("");
+  }
+
+  if (isValidElement<{ children?: React.ReactNode }>(children)) {
+    return getButtonLabel(children.props.children, ariaLabel);
+  }
+
+  return ariaLabel ?? "";
+}
+
+function resolveActionIntent(
+  intent: ActionButtonProps["intent"],
+  children: React.ReactNode,
+  ariaLabel?: string,
+): "load" | "clear" {
+  if (intent) {
+    return intent;
+  }
+
+  const text = `${getButtonLabel(children, ariaLabel)} ${ariaLabel ?? ""}`.toLowerCase();
+  if (/\bclear\b|\breset\b|\bempty\b/.test(text)) {
+    return "clear";
+  }
+
+  return "load";
+}
+
+function GhostActionButton({
+  className,
+  children,
+  intent,
+  onClick,
+  disabled,
+  "aria-label": ariaLabel,
+  ...props
+}: ActionButtonProps) {
+  const [ripple, setRipple] = useState(false);
+  const action = resolveActionIntent(intent, children, ariaLabel);
+
+  function triggerRipple() {
+    setRipple(false);
+    requestAnimationFrame(() => setRipple(true));
+  }
+
+  return (
+    <button
+      type="button"
+      {...props}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      data-action={action}
+      className={cn("tool-action-btn", className)}
+      onClick={(event) => {
+        if (!disabled) {
+          triggerRipple();
+        }
+        onClick?.(event);
+      }}
+    >
+      <span className="tool-action-btn__glow" aria-hidden />
+      <span className="tool-action-btn__ring" aria-hidden />
+      <span
+        className={cn("tool-action-btn__ripple", ripple && "tool-action-btn__ripple--active")}
+        aria-hidden
+        onAnimationEnd={() => setRipple(false)}
+      />
+      <span className="tool-action-btn__shine" aria-hidden />
+      <span className="tool-action-btn__content">{children}</span>
+    </button>
+  );
+}
+
+export function ActionButton({
+  variant = "secondary",
+  className,
+  children,
+  intent,
+  ...props
+}: ActionButtonProps) {
+  if (variant === "ghost") {
+    return (
+      <GhostActionButton className={className} intent={intent} {...props}>
+        {children}
+      </GhostActionButton>
+    );
+  }
+
   const variants = {
     primary:
       "bg-foreground text-background hover:opacity-90 disabled:bg-border disabled:text-muted-foreground",
     secondary:
       "bg-primary text-white hover:shadow-lg hover:shadow-primary/20 disabled:bg-border disabled:text-muted-foreground",
-    ghost:
-      "border border-border bg-background text-foreground hover:bg-background-soft disabled:text-muted-foreground",
   };
 
   return (
@@ -281,7 +373,9 @@ export function ActionButton({ variant = "secondary", className, ...props }: Act
         variants[variant],
         className,
       )}
-    />
+    >
+      {children}
+    </button>
   );
 }
 
