@@ -44,3 +44,18 @@ Environment variables for production (Workers build + runtime):
 
 - `NEXT_PUBLIC_SITE_URL=https://devs-forge.com`
 - `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` (optional; analytics disabled when unset)
+- `SECURITY_CSP_ENFORCE=true` (optional; default is CSP **report-only** in production)
+
+## Security headers
+
+HTTP security headers (HSTS, `nosniff`, frame denial, Permissions-Policy, CSP) are defined in `src/lib/security-headers.ts` and applied via:
+
+- `next.config.ts` (`headers()`)
+- `src/middleware.ts` and `cloudflare/entry.worker.ts` (edge responses)
+- `public/_headers` for Cloudflare static assets (keep in sync when editing the CSP)
+
+CSP ships as **Report-Only** in production so you can watch the browser console for violations before enforcing. Set `SECURITY_CSP_ENFORCE=true` on the Worker when ready.
+
+**Cloudflare dashboard (manual):** enable WAF managed rules, Bot Fight Mode with **allow verified bots** (Googlebot/Bingbot), and optional rate limits on `/ingest/*` so analytics cannot be abused as an open relay.
+
+Responsible disclosure: [security.txt](https://devs-forge.com/.well-known/security.txt) (`public/.well-known/security.txt`).

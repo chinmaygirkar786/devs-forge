@@ -6,18 +6,21 @@ import {
   isProtectedChunkPath,
 } from "@/lib/chunk-access-guard";
 import { getInternalRouteDenyReason } from "@/lib/route-access-policy";
+import { applySecurityHeadersInPlace } from "@/lib/security-headers";
 
 function denyInternalRoute(request: NextRequest, reason: "redirect" | "forbidden") {
   if (reason === "redirect") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return applySecurityHeadersInPlace(NextResponse.redirect(new URL("/", request.url)));
   }
 
-  return new NextResponse(null, {
-    status: 403,
-    headers: {
-      "Cache-Control": "no-store",
-    },
-  });
+  return applySecurityHeadersInPlace(
+    new NextResponse(null, {
+      status: 403,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    }),
+  );
 }
 
 export function middleware(request: NextRequest) {
@@ -40,10 +43,10 @@ export function middleware(request: NextRequest) {
 
     const response = NextResponse.next();
     response.headers.set("Vary", chunkResponseHeaders.vary);
-    return response;
+    return applySecurityHeadersInPlace(response);
   }
 
-  return NextResponse.next();
+  return applySecurityHeadersInPlace(NextResponse.next());
 }
 
 export const config = {
