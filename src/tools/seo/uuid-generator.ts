@@ -51,7 +51,8 @@ export const uuidGeneratorSeo: ToolSeoBlock = {
   faqs: [
     {
       question: "What UUID version is generated?",
-      answer: "This tool generates random UUID version 4 (v4) identifiers using browser randomness APIs.",
+      answer:
+        "This tool generates random UUID version 4 (v4) identifiers using browser randomness APIs.",
     },
     {
       question: "How random are the UUIDs?",
@@ -60,8 +61,7 @@ export const uuidGeneratorSeo: ToolSeoBlock = {
     },
     {
       question: "Can I generate multiple UUIDs at once?",
-      answer:
-        "Yes. Choose a count and copy the full list for fixtures, seeds, or bulk templates.",
+      answer: "Yes. Choose a count and copy the full list for fixtures, seeds, or bulk templates.",
     },
     {
       question: "Are UUIDs guaranteed unique worldwide?",
@@ -85,8 +85,7 @@ export const uuidGeneratorSeo: ToolSeoBlock = {
     },
     {
       question: "Is data sent to a server?",
-      answer:
-        "No. Generation happens entirely in your browser.",
+      answer: "No. Generation happens entirely in your browser.",
     },
   ],
   internalLinkSlugs: [

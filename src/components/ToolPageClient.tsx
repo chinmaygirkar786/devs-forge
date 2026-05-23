@@ -20,7 +20,7 @@ type ToolPageClientProps = {
 
 function ToolLoadingFallback() {
   return (
-    <div className="surface-card min-h-[280px] rounded-3xl p-6 text-sm text-muted-foreground">
+    <div className="surface-card text-muted-foreground min-h-[280px] rounded-3xl p-6 text-sm">
       Loading interactive tool...
     </div>
   );

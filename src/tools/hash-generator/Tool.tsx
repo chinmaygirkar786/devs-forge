@@ -49,9 +49,7 @@ export default function HashGeneratorTool() {
       } catch (hashError) {
         if (!cancelled) {
           setOutput("");
-          setError(
-            hashError instanceof Error ? hashError.message : "Unable to generate hash.",
-          );
+          setError(hashError instanceof Error ? hashError.message : "Unable to generate hash.");
         }
       }
     };
@@ -100,7 +98,10 @@ export default function HashGeneratorTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Hash output" description="Hex-encoded digest using Web Crypto in your browser.">
+      <SectionCard
+        title="Hash output"
+        description="Hex-encoded digest using Web Crypto in your browser."
+      >
         <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Digest" />
           <CopyButton value={output} />

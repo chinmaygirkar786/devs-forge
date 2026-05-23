@@ -43,8 +43,7 @@ export default function XmlFormatterTool() {
     try {
       const indent = Number(space);
       return {
-        output:
-          mode === "format" ? formatXml(input, indent) : minifyXml(input),
+        output: mode === "format" ? formatXml(input, indent) : minifyXml(input),
         error: "",
       };
     } catch (error) {
@@ -80,11 +79,7 @@ export default function XmlFormatterTool() {
         {mode === "format" ? (
           <div className="mt-4">
             <Field label="Indentation">
-              <DropdownField
-                value={space}
-                options={[...indentOptions]}
-                onChange={setSpace}
-              />
+              <DropdownField value={space} options={[...indentOptions]} onChange={setSpace} />
             </Field>
           </div>
         ) : null}

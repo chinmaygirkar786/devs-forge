@@ -5,16 +5,9 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
 import { categorySeoCopy } from "@/lib/category-seo";
-import {
-  buildCategoryJsonLd,
-  buildCategoryMetadata,
-} from "@/lib/seo";
+import { buildCategoryJsonLd, buildCategoryMetadata } from "@/lib/seo";
 import { routes } from "@/lib/internal-links";
-import {
-  getToolsForCategory,
-  isToolCategory,
-  toolCategories,
-} from "@/lib/tools";
+import { getToolsForCategory, isToolCategory, toolCategories } from "@/lib/tools";
 import { toolCategoryKeys } from "@/tools";
 import type { ToolCategory } from "@/tools";
 
@@ -38,11 +31,7 @@ export async function generateMetadata({
   return buildCategoryMetadata(category);
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category: categoryParam } = await params;
 
   if (!isToolCategory(categoryParam)) {
@@ -67,19 +56,19 @@ export default async function CategoryPage({
       />
 
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+        <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
           {meta.title}
         </p>
-        <h1 className="mt-4 text-4xl font-black tracking-tight text-foreground sm:text-5xl">
+        <h1 className="text-foreground mt-4 text-4xl font-black tracking-tight sm:text-5xl">
           {copy.headline}
         </h1>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
+        <p className="text-muted-foreground mt-4 max-w-3xl text-base leading-8 sm:text-lg">
           {copy.intro}
         </p>
       </section>
 
       <section className="surface-card mt-8 rounded-3xl p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-foreground">
+        <h2 className="text-foreground text-2xl font-bold">
           {categoryTools.length} tools in this category
         </h2>
         <ul className="mt-6 grid gap-4 md:grid-cols-2">
@@ -91,7 +80,7 @@ export default async function CategoryPage({
                 title={tool.title}
                 description={tool.description}
                 eyebrow={tool.keywordCluster.primary}
-                className="block rounded-2xl border border-border p-5 hover:border-border-strong hover:bg-background-soft"
+                className="border-border hover:border-border-strong hover:bg-background-soft block rounded-2xl border p-5"
               />
             </li>
           ))}

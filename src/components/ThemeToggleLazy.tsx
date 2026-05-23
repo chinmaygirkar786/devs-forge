@@ -12,10 +12,7 @@ export function ThemeToggleLazy() {
   return (
     <Suspense
       fallback={
-        <div
-          className="surface-muted h-[34px] w-[148px] animate-pulse rounded-full"
-          aria-hidden
-        />
+        <div className="surface-muted h-[34px] w-[148px] animate-pulse rounded-full" aria-hidden />
       }
     >
       <ThemeToggle />

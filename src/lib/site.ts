@@ -9,11 +9,7 @@ function resolveSiteUrl() {
     );
   }
 
-  if (
-    process.env.SEO_STRICT_SITE_URL === "true" &&
-    fromEnv &&
-    fromEnv !== DEFAULT_SITE_URL
-  ) {
+  if (process.env.SEO_STRICT_SITE_URL === "true" && fromEnv && fromEnv !== DEFAULT_SITE_URL) {
     console.warn(
       `[seo] NEXT_PUBLIC_SITE_URL (${fromEnv}) differs from expected production domain (${DEFAULT_SITE_URL}).`,
     );

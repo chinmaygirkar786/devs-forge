@@ -8,17 +8,9 @@ const SOCIAL_PREVIEW_CRAWLER =
 
 const SEO_DISCOVERY_PATHS = new Set(["/robots.txt", "/sitemap.xml"]);
 
-const BRAND_IMAGE_PATHS = new Set([
-  "/opengraph-image",
-  "/icon",
-  "/apple-icon",
-]);
+const BRAND_IMAGE_PATHS = new Set(["/opengraph-image", "/icon", "/apple-icon"]);
 
-const PWA_INTERNAL_PATHS = new Set([
-  "/sw.js",
-  "/manifest.webmanifest",
-  "/favicon.ico",
-]);
+const PWA_INTERNAL_PATHS = new Set(["/sw.js", "/manifest.webmanifest", "/favicon.ico"]);
 
 const DEPLOY_INFRA_PATHS = new Set(["/BUILD_ID", "/_routes.json", "/_redirects"]);
 
@@ -43,12 +35,7 @@ export function isDirectBrowserNavigation(request: Request) {
   }
 
   if (fetchMode === "navigate") {
-    const allowedFetchDests = new Set([
-      "manifest",
-      "worker",
-      "serviceworker",
-      "script",
-    ]);
+    const allowedFetchDests = new Set(["manifest", "worker", "serviceworker", "script"]);
     return !allowedFetchDests.has(fetchDest);
   }
 

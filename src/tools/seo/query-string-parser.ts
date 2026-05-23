@@ -44,7 +44,8 @@ export const queryStringParserSeo: ToolSeoBlock = {
     },
     {
       question: "Does this replace URL encoder?",
-      answer: "Use URL encoder for whole-string encode/decode; use this tool for structured parameter editing.",
+      answer:
+        "Use URL encoder for whole-string encode/decode; use this tool for structured parameter editing.",
     },
     {
       question: "What about hash fragments?",

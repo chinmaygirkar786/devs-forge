@@ -58,8 +58,9 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 }
 
 * {
@@ -91,8 +92,7 @@ body {
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, var(--primary-soft), transparent 26%),
-    radial-gradient(circle at top right, var(--accent-soft), transparent 18%),
-    var(--background);
+    radial-gradient(circle at top right, var(--accent-soft), transparent 18%), var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   transition:

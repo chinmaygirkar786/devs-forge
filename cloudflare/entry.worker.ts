@@ -14,11 +14,7 @@ import { getInternalRouteDenyReason } from "../src/lib/route-access-policy.js";
 export { BucketCachePurge, DOQueueHandler, DOShardedTagCache };
 
 type FetchHandler = {
-  fetch: (
-    request: Request,
-    env: unknown,
-    ctx: ExecutionContext,
-  ) => Promise<Response>;
+  fetch: (request: Request, env: unknown, ctx: ExecutionContext) => Promise<Response>;
 };
 
 const openNext = openNextWorker as FetchHandler;
@@ -40,10 +36,7 @@ function respondToCdnCgiRum(request: Request): Response {
   return new Response(null, { status: 204 });
 }
 
-function denyInternalRoute(
-  request: Request,
-  reason: "redirect" | "forbidden",
-): Response {
+function denyInternalRoute(request: Request, reason: "redirect" | "forbidden"): Response {
   if (reason === "redirect") {
     return Response.redirect(new URL("/", request.url), 302);
   }
@@ -76,11 +69,7 @@ function withChunkVary(response: Response): Response {
 }
 
 const entryWorker = {
-  async fetch(
-    request: Request,
-    env: unknown,
-    ctx: ExecutionContext,
-  ): Promise<Response> {
+  async fetch(request: Request, env: unknown, ctx: ExecutionContext): Promise<Response> {
     const { pathname } = new URL(request.url);
 
     if (pathname === "/cdn-cgi/rum") {

@@ -20,18 +20,18 @@ If GSC shows **Couldn’t fetch**:
 
 Request indexing only after **Test live URL** shows **URL is available to Google**.
 
-| Tool | URL |
-|------|-----|
-| JSON Formatter | https://devs-forge.com/tools/json-formatter |
-| JWT Decoder | https://devs-forge.com/tools/jwt-decoder |
-| Regex Tester | https://devs-forge.com/tools/regex-tester |
-| Base64 Encoder | https://devs-forge.com/tools/base64-encoder |
-| UUID Generator | https://devs-forge.com/tools/uuid-generator |
-| Color Palette | https://devs-forge.com/tools/color-palette-generator |
-| URL Encoder | https://devs-forge.com/tools/url-encoder |
-| HTML Formatter | https://devs-forge.com/tools/html-formatter |
-| Timestamp Converter | https://devs-forge.com/tools/timestamp-converter |
-| JSON to TypeScript | https://devs-forge.com/tools/json-to-typescript |
+| Tool                | URL                                                  |
+| ------------------- | ---------------------------------------------------- |
+| JSON Formatter      | https://devs-forge.com/tools/json-formatter          |
+| JWT Decoder         | https://devs-forge.com/tools/jwt-decoder             |
+| Regex Tester        | https://devs-forge.com/tools/regex-tester            |
+| Base64 Encoder      | https://devs-forge.com/tools/base64-encoder          |
+| UUID Generator      | https://devs-forge.com/tools/uuid-generator          |
+| Color Palette       | https://devs-forge.com/tools/color-palette-generator |
+| URL Encoder         | https://devs-forge.com/tools/url-encoder             |
+| HTML Formatter      | https://devs-forge.com/tools/html-formatter          |
+| Timestamp Converter | https://devs-forge.com/tools/timestamp-converter     |
+| JSON to TypeScript  | https://devs-forge.com/tools/json-to-typescript      |
 
 Also inspect once: `/`, `/tools`, `/sitemap.xml`.
 
@@ -47,15 +47,15 @@ Checks (Googlebot user-agent): `robots.txt`, `sitemap.xml` (200 + 19 URLs), 10 c
 
 ## 4. GSC issue → action matrix
 
-| GSC issue | Likely cause | Action |
-|-----------|--------------|--------|
-| **Blocked by robots.txt** on `/icon`, `/apple-icon`, `/sw.js`, `/manifest.webmanifest` | Intentional in `src/app/robots.ts` | **No fix** — not needed for rankings |
-| **403** on `/_next/static/chunks/*.js` | Chunk guard without crawler bypass or stale cache | Deploy `src/lib/chunk-access-guard.ts`; purge CF cache for chunks |
-| **Page with redirect** on `/robots.txt` or `/icon` (normal browser) | `src/lib/route-access-policy.ts` redirects tab navigation | **Expected** for users; Googlebot should get **200** (`npm run verify:crawl`) |
-| **Soft 404** / **Crawled – not indexed** | New site / authority | On-page SEO + time; not a robots bug |
-| **Server error (5xx)** | Worker / Cloudflare | Security → Events, Wrangler logs |
-| **Sitemap couldn’t read** | Wrong property, 403, non-XML | Fix deploy; expect `Content-Type: application/xml` |
-| **Alternate page with proper canonical** | — | Usually valid; confirm canonical matches tool URL |
+| GSC issue                                                                              | Likely cause                                              | Action                                                                        |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **Blocked by robots.txt** on `/icon`, `/apple-icon`, `/sw.js`, `/manifest.webmanifest` | Intentional in `src/app/robots.ts`                        | **No fix** — not needed for rankings                                          |
+| **403** on `/_next/static/chunks/*.js`                                                 | Chunk guard without crawler bypass or stale cache         | Deploy `src/lib/chunk-access-guard.ts`; purge CF cache for chunks             |
+| **Page with redirect** on `/robots.txt` or `/icon` (normal browser)                    | `src/lib/route-access-policy.ts` redirects tab navigation | **Expected** for users; Googlebot should get **200** (`npm run verify:crawl`) |
+| **Soft 404** / **Crawled – not indexed**                                               | New site / authority                                      | On-page SEO + time; not a robots bug                                          |
+| **Server error (5xx)**                                                                 | Worker / Cloudflare                                       | Security → Events, Wrangler logs                                              |
+| **Sitemap couldn’t read**                                                              | Wrong property, 403, non-XML                              | Fix deploy; expect `Content-Type: application/xml`                            |
+| **Alternate page with proper canonical**                                               | —                                                         | Usually valid; confirm canonical matches tool URL                             |
 
 For targeted code fixes, export **Indexing → Pages** (or **Why pages aren’t indexed**) with example URLs and error types.
 

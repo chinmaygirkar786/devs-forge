@@ -23,10 +23,7 @@ export type InternalLink = {
   kind: InternalLinkKind;
 };
 
-export function toolToLink(
-  tool: ToolDefinition,
-  kind: InternalLinkKind = "related",
-): InternalLink {
+export function toolToLink(tool: ToolDefinition, kind: InternalLinkKind = "related"): InternalLink {
   return {
     href: routes.tool(tool.slug),
     label: tool.seoLinkLabel,
@@ -83,9 +80,7 @@ export function getInternalLinksForTool(
   const categoryPeers = allTools
     .filter(
       (tool) =>
-        tool.slug !== slug &&
-        tool.category === current.category &&
-        !relatedSlugSet.has(tool.slug),
+        tool.slug !== slug && tool.category === current.category && !relatedSlugSet.has(tool.slug),
     )
     .slice(0, categoryPeerLimit)
     .map((tool) => toolToLink(tool, "categoryPeer"));

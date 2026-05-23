@@ -46,15 +46,15 @@ export function Navbar({ searchIndex }: NavbarProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl">
+      <header className="border-border/80 bg-background/80 sticky top-0 z-40 border-b backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-3">
               <SiteLogo />
-              <span className="text-lg font-bold text-foreground">{siteConfig.name}</span>
+              <span className="text-foreground text-lg font-bold">{siteConfig.name}</span>
             </Link>
 
-            <nav className="hidden items-center gap-5 text-sm text-muted-foreground lg:flex">
+            <nav className="text-muted-foreground hidden items-center gap-5 text-sm lg:flex">
               {siteConfig.navigation.map((item) => (
                 <Link key={item.href} href={item.href} className="hover:text-foreground">
                   {item.label}
@@ -67,10 +67,10 @@ export function Navbar({ searchIndex }: NavbarProps) {
             <button
               type="button"
               onClick={() => openPalette("button")}
-              className="surface-muted hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground sm:flex"
+              className="surface-muted text-muted-foreground hover:text-foreground hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium sm:flex"
             >
               <span>Search tools</span>
-              <span className="inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border border-border px-3 py-1 text-xs font-semibold whitespace-nowrap">
+              <span className="border-border inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold whitespace-nowrap">
                 Ctrl + K
               </span>
             </button>

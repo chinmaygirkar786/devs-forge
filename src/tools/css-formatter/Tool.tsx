@@ -74,7 +74,10 @@ export default function CssFormatterTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Output" description="Paste into components, emails, or design handoff docs.">
+      <SectionCard
+        title="Output"
+        description="Paste into components, emails, or design handoff docs."
+      >
         <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Result" />
           <CopyButton value={result.output} />

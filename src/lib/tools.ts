@@ -1,12 +1,7 @@
 import { getRelatedToolsFromRegistry, routes } from "@/lib/internal-links";
 import { toolCategories, toolCategoryKeys, tools } from "@/tools";
 
-export {
-  toolCategories,
-  toolCategoryKeys,
-  toolSlugs,
-  tools,
-} from "@/tools";
+export { toolCategories, toolCategoryKeys, toolSlugs, tools } from "@/tools";
 export type {
   ToolCategory,
   ToolDefinition,

@@ -68,7 +68,10 @@ export default function CronParserTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Human-readable schedule" description="Use when reviewing jobs, crontab entries, or CI schedules.">
+      <SectionCard
+        title="Human-readable schedule"
+        description="Use when reviewing jobs, crontab entries, or CI schedules."
+      >
         <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Description" />
           <CopyButton value={result.output} />

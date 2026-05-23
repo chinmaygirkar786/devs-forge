@@ -79,11 +79,9 @@ export function PwaProvider() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      navigator.serviceWorker
-        .register("/sw.js", { scope: "/" })
-        .catch((error) => {
-          console.error("[pwa] Service worker registration failed:", error);
-        });
+      navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch((error) => {
+        console.error("[pwa] Service worker registration failed:", error);
+      });
     }
   }, []);
 
@@ -96,8 +94,8 @@ export function PwaProvider() {
       <div className={bannerClassName} role="region" aria-label="Install app on iOS">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-foreground">Install on iPhone or iPad</p>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-foreground text-sm font-semibold">Install on iPhone or iPad</p>
+            <p className="text-muted-foreground mt-1 text-sm">
               Tap the Share button in Safari, then choose &quot;Add to Home Screen&quot;.
             </p>
           </div>
@@ -117,8 +115,8 @@ export function PwaProvider() {
     <div className={bannerClassName} role="region" aria-label="Install app">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground">Install Devs Forge</p>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-foreground text-sm font-semibold">Install Devs Forge</p>
+          <p className="text-muted-foreground mt-1 text-sm">
             Use the install icon in your browser&apos;s address bar or menu when it appears.
           </p>
         </div>

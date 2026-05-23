@@ -61,13 +61,11 @@ export const base64EncoderSeo: ToolSeoBlock = {
     },
     {
       question: "Where is my input processed?",
-      answer:
-        "All conversion runs locally in your browser. Nothing is uploaded to a server.",
+      answer: "All conversion runs locally in your browser. Nothing is uploaded to a server.",
     },
     {
       question: "Is Base64 the same as encryption?",
-      answer:
-        "No. Base64 is an encoding. Anyone can decode it without a secret key.",
+      answer: "No. Base64 is an encoding. Anyone can decode it without a secret key.",
     },
     {
       question: "Why does decoding fail?",

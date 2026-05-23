@@ -50,13 +50,16 @@ export default function QueryStringParserTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Parsed parameters" description="Decoded keys and values from the query string.">
+      <SectionCard
+        title="Parsed parameters"
+        description="Decoded keys and values from the query string."
+      >
         {rows.length === 0 ? (
           <StatusBanner tone="neutral" text="No query parameters detected." />
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-border">
+          <div className="border-border overflow-x-auto rounded-2xl border">
             <table className="min-w-full text-left text-sm">
-              <thead className="bg-background-soft text-xs uppercase tracking-wide text-muted-foreground">
+              <thead className="bg-background-soft text-muted-foreground text-xs tracking-wide uppercase">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Key</th>
                   <th className="px-4 py-3 font-semibold">Value</th>
@@ -64,9 +67,9 @@ export default function QueryStringParserTool() {
               </thead>
               <tbody>
                 {rows.map((row) => (
-                  <tr key={`${row.key}-${row.value}`} className="border-t border-border">
-                    <td className="px-4 py-3 font-mono text-xs text-foreground">{row.key}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
+                  <tr key={`${row.key}-${row.value}`} className="border-border border-t">
+                    <td className="text-foreground px-4 py-3 font-mono text-xs">{row.key}</td>
+                    <td className="text-muted-foreground px-4 py-3 font-mono text-xs">
                       {row.value}
                     </td>
                   </tr>

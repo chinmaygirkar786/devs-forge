@@ -42,22 +42,20 @@ export function ToolCardLink({
       <ToolIcon slug={slug} size={iconSize} />
       <span className={cn(layout === "horizontal" && "min-w-0 flex-1")}>
         {eyebrow ? (
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          <span className="text-primary text-xs font-semibold tracking-[0.18em] uppercase">
             {eyebrow}
           </span>
         ) : null}
         <span
           className={cn(
-            "block font-semibold text-foreground",
+            "text-foreground block font-semibold",
             eyebrow ? "mt-3 text-lg" : "text-lg",
           )}
         >
           {title}
         </span>
         {description ? (
-          <span className="mt-2 block text-sm leading-6 text-muted-foreground">
-            {description}
-          </span>
+          <span className="text-muted-foreground mt-2 block text-sm leading-6">{description}</span>
         ) : null}
         {children}
       </span>

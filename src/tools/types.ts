@@ -2,11 +2,7 @@ import type { ComponentType } from "react";
 
 import type { AffiliateContext } from "@/lib/affiliate";
 
-export type ToolCategory =
-  | "formatting"
-  | "conversion"
-  | "generators"
-  | "utilities";
+export type ToolCategory = "formatting" | "conversion" | "generators" | "utilities";
 
 export type ToolExample = {
   title: string;

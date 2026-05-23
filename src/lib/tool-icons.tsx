@@ -32,10 +32,7 @@ const iconProps = (className?: string) => ({
   "aria-hidden": true as const,
 });
 
-export function ToolIconGlyph({
-  slug,
-  className,
-}: IconGlyphProps & { slug: string }) {
+export function ToolIconGlyph({ slug, className }: IconGlyphProps & { slug: string }) {
   const props = iconProps(className);
 
   if (!isToolSlug(slug)) {

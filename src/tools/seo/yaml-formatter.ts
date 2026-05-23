@@ -45,7 +45,8 @@ export const yamlFormatterSeo: ToolSeoBlock = {
     },
     {
       question: "How is this different from JSON formatter?",
-      answer: "Use JSON formatter for JSON payloads. This tool targets YAML-specific syntax and indentation rules.",
+      answer:
+        "Use JSON formatter for JSON payloads. This tool targets YAML-specific syntax and indentation rules.",
     },
     {
       question: "Can I minify YAML for transport?",

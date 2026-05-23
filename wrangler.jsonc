@@ -3,31 +3,23 @@
   "main": "cloudflare/entry.worker.ts",
   "name": "devs-forge",
   "compatibility_date": "2026-05-17",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
     // Route chunk requests through the worker so middleware can enforce Sec-Fetch rules.
-    "run_worker_first": [
-      "/_next/static/chunks/*",
-      "/BUILD_ID",
-      "/_routes.json",
-      "/_redirects"
-    ]
+    "run_worker_first": ["/_next/static/chunks/*", "/BUILD_ID", "/_routes.json", "/_redirects"],
   },
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "devs-forge"
-    }
+      "service": "devs-forge",
+    },
   ],
   "images": {
-    "binding": "IMAGES"
+    "binding": "IMAGES",
   },
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
 }

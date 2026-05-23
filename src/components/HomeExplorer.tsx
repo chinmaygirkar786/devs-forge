@@ -41,15 +41,15 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
     <section className="surface-card rounded-[2rem] p-6 sm:p-8">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+          <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
             Free developer tools online
           </p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-foreground mt-4 text-3xl font-black tracking-tight sm:text-4xl">
             Search online coding utilities by task, keyword, or workflow.
           </h2>
-          <p className="mt-4 text-base leading-8 text-muted-foreground">
-            This hub is built for developers who need fast browser-based tools for
-            formatting, decoding, generating, and converting data without any setup.
+          <p className="text-muted-foreground mt-4 text-base leading-8">
+            This hub is built for developers who need fast browser-based tools for formatting,
+            decoding, generating, and converting data without any setup.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
               }
             }}
             placeholder="Search JSON, JWT, regex, UUID, markdown, gradients..."
-            className="w-full rounded-[1.75rem] border border-border bg-background px-5 py-4 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary-soft"
+            className="border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-[1.75rem] border px-5 py-4 text-base outline-none focus:ring-2"
           />
         </div>
       </div>

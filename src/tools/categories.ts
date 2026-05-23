@@ -1,18 +1,13 @@
 import type { ToolCategory } from "@/tools/types";
 
-export const toolCategories: Record<
-  ToolCategory,
-  { title: string; description: string }
-> = {
+export const toolCategories: Record<ToolCategory, { title: string; description: string }> = {
   formatting: {
     title: "Formatting Tools",
-    description:
-      "Clean up code, content, and markup for faster debugging and readable output.",
+    description: "Clean up code, content, and markup for faster debugging and readable output.",
   },
   conversion: {
     title: "Conversion Tools",
-    description:
-      "Convert between common developer formats instantly without leaving the browser.",
+    description: "Convert between common developer formats instantly without leaving the browser.",
   },
   generators: {
     title: "Generators",
@@ -21,8 +16,7 @@ export const toolCategories: Record<
   },
   utilities: {
     title: "Developer Utilities",
-    description:
-      "Inspect tokens, validate patterns, and work through developer workflows faster.",
+    description: "Inspect tokens, validate patterns, and work through developer workflows faster.",
   },
 };
 

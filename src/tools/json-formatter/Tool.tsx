@@ -103,7 +103,7 @@ export default function JsonFormatterTool() {
         description="Syntax is validated before formatting so you can spot malformed payloads quickly."
       >
         <div className="mb-3 flex items-center justify-between gap-3">
-          <span className="text-sm font-semibold text-foreground">Pretty JSON</span>
+          <span className="text-foreground text-sm font-semibold">Pretty JSON</span>
           <CopyButton value={result.output} />
         </div>
         <TextareaField

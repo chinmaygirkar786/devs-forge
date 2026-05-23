@@ -124,8 +124,7 @@ const toolSeeds: ToolSeed[] = [
       },
       {
         title: "Compare header algorithm values",
-        input:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
+        input: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
       },
     ],
     relatedSlugs: [
@@ -255,8 +254,7 @@ const toolSeeds: ToolSeed[] = [
   {
     slug: "uuid-generator",
     title: "UUID Generator",
-    description:
-      "Generate UUID v4 values in batches for seeds, fixtures, IDs, and test data.",
+    description: "Generate UUID v4 values in batches for seeds, fixtures, IDs, and test data.",
     category: "generators",
     popular: true,
     keywordCluster: {
@@ -386,8 +384,7 @@ const toolSeeds: ToolSeed[] = [
   {
     slug: "markdown-previewer",
     title: "Markdown Previewer",
-    description:
-      "Write Markdown and preview rendered output side by side with clean typography.",
+    description: "Write Markdown and preview rendered output side by side with clean typography.",
     category: "formatting",
     popular: false,
     keywordCluster: {
@@ -416,12 +413,7 @@ const toolSeeds: ToolSeed[] = [
         input: "# Devs Forge\n\n- Fast\n- Browser-only\n- Free tools",
       },
     ],
-    relatedSlugs: [
-      "html-formatter",
-      "xml-formatter",
-      "json-formatter",
-      "gradient-generator",
-    ],
+    relatedSlugs: ["html-formatter", "xml-formatter", "json-formatter", "gradient-generator"],
     affiliateContext: ["frontend", "productivity", "design"],
     loadComponent: () => import("@/tools/markdown-previewer/Tool"),
   },
@@ -472,8 +464,7 @@ const toolSeeds: ToolSeed[] = [
   {
     slug: "html-formatter",
     title: "HTML Formatter / Minifier",
-    description:
-      "Beautify messy HTML or minify markup for compact embeds and production snippets.",
+    description: "Beautify messy HTML or minify markup for compact embeds and production snippets.",
     category: "formatting",
     popular: true,
     keywordCluster: {
@@ -610,11 +601,12 @@ const toolSeeds: ToolSeed[] = [
     examples: [
       {
         title: "Format a Kubernetes ConfigMap",
-        input: "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  DEBUG: \"true\"",
+        input:
+          'apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  DEBUG: "true"',
       },
       {
         title: "Validate docker-compose services block",
-        input: "services:\n  web:\n    image: nginx:latest\n    ports:\n      - \"8080:80\"",
+        input: 'services:\n  web:\n    image: nginx:latest\n    ports:\n      - "8080:80"',
       },
       {
         title: "Catch bad indentation",
@@ -720,7 +712,11 @@ const toolSeeds: ToolSeed[] = [
       { title: "snake_case to camelCase", input: "user_profile_id", output: "userProfileId" },
       { title: "Phrase to kebab-case", input: "Order Line Item", output: "order-line-item" },
       { title: "camelCase to CONSTANT_CASE", input: "maxRetryCount", output: "MAX_RETRY_COUNT" },
-      { title: "Mixed input to PascalCase", input: "http_response_code", output: "HttpResponseCode" },
+      {
+        title: "Mixed input to PascalCase",
+        input: "http_response_code",
+        output: "HttpResponseCode",
+      },
     ],
     relatedSlugs: [
       "json-formatter",
@@ -808,12 +804,7 @@ const toolSeeds: ToolSeed[] = [
       { title: "Weekly Sunday job", input: "0 0 * * 0" },
       { title: "Every minute (demo)", input: "* * * * *" },
     ],
-    relatedSlugs: [
-      "timestamp-converter",
-      "yaml-formatter",
-      "json-formatter",
-      "regex-tester",
-    ],
+    relatedSlugs: ["timestamp-converter", "yaml-formatter", "json-formatter", "regex-tester"],
     affiliateContext: ["backend", "api", "productivity"],
     loadComponent: () => import("@/tools/cron-parser/Tool"),
   },
@@ -939,12 +930,7 @@ const toolSeeds: ToolSeed[] = [
         input: '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
       },
     ],
-    relatedSlugs: [
-      "json-formatter",
-      "uuid-generator",
-      "base64-encoder",
-      "timestamp-converter",
-    ],
+    relatedSlugs: ["json-formatter", "uuid-generator", "base64-encoder", "timestamp-converter"],
     affiliateContext: ["ai-coding", "backend", "frontend"],
     loadComponent: () => import("@/tools/json-to-typescript/Tool"),
   },

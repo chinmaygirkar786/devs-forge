@@ -28,7 +28,8 @@ export const cronParserSeo: ToolSeoBlock = {
   faqs: [
     {
       question: "Does this calculate next run times?",
-      answer: "It provides human-readable descriptions. Use your scheduler for exact next executions.",
+      answer:
+        "It provides human-readable descriptions. Use your scheduler for exact next executions.",
     },
     {
       question: "Are time zones handled?",

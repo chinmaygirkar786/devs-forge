@@ -56,8 +56,7 @@ export const regexTesterSeo: ToolSeoBlock = {
     },
     {
       question: "Can I test capture groups?",
-      answer:
-        "Yes. Matches display with grouped captures when your pattern defines parentheses.",
+      answer: "Yes. Matches display with grouped captures when your pattern defines parentheses.",
     },
     {
       question: "Why does my pattern fail with an error?",
@@ -71,8 +70,7 @@ export const regexTesterSeo: ToolSeoBlock = {
     },
     {
       question: "Is my sample text uploaded?",
-      answer:
-        "No. Matching runs locally in your browser.",
+      answer: "No. Matching runs locally in your browser.",
     },
     {
       question: "Can I test replace operations?",

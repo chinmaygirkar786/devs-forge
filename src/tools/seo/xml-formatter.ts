@@ -56,8 +56,7 @@ export const xmlFormatterSeo: ToolSeoBlock = {
     },
     {
       question: "Can I format minified XML from an API response?",
-      answer:
-        "Yes. Paste compact XML and choose format mode with your preferred indentation.",
+      answer: "Yes. Paste compact XML and choose format mode with your preferred indentation.",
     },
     {
       question: "What happens if my XML is invalid?",

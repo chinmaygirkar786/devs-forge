@@ -70,7 +70,10 @@ export default function CaseConverterTool() {
         </div>
       </SectionCard>
 
-      <SectionCard title="Converted output" description="Copy into code, OpenAPI schemas, or database migrations.">
+      <SectionCard
+        title="Converted output"
+        description="Copy into code, OpenAPI schemas, or database migrations."
+      >
         <div className="mb-3 flex items-center justify-between gap-3">
           <FieldLabel label="Result" />
           <CopyButton value={output} />

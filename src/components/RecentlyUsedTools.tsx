@@ -25,10 +25,8 @@ export function RecentlyUsedTools() {
   return (
     <section className="surface-card rounded-[2rem] p-6 sm:p-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-xl font-bold text-foreground">Recently used</h2>
-        <p className="text-sm text-muted-foreground">
-          Stored locally on this device only.
-        </p>
+        <h2 className="text-foreground text-xl font-bold">Recently used</h2>
+        <p className="text-muted-foreground text-sm">Stored locally on this device only.</p>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-3">
@@ -36,7 +34,7 @@ export function RecentlyUsedTools() {
           <Link
             key={entry.slug}
             href={routes.tool(entry.slug)}
-            className="recent-tool-chip inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-background px-3 py-2 text-sm font-medium whitespace-nowrap text-foreground"
+            className="recent-tool-chip border-border bg-background text-foreground inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium whitespace-nowrap"
           >
             <span className="recent-tool-chip-icon rounded-lg">
               <ToolIcon slug={entry.slug} size="sm" className="h-7 w-7 rounded-lg" />

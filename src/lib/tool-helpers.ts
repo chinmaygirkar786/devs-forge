@@ -26,10 +26,7 @@ export function encodeBase64(value: string) {
 
 export function decodeBase64(value: string) {
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-  const padded = normalized.padEnd(
-    normalized.length + ((4 - (normalized.length % 4)) % 4),
-    "=",
-  );
+  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), "=");
 
   return decodeURIComponent(escape(atob(padded)));
 }
@@ -140,11 +137,7 @@ function inferType(value: unknown, keyName: string, interfaces: string[]): strin
   return "unknown";
 }
 
-function generateInterface(
-  name: string,
-  value: Record<string, unknown>,
-  interfaces: string[],
-) {
+function generateInterface(name: string, value: Record<string, unknown>, interfaces: string[]) {
   const lines = Object.entries(value).map(([key, entryValue]) => {
     const safeKey = /^[a-zA-Z_$][\w$]*$/.test(key) ? key : JSON.stringify(key);
     const inferredType = inferType(entryValue, key, interfaces);
@@ -198,9 +191,7 @@ const HTML_VOID_ELEMENTS = new Set([
   "wbr",
 ]);
 
-type HtmlToken =
-  | { type: "text"; value: string }
-  | { type: "tag"; value: string };
+type HtmlToken = { type: "text"; value: string } | { type: "tag"; value: string };
 
 function readHtmlTag(source: string, start: number) {
   let index = start + 1;
@@ -280,8 +271,7 @@ function parseHtmlTag(tag: string) {
   }
 
   const name = openingMatch[1].toLowerCase();
-  const selfClosing =
-    /\/\s*>$/.test(trimmed) || HTML_VOID_ELEMENTS.has(name);
+  const selfClosing = /\/\s*>$/.test(trimmed) || HTML_VOID_ELEMENTS.has(name);
 
   return {
     kind: selfClosing ? ("self-closing" as const) : ("open" as const),
@@ -359,8 +349,7 @@ function parseXmlDocument(value: string): Document {
   const parseError = doc.querySelector("parsererror");
 
   if (parseError) {
-    const message =
-      parseError.textContent?.replace(/\s+/g, " ").trim() || "Invalid XML document.";
+    const message = parseError.textContent?.replace(/\s+/g, " ").trim() || "Invalid XML document.";
     throw new Error(message);
   }
 
@@ -368,18 +357,10 @@ function parseXmlDocument(value: string): Document {
 }
 
 function escapeXmlText(text: string) {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function formatXmlElement(
-  element: Element,
-  depth: number,
-  indentSize: number,
-  lines: string[],
-) {
+function formatXmlElement(element: Element, depth: number, indentSize: number, lines: string[]) {
   const indent = " ".repeat(indentSize);
   const attrString = Array.from(element.attributes)
     .map((attr) => ` ${attr.name}="${attr.value}"`)
@@ -399,8 +380,7 @@ function formatXmlElement(
   }
 
   const onlyText =
-    meaningfulChildren.length === 1 &&
-    meaningfulChildren[0].nodeType === Node.TEXT_NODE;
+    meaningfulChildren.length === 1 && meaningfulChildren[0].nodeType === Node.TEXT_NODE;
 
   if (onlyText) {
     const text = meaningfulChildren[0].textContent?.trim() ?? "";
@@ -720,8 +700,7 @@ function rgbToHsl({ r, g, b }: RGB) {
   }
 
   const delta = max - min;
-  const saturation =
-    lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  const saturation = lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
 
   let hue = 0;
   switch (max) {

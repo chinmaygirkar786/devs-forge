@@ -30,9 +30,7 @@ export default function RegexTesterTool() {
   const result = useMemo(() => {
     try {
       const regex = new RegExp(pattern, flags);
-      const matchRegex = flags.includes("g")
-        ? regex
-        : new RegExp(pattern, `${flags}g`);
+      const matchRegex = flags.includes("g") ? regex : new RegExp(pattern, `${flags}g`);
       const matches = [...text.matchAll(matchRegex)].map((match) => ({
         value: match[0],
         index: match.index ?? 0,
@@ -123,7 +121,7 @@ export default function RegexTesterTool() {
               {result.explanation.map((item) => (
                 <div
                   key={item}
-                  className="surface-muted rounded-2xl px-4 py-3 text-sm text-muted-foreground"
+                  className="surface-muted text-muted-foreground rounded-2xl px-4 py-3 text-sm"
                 >
                   {item}
                 </div>

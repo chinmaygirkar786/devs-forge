@@ -64,7 +64,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${geistSans.className} min-h-full flex flex-col`}>
+      <body className={`${geistSans.className} flex min-h-full flex-col`}>
         <Navbar searchIndex={toolSearchIndex} />
         <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
           {children}
