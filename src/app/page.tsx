@@ -135,44 +135,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="surface-card rounded-[2rem] p-6 sm:p-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-3xl">
-            <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
-              Full directory
-            </p>
-            <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              All developer tools
-            </h2>
-            <p className="text-muted-foreground mt-4 text-base leading-8">
-              Every free online coding utility on {siteConfig.name}, with direct links for faster
-              navigation and stronger internal discovery.
-            </p>
-          </div>
-          <Link
-            href={routes.toolsIndex}
-            className="border-border text-foreground hover:text-primary shrink-0 rounded-full border px-5 py-3 text-sm font-semibold"
-          >
-            View full tools index
-          </Link>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {tools.map((tool) => (
-            <ToolCardLink
-              key={tool.slug}
-              href={routes.tool(tool.slug)}
-              slug={tool.slug}
-              title={tool.seoLinkLabel}
-              description={tool.description}
-              tooltip={tool.title}
-              className="surface-muted rounded-3xl p-5"
-              interactive
-            />
-          ))}
-        </div>
-      </section>
-
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="surface-card rounded-[2rem] p-6 sm:p-8">
           <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">

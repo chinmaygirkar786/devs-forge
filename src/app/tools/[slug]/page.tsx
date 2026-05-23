@@ -5,7 +5,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { ToolLayout } from "@/components/ToolLayout";
 import { ToolPageClient } from "@/components/ToolPageClient";
 import { buildToolPageJsonLd, getToolMetadataBySlug } from "@/lib/seo";
-import { getRelatedTools, getToolBySlug, toolSlugs } from "@/lib/tools";
+import { getToolBySlug, toolSlugs } from "@/lib/tools";
 
 export const dynamic = "force-static";
 
@@ -39,7 +39,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   return (
     <>
       <SEOHead jsonLd={buildToolPageJsonLd(tool)} />
-      <ToolLayout tool={tool} relatedTools={getRelatedTools(slug)}>
+      <ToolLayout tool={tool}>
         <ToolPageClient slug={slug} usageMeta={{ title: tool.title, category: tool.category }} />
       </ToolLayout>
     </>
