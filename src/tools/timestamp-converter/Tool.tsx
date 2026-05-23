@@ -77,10 +77,7 @@ export default function TimestampConverterTool() {
             <div className="grid gap-4">
               <StatPill label="Unix seconds" value={Math.floor(result.date.getTime() / 1000)} />
               <StatPill label="Unix milliseconds" value={result.date.getTime()} />
-              <StatPill
-                label="Timezone"
-                value={Intl.DateTimeFormat().resolvedOptions().timeZone}
-              />
+              <StatPill label="Timezone" value={Intl.DateTimeFormat().resolvedOptions().timeZone} />
             </div>
           </SectionCard>
 

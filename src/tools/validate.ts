@@ -1,3 +1,4 @@
+import { assertToolLoadersRegistered } from "@/lib/load-tool-module";
 import { toolCategoryKeys } from "@/tools/categories";
 import type { ToolDefinition, ToolSeoBlock } from "@/tools/types";
 
@@ -7,9 +8,7 @@ export function validateInternalLinks(tools: ToolDefinition[]) {
   for (const tool of tools) {
     for (const relatedSlug of tool.relatedSlugs) {
       if (relatedSlug === tool.slug) {
-        throw new Error(
-          `[tool registry] "${tool.slug}" lists itself in relatedSlugs.`,
-        );
+        throw new Error(`[tool registry] "${tool.slug}" lists itself in relatedSlugs.`);
       }
 
       if (!slugSet.has(relatedSlug)) {
@@ -22,9 +21,7 @@ export function validateInternalLinks(tools: ToolDefinition[]) {
 }
 
 function warnAsymmetricRelatedLinks(tools: ToolDefinition[]) {
-  const relatedBySlug = new Map(
-    tools.map((tool) => [tool.slug, new Set(tool.relatedSlugs)]),
-  );
+  const relatedBySlug = new Map(tools.map((tool) => [tool.slug, new Set(tool.relatedSlugs)]));
 
   for (const tool of tools) {
     for (const relatedSlug of tool.relatedSlugs) {
@@ -53,9 +50,7 @@ export function assertToolRegistry(
 
   for (const tool of tools) {
     if (!(tool.slug in seoContent)) {
-      throw new Error(
-        `[tool registry] Missing seo content for slug "${tool.slug}".`,
-      );
+      throw new Error(`[tool registry] Missing seo content for slug "${tool.slug}".`);
     }
 
     if (!tool.title.trim()) {
@@ -63,33 +58,25 @@ export function assertToolRegistry(
     }
 
     if (!tool.description.trim()) {
-      throw new Error(
-        `[tool registry] "${tool.slug}" is missing a description.`,
-      );
+      throw new Error(`[tool registry] "${tool.slug}" is missing a description.`);
     }
 
     if (!toolCategoryKeys.includes(tool.category)) {
-      throw new Error(
-        `[tool registry] "${tool.slug}" has invalid category "${tool.category}".`,
-      );
+      throw new Error(`[tool registry] "${tool.slug}" has invalid category "${tool.category}".`);
     }
 
     if (tool.keywords.length < 3) {
-      throw new Error(
-        `[tool registry] "${tool.slug}" must have at least 3 keywords.`,
-      );
+      throw new Error(`[tool registry] "${tool.slug}" must have at least 3 keywords.`);
     }
   }
 
   for (const key of seoKeys) {
     if (!slugSet.has(key)) {
-      throw new Error(
-        `[tool registry] Orphan seo content key "${key}" has no matching tool seed.`,
-      );
+      throw new Error(`[tool registry] Orphan seo content key "${key}" has no matching tool seed.`);
     }
   }
 
   validateInternalLinks(tools);
   warnAsymmetricRelatedLinks(tools);
+  assertToolLoadersRegistered(slugs);
 }
-

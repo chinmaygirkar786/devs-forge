@@ -1,9 +1,6 @@
 import type { ToolCategory } from "@/tools";
 
-export const categorySeoCopy: Record<
-  ToolCategory,
-  { headline: string; intro: string }
-> = {
+export const categorySeoCopy: Record<ToolCategory, { headline: string; intro: string }> = {
   formatting: {
     headline: "Formatting tools for JSON, HTML, and Markdown",
     intro:

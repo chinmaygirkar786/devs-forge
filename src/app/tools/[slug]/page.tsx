@@ -28,11 +28,7 @@ export async function generateMetadata({
   return getToolMetadataBySlug(slug) ?? {};
 }
 
-export default async function ToolPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const tool = getToolBySlug(slug);
 
@@ -44,10 +40,7 @@ export default async function ToolPage({
     <>
       <SEOHead jsonLd={buildToolPageJsonLd(tool)} />
       <ToolLayout tool={tool} relatedTools={getRelatedTools(slug)}>
-        <ToolPageClient
-          slug={slug}
-          usageMeta={{ title: tool.title, category: tool.category }}
-        />
+        <ToolPageClient slug={slug} usageMeta={{ title: tool.title, category: tool.category }} />
       </ToolLayout>
     </>
   );

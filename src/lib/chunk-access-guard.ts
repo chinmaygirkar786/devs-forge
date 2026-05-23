@@ -37,11 +37,7 @@ export function isAllowedChunkRequest(request: Request) {
   const referer = request.headers.get("referer") ?? "";
   const origin = new URL(request.url).origin;
 
-  if (
-    fetchDest === "document" ||
-    fetchDest === "iframe" ||
-    fetchMode === "navigate"
-  ) {
+  if (fetchDest === "document" || fetchDest === "iframe" || fetchMode === "navigate") {
     return false;
   }
 

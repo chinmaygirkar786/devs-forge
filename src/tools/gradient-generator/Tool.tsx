@@ -35,7 +35,7 @@ export default function GradientGeneratorTool() {
                 type="color"
                 value={firstColor}
                 onChange={(event) => setFirstColor(event.target.value.toUpperCase())}
-                className="h-12 w-16 cursor-pointer rounded-2xl border border-border bg-transparent"
+                className="border-border h-12 w-16 cursor-pointer rounded-2xl border bg-transparent"
               />
               <InputField
                 value={firstColor}
@@ -51,7 +51,7 @@ export default function GradientGeneratorTool() {
                 type="color"
                 value={secondColor}
                 onChange={(event) => setSecondColor(event.target.value.toUpperCase())}
-                className="h-12 w-16 cursor-pointer rounded-2xl border border-border bg-transparent"
+                className="border-border h-12 w-16 cursor-pointer rounded-2xl border bg-transparent"
               />
               <InputField
                 value={secondColor}
@@ -72,7 +72,7 @@ export default function GradientGeneratorTool() {
         description="Use the live preview to compare direction and contrast before copying."
       >
         <div
-          className="h-52 rounded-3xl border border-border"
+          className="border-border h-52 rounded-3xl border"
           style={{ background: `linear-gradient(${angle}deg, ${firstColor}, ${secondColor})` }}
         />
 

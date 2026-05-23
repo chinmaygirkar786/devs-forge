@@ -218,8 +218,7 @@ export function buildToolsIndexJsonLd() {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Free Online Developer Tools",
-    description:
-      "A collection of browser-based developer utilities on Devs Forge.",
+    description: "A collection of browser-based developer utilities on Devs Forge.",
     numberOfItems: tools.length,
     itemListElement: tools.map((tool, index) => ({
       "@type": "ListItem",
@@ -249,9 +248,7 @@ export function buildCategoryJsonLd(category: ToolCategory) {
   };
 }
 
-export function buildBreadcrumbJsonLd(
-  items: Array<{ name: string; path: string }>,
-) {
+export function buildBreadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

@@ -78,6 +78,55 @@ export const toolSerpMeta: Record<ToolSlug, ToolSerpMeta> = {
     pageHeading: "HTML Formatter Online",
     seoLinkLabel: "HTML formatter online",
   },
+  "xml-formatter": {
+    metaTitle: "XML Formatter Online – Free Validator & Pretty Print",
+    metaDescription:
+      "Free xml formatter online to validate syntax, pretty-print RSS and SOAP XML, and minify documents in your browser. No upload or account required.",
+    pageHeading: "XML Formatter Online",
+    seoLinkLabel: "XML formatter online",
+  },
+  "yaml-formatter": {
+    metaTitle: "YAML Formatter Online – Validate & Pretty Print Config",
+    metaDescription:
+      "Free yaml formatter online to validate Kubernetes, Compose, and CI YAML with pretty-print or minify modes. Runs locally in your browser, no upload.",
+    pageHeading: "YAML Formatter Online",
+    seoLinkLabel: "YAML formatter online",
+  },
+  "css-formatter": {
+    metaTitle: "CSS Formatter Online – Beautify & Minify Styles",
+    metaDescription:
+      "Free css formatter online to beautify or minify CSS snippets for components and email templates. Browser-based with no upload required.",
+    pageHeading: "CSS Formatter Online",
+    seoLinkLabel: "CSS formatter online",
+  },
+  "case-converter": {
+    metaTitle: "Case Converter Online – camelCase, snake_case & More",
+    metaDescription:
+      "Free case converter online for camelCase, PascalCase, snake_case, kebab-case, and CONSTANT_CASE. Convert identifiers locally with no upload.",
+    pageHeading: "Case Converter Online",
+    seoLinkLabel: "Case converter online",
+  },
+  "hash-generator": {
+    metaTitle: "Hash Generator Online – SHA-256 & SHA-512 Hex",
+    metaDescription:
+      "Free hash generator online for SHA-256, SHA-384, SHA-512, and SHA-1 digests from text. Web Crypto runs locally in your browser, no upload.",
+    pageHeading: "Hash Generator Online",
+    seoLinkLabel: "Hash generator online",
+  },
+  "cron-parser": {
+    metaTitle: "Cron Expression Parser – Human-Readable Schedule",
+    metaDescription:
+      "Free cron parser online to explain standard five-field cron expressions in plain English. Debug crontab and CI schedules in your browser.",
+    pageHeading: "Cron Expression Parser",
+    seoLinkLabel: "Cron expression parser",
+  },
+  "query-string-parser": {
+    metaTitle: "Query String Parser – Decode URL Parameters",
+    metaDescription:
+      "Free query string parser online to split URL parameters into a table and rebuild encoded query strings. Local browser parsing, no upload.",
+    pageHeading: "Query String Parser",
+    seoLinkLabel: "Query string parser",
+  },
   "timestamp-converter": {
     metaTitle: "Timestamp Converter Online – Unix to Date & Back",
     metaDescription:

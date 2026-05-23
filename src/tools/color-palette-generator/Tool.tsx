@@ -37,16 +37,11 @@ export default function ColorPaletteGeneratorTool() {
   const [colorName, setColorName] = useState(defaultColorName);
   const [toastMessage, setToastMessage] = useState("");
   const palette = useMemo(() => generatePalette(color), [color]);
-  const normalizedColorName = useMemo(
-    () => normalizeSwatchColorName(colorName),
-    [colorName],
-  );
+  const normalizedColorName = useMemo(() => normalizeSwatchColorName(colorName), [colorName]);
   const paletteListOutput = useMemo(
     () =>
       palette
-        .map((swatch) =>
-          formatCssVariable(normalizedColorName, swatch.label, swatch.value),
-        )
+        .map((swatch) => formatCssVariable(normalizedColorName, swatch.label, swatch.value))
         .join("\n"),
     [normalizedColorName, palette],
   );
@@ -85,7 +80,7 @@ export default function ColorPaletteGeneratorTool() {
               type="color"
               value={color}
               onChange={(event) => setColor(event.target.value.toUpperCase())}
-              className="h-12 w-16 rounded-2xl border border-border bg-transparent cursor-pointer"
+              className="border-border h-12 w-16 cursor-pointer rounded-2xl border bg-transparent"
             />
             <InputField
               value={color}
@@ -108,7 +103,7 @@ export default function ColorPaletteGeneratorTool() {
                 key={starter}
                 type="button"
                 onClick={() => setColor(starter)}
-                className="inline-flex cursor-pointer shrink-0 items-center justify-center rounded-full border border-border px-4 py-2 text-sm font-medium whitespace-nowrap text-foreground"
+                className="border-border text-foreground inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap"
               >
                 {starter}
               </button>
@@ -117,9 +112,7 @@ export default function ColorPaletteGeneratorTool() {
               variant="ghost"
               onClick={() =>
                 setColor(
-                  starterColors[
-                    Math.floor(Math.random() * starterColors.length)
-                  ] ?? "#4F46E5",
+                  starterColors[Math.floor(Math.random() * starterColors.length)] ?? "#4F46E5",
                 )
               }
             >
@@ -142,7 +135,7 @@ export default function ColorPaletteGeneratorTool() {
                 key={swatch.label}
                 type="button"
                 onClick={() => void copySwatchColor(swatch.value, swatch.label)}
-                className="flex cursor-pointer items-center justify-between rounded-2xl border border-border px-4 py-4 text-left"
+                className="border-border flex cursor-pointer items-center justify-between rounded-2xl border px-4 py-4 text-left"
                 style={{
                   backgroundColor: swatch.value,
                   color: getReadableTextColor(swatch.value),

@@ -32,19 +32,19 @@ export default function Home() {
       <section className="surface-card overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+            <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
               Free online developer tools
             </p>
-            <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="text-foreground mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
               {siteConfig.heroTitle}
             </h1>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
+            <p className="text-muted-foreground mt-5 max-w-3xl text-base leading-8 sm:text-lg">
               {siteConfig.heroDescription}
             </p>
-            <ul className="mt-5 flex max-w-3xl flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground mt-5 flex max-w-3xl flex-wrap gap-x-4 gap-y-2 text-sm">
               {siteConfig.heroHighlights.map((highlight) => (
                 <li key={highlight} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" />
                   <span>{highlight}</span>
                 </li>
               ))}
@@ -53,19 +53,19 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={routes.toolsIndex}
-                className="rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background"
+                className="bg-foreground text-background rounded-full px-5 py-3 text-sm font-semibold"
               >
                 Browse all tools
               </Link>
               <Link
                 href={routes.tool("json-formatter")}
-                className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground"
+                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
               >
                 JSON Formatter
               </Link>
               <button
                 type="button"
-                className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground"
+                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
               >
                 Press Ctrl + K to search
               </button>
@@ -92,43 +92,37 @@ export default function Home() {
 
       <section id="categories" className="space-y-8">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
             Browse by category
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
             Developer tools categories
           </h2>
-          <p className="mt-4 text-base leading-8 text-muted-foreground">
-            Explore free browser-based developer tools grouped by formatting,
-            conversion, generators, and utilities—each category links to every tool
-            in that workflow.
+          <p className="text-muted-foreground mt-4 text-base leading-8">
+            Explore free browser-based developer tools grouped by formatting, conversion,
+            generators, and utilities—each category links to every tool in that workflow.
           </p>
         </div>
 
         <div className="grid gap-6 xl:grid-cols-4">
           {categories.map((category) => (
             <div key={category.key} className="surface-card rounded-3xl p-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
                 {category.title}
               </p>
-              <h3 className="mt-3 text-2xl font-bold text-foreground">
-                <Link
-                  href={routes.category(category.key)}
-                  className="hover:text-primary"
-                >
+              <h3 className="text-foreground mt-3 text-2xl font-bold">
+                <Link href={routes.category(category.key)} className="hover:text-primary">
                   {category.tools.length} tools
                 </Link>
               </h3>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                {category.description}
-              </p>
+              <p className="text-muted-foreground mt-3 text-sm leading-7">{category.description}</p>
               <div className="mt-5 space-y-3 text-sm">
                 {category.tools.map((tool) => (
                   <Link
                     key={tool.slug}
                     href={routes.tool(tool.slug)}
                     title={tool.title}
-                    className="flex items-center gap-3 text-foreground hover:text-primary"
+                    className="text-foreground hover:text-primary flex items-center gap-3"
                   >
                     <ToolIcon slug={tool.slug} size="sm" />
                     <span className="font-medium">{tool.seoLinkLabel}</span>
@@ -143,20 +137,20 @@ export default function Home() {
       <section className="surface-card rounded-[2rem] p-6 sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
+            <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
               Full directory
             </p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
               All developer tools
             </h2>
-            <p className="mt-4 text-base leading-8 text-muted-foreground">
-              Every free online coding utility on {siteConfig.name}, with direct links
-              for faster navigation and stronger internal discovery.
+            <p className="text-muted-foreground mt-4 text-base leading-8">
+              Every free online coding utility on {siteConfig.name}, with direct links for faster
+              navigation and stronger internal discovery.
             </p>
           </div>
           <Link
             href={routes.toolsIndex}
-            className="shrink-0 rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground hover:text-primary"
+            className="border-border text-foreground hover:text-primary shrink-0 rounded-full border px-5 py-3 text-sm font-semibold"
           >
             View full tools index
           </Link>
@@ -180,47 +174,46 @@ export default function Home() {
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="surface-card rounded-[2rem] p-6 sm:p-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
             Why {siteConfig.name}
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground">
+          <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight">
             A single hub for the coding utilities you reach for every day.
           </h2>
-          <p className="mt-4 text-base leading-8 text-muted-foreground">
-            {siteConfig.name} exists to help you format, decode, convert, and generate
-            data without switching tabs, creating accounts, or uploading sensitive
-            payloads to a server. Each tool is built for a specific developer task you
-            already do regularly.
+          <p className="text-muted-foreground mt-4 text-base leading-8">
+            {siteConfig.name} exists to help you format, decode, convert, and generate data without
+            switching tabs, creating accounts, or uploading sensitive payloads to a server. Each
+            tool is built for a specific developer task you already do regularly.
           </p>
-          <p className="mt-4 text-base leading-8 text-muted-foreground">
-            From JSON and JWT workflows to regex checks, timestamps, colors, and
-            markup—open the tool you need, get a clear result, copy it, and move on.
+          <p className="text-muted-foreground mt-4 text-base leading-8">
+            From JSON and JWT workflows to regex checks, timestamps, colors, and markup—open the
+            tool you need, get a clear result, copy it, and move on.
           </p>
         </div>
 
         <div className="surface-card rounded-[2rem] p-6 sm:p-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
             Workflow ready
           </p>
           <div className="mt-4 space-y-4">
             <div className="surface-muted rounded-2xl p-4">
-              <h3 className="font-semibold text-foreground">Copy-first UX</h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Every tool includes instant output and copy-to-clipboard support for
-                low-friction workflows.
+              <h3 className="text-foreground font-semibold">Copy-first UX</h3>
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
+                Every tool includes instant output and copy-to-clipboard support for low-friction
+                workflows.
               </p>
             </div>
             <div className="surface-muted rounded-2xl p-4">
-              <h3 className="font-semibold text-foreground">Command palette</h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <h3 className="text-foreground font-semibold">Command palette</h3>
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 Open tool search anywhere with Ctrl + K for fast navigation.
               </p>
             </div>
             <div className="surface-muted rounded-2xl p-4">
-              <h3 className="font-semibold text-foreground">Privacy first</h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Inputs stay on your device. No account, no uploads, and no backend
-                required to use the tools.
+              <h3 className="text-foreground font-semibold">Privacy first</h3>
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
+                Inputs stay on your device. No account, no uploads, and no backend required to use
+                the tools.
               </p>
             </div>
           </div>

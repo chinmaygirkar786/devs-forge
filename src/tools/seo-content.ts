@@ -5,6 +5,13 @@ import { jsonFormatterSeo } from "@/tools/seo/json-formatter";
 import { jwtDecoderSeo } from "@/tools/seo/jwt-decoder";
 import { regexTesterSeo } from "@/tools/seo/regex-tester";
 import { uuidGeneratorSeo } from "@/tools/seo/uuid-generator";
+import { caseConverterSeo } from "@/tools/seo/case-converter";
+import { cronParserSeo } from "@/tools/seo/cron-parser";
+import { cssFormatterSeo } from "@/tools/seo/css-formatter";
+import { hashGeneratorSeo } from "@/tools/seo/hash-generator";
+import { queryStringParserSeo } from "@/tools/seo/query-string-parser";
+import { xmlFormatterSeo } from "@/tools/seo/xml-formatter";
+import { yamlFormatterSeo } from "@/tools/seo/yaml-formatter";
 
 const defaultSeoFields: Pick<ToolSeoBlock, "contentSections" | "internalLinkSlugs"> = {
   contentSections: [],
@@ -34,13 +41,11 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Can I copy individual swatches?",
-        answer:
-          "Yes. Click a swatch to copy its hex value to the clipboard.",
+        answer: "Yes. Click a swatch to copy its hex value to the clipboard.",
       },
       {
         question: "Does this check color contrast?",
-        answer:
-          "Swatch labels use contrast-aware text colors for readability on each background.",
+        answer: "Swatch labels use contrast-aware text colors for readability on each background.",
       },
     ],
   },
@@ -65,8 +70,7 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Do I need to install anything?",
-        answer:
-          "No. The generator runs entirely in your browser with instant preview.",
+        answer: "No. The generator runs entirely in your browser with instant preview.",
       },
     ],
   },
@@ -87,8 +91,7 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Is my Markdown uploaded anywhere?",
-        answer:
-          "No. Rendering happens locally in your browser.",
+        answer: "No. Rendering happens locally in your browser.",
       },
       {
         question: "Can I copy the rendered HTML?",
@@ -114,8 +117,7 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Can I decode a full URL?",
-        answer:
-          "Yes. Paste an encoded string and switch to decode mode for readable output.",
+        answer: "Yes. Paste an encoded string and switch to decode mode for readable output.",
       },
       {
         question: "Is data sent to a server?",
@@ -140,16 +142,21 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Can I minify HTML for production?",
-        answer:
-          "Yes. Switch to minify mode to produce a compact single-line snippet.",
+        answer: "Yes. Switch to minify mode to produce a compact single-line snippet.",
       },
       {
         question: "Are attributes with special characters supported?",
-        answer:
-          "Yes. The formatter respects quoted attribute values when indenting tags.",
+        answer: "Yes. The formatter respects quoted attribute values when indenting tags.",
       },
     ],
   },
+  "xml-formatter": xmlFormatterSeo,
+  "yaml-formatter": yamlFormatterSeo,
+  "css-formatter": cssFormatterSeo,
+  "case-converter": caseConverterSeo,
+  "hash-generator": hashGeneratorSeo,
+  "cron-parser": cronParserSeo,
+  "query-string-parser": queryStringParserSeo,
   "timestamp-converter": {
     ...defaultSeoFields,
     seoIntro:
@@ -172,8 +179,7 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Is timezone handled?",
-        answer:
-          "Output includes localized formatting based on your browser timezone settings.",
+        answer: "Output includes localized formatting based on your browser timezone settings.",
       },
     ],
   },
@@ -199,8 +205,7 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
       {
         question: "Is my JSON uploaded?",
-        answer:
-          "No. Type generation runs entirely in your browser.",
+        answer: "No. Type generation runs entirely in your browser.",
       },
     ],
   },

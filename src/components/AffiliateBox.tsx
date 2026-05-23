@@ -12,14 +12,14 @@ export function AffiliateBox({ slug, items }: AffiliateBoxProps) {
     <aside className="surface-card rounded-3xl p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
             Recommended Developer Tools
           </p>
-          <h3 className="mt-2 text-xl font-bold text-foreground">
+          <h3 className="text-foreground mt-2 text-xl font-bold">
             Tools that may help your workflow
           </h3>
         </div>
-        <span className="inline-flex shrink-0 items-center justify-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-accent">
+        <span className="bg-accent-soft text-accent inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
           Affiliate-ready
         </span>
       </div>
@@ -29,13 +29,9 @@ export function AffiliateBox({ slug, items }: AffiliateBoxProps) {
           <div key={item.id} className="surface-muted rounded-2xl p-4">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h4 className="font-semibold text-foreground">{item.name}</h4>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  {item.description}
-                </p>
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                  {item.note}
-                </p>
+                <h4 className="text-foreground font-semibold">{item.name}</h4>
+                <p className="text-muted-foreground mt-1 text-sm leading-6">{item.description}</p>
+                <p className="text-muted-foreground mt-2 text-xs leading-5">{item.note}</p>
               </div>
             </div>
 
@@ -45,7 +41,7 @@ export function AffiliateBox({ slug, items }: AffiliateBoxProps) {
                 target="_blank"
                 rel="noopener noreferrer sponsored"
                 onClick={() => trackAffiliateClick(item.id, slug)}
-                className="mt-4 inline-flex rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background"
+                className="bg-foreground text-background mt-4 inline-flex rounded-full px-4 py-2 text-sm font-semibold"
               >
                 {item.cta}
               </a>
@@ -53,7 +49,7 @@ export function AffiliateBox({ slug, items }: AffiliateBoxProps) {
               <button
                 type="button"
                 disabled
-                className="mt-4 inline-flex cursor-not-allowed rounded-full border border-dashed border-border-strong px-4 py-2 text-sm font-semibold text-muted-foreground"
+                className="border-border-strong text-muted-foreground mt-4 inline-flex cursor-not-allowed rounded-full border border-dashed px-4 py-2 text-sm font-semibold"
               >
                 {item.cta}
               </button>

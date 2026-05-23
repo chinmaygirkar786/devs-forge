@@ -55,12 +55,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
 
     return searchIndex
       .filter((tool) => {
-        const searchable = [
-          tool.title,
-          tool.primaryKeyword,
-          tool.description,
-          ...tool.keywords,
-        ]
+        const searchable = [tool.title, tool.primaryKeyword, tool.description, ...tool.keywords]
           .join(" ")
           .toLowerCase();
 
@@ -76,9 +71,9 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/40 px-4 pt-24 backdrop-blur-sm">
       <div className="surface-card w-full max-w-2xl overflow-hidden rounded-3xl">
-        <div className="border-b border-border px-5 py-4">
+        <div className="border-border border-b px-5 py-4">
           <div className="flex items-center gap-3">
-            <span className="inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-primary">
+            <span className="bg-primary-soft text-primary inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
               Ctrl + K
             </span>
             <input
@@ -86,13 +81,13 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search for JSON, JWT, regex, timestamps..."
-              className="w-full border-none bg-transparent text-base outline-none placeholder:text-muted-foreground"
+              className="placeholder:text-muted-foreground w-full border-none bg-transparent text-base outline-none"
             />
           </div>
         </div>
 
         <div className="max-h-[420px] overflow-y-auto p-3">
-          <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-muted-foreground px-3 pb-2 text-xs font-semibold tracking-[0.2em] uppercase">
             {query ? "Search results" : "Recently used tools"}
           </p>
 
@@ -119,21 +114,18 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
                   <div className="flex items-start justify-between gap-3">
                     <ToolIcon slug={tool.slug} size="sm" />
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-foreground">{tool.title}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {tool.description}
-                      </p>
+                      <p className="text-foreground font-semibold">{tool.title}</p>
+                      <p className="text-muted-foreground mt-1 text-sm">{tool.description}</p>
                     </div>
-                    <span className="inline-flex shrink-0 items-center rounded-full bg-accent-soft px-3 py-1.5 text-xs font-medium whitespace-nowrap text-accent">
+                    <span className="bg-accent-soft text-accent inline-flex shrink-0 items-center rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap">
                       {tool.categoryTitle}
                     </span>
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
-                No tools matched your search yet. Try JSON, regex, base64, UUID, or
-                timestamp.
+              <div className="border-border text-muted-foreground rounded-2xl border border-dashed px-4 py-8 text-center text-sm">
+                No tools matched your search yet. Try JSON, regex, base64, UUID, or timestamp.
               </div>
             )}
           </div>

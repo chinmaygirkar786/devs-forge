@@ -21,6 +21,51 @@
   --danger: #dc2626;
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --shadow-hover: 0 16px 40px rgba(79, 70, 229, 0.2), 0 8px 22px rgba(6, 182, 212, 0.14);
+  /* Copy output button — light mode: bright violet/cyan (dark mode tokens in .dark) */
+  --copy-btn-from: #6366f1;
+  --copy-btn-via: #8b5cf6;
+  --copy-btn-to: #06b6d4;
+  --copy-btn-border: #818cf8;
+  --copy-btn-shadow: rgba(99, 102, 241, 0.42);
+  --copy-btn-shadow-hover: rgba(139, 92, 246, 0.55);
+  --copy-btn-ring: rgba(99, 102, 241, 0.5);
+  --copy-btn-success-from: #059669;
+  --copy-btn-success-via: #10b981;
+  --copy-btn-success-to: #14b8a6;
+  --copy-btn-success-border: #34d399;
+  --copy-btn-success-shadow: rgba(16, 185, 129, 0.45);
+  --copy-btn-glow-1: #818cf8;
+  --copy-btn-glow-2: #22d3ee;
+  --copy-btn-glow-3: #c084fc;
+  --copy-btn-depth: #4f46e5;
+  /* Tool action buttons (Load example / Clear) — light */
+  --tool-action-bg: var(--card);
+  --tool-action-border: var(--border-strong);
+  --tool-action-shadow: rgba(15, 23, 42, 0.06);
+  --tool-action-shadow-hover: rgba(99, 102, 241, 0.22);
+  --tool-action-load-glow-1: #a5b4fc;
+  --tool-action-load-glow-2: #67e8f9;
+  --tool-action-load-glow-3: #c4b5fd;
+  --tool-action-load-ring: rgba(99, 102, 241, 0.55);
+  --tool-action-load-border-hover: #818cf8;
+  --tool-action-load-text-hover: #4338ca;
+  --tool-action-clear-glow-1: #fda4af;
+  --tool-action-clear-glow-2: #fecdd3;
+  --tool-action-clear-ring: rgba(220, 38, 38, 0.4);
+  --tool-action-clear-border-hover: #f87171;
+  --tool-action-clear-text-hover: #b91c1c;
+  --tool-action-ripple: rgba(99, 102, 241, 0.2);
+  --tool-action-ripple-clear: rgba(220, 38, 38, 0.18);
+  --tool-action-bg-hover: var(--tool-action-bg);
+  --tool-action-glow-idle-blur: 8px;
+  --tool-action-glow-hover-opacity: 0.85;
+  --tool-action-glow-hover-blur: 8px;
+  --tool-action-glow-hover-scale: 1.04;
+  --tool-action-hover-shadow-glow: 35%;
+  --tool-action-hover-shadow-spread: 24px;
+  --tool-action-clear-shadow-spread: 20px;
+  --tool-action-ring-hover-opacity: 1;
+  --tool-action-shine-strength: 8%;
 }
 
 .dark {
@@ -40,6 +85,50 @@
   --danger: #f87171;
   --shadow: 0 16px 40px rgba(2, 6, 23, 0.35);
   --shadow-hover: 0 18px 44px rgba(129, 140, 248, 0.32), 0 10px 26px rgba(34, 211, 238, 0.2);
+  --copy-btn-from: #4f46e5;
+  --copy-btn-via: #7c3aed;
+  --copy-btn-to: #0891b2;
+  --copy-btn-border: #a5b4fc;
+  --copy-btn-shadow: rgba(79, 70, 229, 0.65);
+  --copy-btn-shadow-hover: rgba(124, 58, 237, 0.75);
+  --copy-btn-ring: rgba(165, 180, 252, 0.55);
+  --copy-btn-success-from: #059669;
+  --copy-btn-success-via: #10b981;
+  --copy-btn-success-to: #14b8a6;
+  --copy-btn-success-border: #6ee7b7;
+  --copy-btn-success-shadow: rgba(16, 185, 129, 0.55);
+  --copy-btn-glow-1: #818cf8;
+  --copy-btn-glow-2: #22d3ee;
+  --copy-btn-glow-3: #c084fc;
+  --copy-btn-depth: #4338ca;
+  /* Tool action buttons — dark */
+  --tool-action-bg: var(--card-muted);
+  --tool-action-border: var(--border-strong);
+  --tool-action-shadow: rgba(2, 6, 23, 0.35);
+  --tool-action-shadow-hover: rgba(129, 140, 248, 0.28);
+  --tool-action-load-glow-1: #818cf8;
+  --tool-action-load-glow-2: #22d3ee;
+  --tool-action-load-glow-3: #a78bfa;
+  --tool-action-load-ring: rgba(165, 180, 252, 0.5);
+  --tool-action-load-border-hover: #a5b4fc;
+  --tool-action-load-text-hover: #e0e7ff;
+  --tool-action-clear-glow-1: #fb7185;
+  --tool-action-clear-glow-2: #fda4af;
+  --tool-action-clear-ring: rgba(248, 113, 113, 0.45);
+  --tool-action-clear-border-hover: #f87171;
+  --tool-action-clear-text-hover: #fecaca;
+  --tool-action-ripple: rgba(129, 140, 248, 0.28);
+  --tool-action-ripple-clear: rgba(248, 113, 113, 0.24);
+  --tool-action-bg-hover: var(--card);
+  --tool-action-glow-idle-blur: 6px;
+  --tool-action-glow-hover-opacity: 0.85;
+  --tool-action-glow-hover-blur: 6px;
+  --tool-action-glow-hover-scale: 1.04;
+  --tool-action-hover-shadow-glow: 35%;
+  --tool-action-hover-shadow-spread: 24px;
+  --tool-action-clear-shadow-spread: 20px;
+  --tool-action-ring-hover-opacity: 1;
+  --tool-action-shine-strength: 8%;
 }
 
 @theme inline {
@@ -58,8 +147,9 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 }
 
 * {
@@ -91,8 +181,7 @@ body {
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, var(--primary-soft), transparent 26%),
-    radial-gradient(circle at top right, var(--accent-soft), transparent 18%),
-    var(--background);
+    radial-gradient(circle at top right, var(--accent-soft), transparent 18%), var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   transition:
@@ -280,5 +369,592 @@ select {
   to {
     opacity: 1;
     transform: translate(0, 0);
+  }
+}
+
+/* Copy output button — inspired by dev.to/css button animations (glow, border, 3D, ripple) */
+@layer components {
+  .copy-output-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-from) 0%,
+      var(--copy-btn-via) 52%,
+      var(--copy-btn-to) 100%
+    );
+    box-shadow:
+      0 4px 0 var(--copy-btn-depth),
+      0 6px 22px var(--copy-btn-shadow);
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 200ms ease;
+  }
+
+  .copy-output-btn:focus-visible {
+    outline: 2px solid var(--copy-btn-ring);
+    outline-offset: 3px;
+  }
+
+  .copy-output-btn:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+  }
+
+  /* #1 Hover glow — soft aura behind the button */
+  .copy-output-btn__glow {
+    position: absolute;
+    inset: -6px;
+    z-index: -2;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-glow-1),
+      var(--copy-btn-glow-3),
+      var(--copy-btn-glow-2)
+    );
+    filter: blur(14px);
+    opacity: 0.45;
+    transition:
+      opacity 280ms ease,
+      filter 280ms ease,
+      transform 280ms ease;
+    pointer-events: none;
+  }
+
+  /* #22 Animated gradient ring on hover */
+  .copy-output-btn__ring {
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from var(--copy-btn-ring-angle, 0deg),
+      var(--copy-btn-glow-1),
+      var(--copy-btn-glow-2),
+      var(--copy-btn-glow-3),
+      var(--copy-btn-glow-1)
+    );
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Shimmer sweep on hover */
+  .copy-output-btn__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgb(255 255 255 / 0.42) 50%,
+      transparent 62%
+    );
+    transform: translateX(-130%) skewX(-12deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* #29 Bubble ripple on click */
+  .copy-output-btn__ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 120%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.38);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .copy-output-btn__ripple--active {
+    animation: copy-btn-ripple 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .copy-output-btn__content {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.28);
+  }
+
+  .copy-output-btn__icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) {
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) {
+      transform: translateY(-3px);
+      box-shadow:
+        0 7px 0 var(--copy-btn-depth),
+        0 10px 32px var(--copy-btn-shadow-hover),
+        0 0 36px color-mix(in srgb, var(--copy-btn-glow-2) 45%, transparent);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__glow {
+      opacity: 0.95;
+      filter: blur(20px);
+      transform: scale(1.06);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__ring {
+      opacity: 1;
+      animation: copy-btn-ring-spin 2.2s linear infinite;
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__shine {
+      opacity: 1;
+      animation: copy-btn-shine 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .copy-output-btn:hover:not(:disabled):not(.copy-output-btn--copied) .copy-output-btn__icon {
+      transform: scale(1.12) rotate(-8deg);
+    }
+  }
+
+  /* #3 3D touch — press down */
+  .copy-output-btn:active:not(:disabled):not(.copy-output-btn--copied) {
+    transform: translateY(2px);
+    box-shadow:
+      0 2px 0 var(--copy-btn-depth),
+      0 4px 14px var(--copy-btn-shadow);
+  }
+
+  .copy-output-btn--copied {
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-success-from) 0%,
+      var(--copy-btn-success-via) 50%,
+      var(--copy-btn-success-to) 100%
+    );
+    box-shadow:
+      0 4px 0 var(--copy-btn-success-border),
+      0 8px 24px var(--copy-btn-success-shadow),
+      0 0 28px color-mix(in srgb, var(--copy-btn-success-via) 40%, transparent);
+    animation: copy-btn-success-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .copy-output-btn--copied .copy-output-btn__glow {
+    background: linear-gradient(
+      135deg,
+      var(--copy-btn-success-from),
+      var(--copy-btn-success-to),
+      var(--copy-btn-success-via)
+    );
+    opacity: 0.75;
+    filter: blur(16px);
+  }
+
+  .copy-output-btn--copied .copy-output-btn__ring {
+    opacity: 0;
+    animation: none;
+  }
+
+  .copy-output-btn--copied .copy-output-btn__icon {
+    animation: copy-btn-icon-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Load example / Clear — outline style with glow, ring, shimmer, ripple */
+  .tool-action-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--tool-action-border);
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: var(--foreground);
+    background: transparent;
+    box-shadow: 0 1px 2px var(--tool-action-shadow);
+    transition:
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 220ms ease,
+      color 220ms ease;
+  }
+
+  /* Opaque fill so hover glow stays outside readable text */
+  .tool-action-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--tool-action-bg);
+    transition: background-color 220ms ease;
+    pointer-events: none;
+  }
+
+  .tool-action-btn:focus-visible {
+    outline: 2px solid var(--tool-action-load-ring);
+    outline-offset: 3px;
+  }
+
+  .tool-action-btn[data-action="clear"]:focus-visible {
+    outline-color: var(--tool-action-clear-ring);
+  }
+
+  .tool-action-btn:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+  }
+
+  .tool-action-btn__glow {
+    position: absolute;
+    inset: -5px;
+    z-index: -2;
+    border-radius: inherit;
+    opacity: 0;
+    filter: blur(var(--tool-action-glow-idle-blur));
+    transition:
+      opacity 260ms ease,
+      filter 260ms ease,
+      transform 260ms ease;
+    pointer-events: none;
+  }
+
+  .tool-action-btn[data-action="load"] .tool-action-btn__glow {
+    background: linear-gradient(
+      135deg,
+      var(--tool-action-load-glow-1),
+      var(--tool-action-load-glow-3),
+      var(--tool-action-load-glow-2)
+    );
+  }
+
+  .tool-action-btn[data-action="clear"] .tool-action-btn__glow {
+    background: linear-gradient(
+      135deg,
+      var(--tool-action-clear-glow-1),
+      var(--tool-action-clear-glow-2),
+      var(--tool-action-clear-glow-1)
+    );
+  }
+
+  .tool-action-btn__ring {
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .tool-action-btn[data-action="load"] .tool-action-btn__ring {
+    background: conic-gradient(
+      from var(--tool-action-ring-angle, 0deg),
+      var(--tool-action-load-glow-1),
+      var(--tool-action-load-glow-2),
+      var(--tool-action-load-glow-3),
+      var(--tool-action-load-glow-1)
+    );
+  }
+
+  .tool-action-btn[data-action="clear"] .tool-action-btn__ring {
+    background: conic-gradient(
+      from var(--tool-action-ring-angle, 0deg),
+      var(--tool-action-clear-glow-1),
+      var(--tool-action-clear-glow-2),
+      var(--tool-action-clear-glow-1),
+      var(--tool-action-clear-glow-1)
+    );
+  }
+
+  .tool-action-btn__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      color-mix(in srgb, var(--foreground) var(--tool-action-shine-strength), transparent) 50%,
+      transparent 60%
+    );
+    transform: translateX(-130%) skewX(-10deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tool-action-btn__ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 115%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tool-action-btn[data-action="load"] .tool-action-btn__ripple {
+    background: var(--tool-action-ripple);
+  }
+
+  .tool-action-btn[data-action="clear"] .tool-action-btn__ripple {
+    background: var(--tool-action-ripple-clear);
+  }
+
+  .tool-action-btn__ripple--active {
+    animation: tool-action-ripple 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tool-action-btn__content {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) {
+    .tool-action-btn[data-action="load"]:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: var(--tool-action-load-border-hover);
+      color: var(--tool-action-load-text-hover);
+      box-shadow:
+        0 4px 14px var(--tool-action-shadow-hover),
+        0 0 var(--tool-action-hover-shadow-spread)
+          color-mix(
+            in srgb,
+            var(--tool-action-load-glow-2) var(--tool-action-hover-shadow-glow),
+            transparent
+          );
+    }
+
+    .tool-action-btn[data-action="clear"]:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: var(--tool-action-clear-border-hover);
+      color: var(--tool-action-clear-text-hover);
+      box-shadow:
+        0 4px 14px color-mix(in srgb, var(--tool-action-clear-glow-1) 30%, transparent),
+        0 0 var(--tool-action-clear-shadow-spread)
+          color-mix(in srgb, var(--tool-action-clear-glow-2) 28%, transparent);
+    }
+
+    .tool-action-btn:hover:not(:disabled)::before {
+      background: var(--tool-action-bg-hover);
+    }
+
+    .tool-action-btn:hover:not(:disabled) .tool-action-btn__glow {
+      opacity: var(--tool-action-glow-hover-opacity);
+      filter: blur(var(--tool-action-glow-hover-blur));
+      transform: scale(var(--tool-action-glow-hover-scale));
+    }
+
+    .tool-action-btn:hover:not(:disabled) .tool-action-btn__ring {
+      opacity: var(--tool-action-ring-hover-opacity);
+      animation: tool-action-ring-spin 2.8s linear infinite;
+    }
+
+    .tool-action-btn:hover:not(:disabled) .tool-action-btn__shine {
+      opacity: 1;
+      animation: tool-action-shine 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .tool-action-btn:hover:not(:disabled) .tool-action-btn__content {
+      transform: scale(1.02);
+    }
+  }
+
+  .tool-action-btn:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px var(--tool-action-shadow);
+  }
+}
+
+@property --copy-btn-ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes copy-btn-ring-spin {
+  to {
+    --copy-btn-ring-angle: 360deg;
+  }
+}
+
+@keyframes copy-btn-shine {
+  from {
+    transform: translateX(-130%) skewX(-12deg);
+  }
+
+  to {
+    transform: translateX(130%) skewX(-12deg);
+  }
+}
+
+@keyframes copy-btn-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes copy-btn-success-pop {
+  0% {
+    transform: scale(0.94);
+  }
+
+  45% {
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes copy-btn-icon-pop {
+  0% {
+    transform: scale(0.5) rotate(-16deg);
+  }
+
+  65% {
+    transform: scale(1.18) rotate(5deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@property --tool-action-ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes tool-action-ring-spin {
+  to {
+    --tool-action-ring-angle: 360deg;
+  }
+}
+
+@keyframes tool-action-shine {
+  from {
+    transform: translateX(-130%) skewX(-10deg);
+  }
+
+  to {
+    transform: translateX(130%) skewX(-10deg);
+  }
+}
+
+@keyframes tool-action-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-output-btn__ring,
+  .copy-output-btn__shine,
+  .copy-output-btn__ripple--active,
+  .copy-output-btn--copied,
+  .copy-output-btn--copied .copy-output-btn__icon {
+    animation: none !important;
+  }
+
+  @media (hover: hover) {
+    .copy-output-btn:hover:not(:disabled) {
+      transform: none;
+    }
+
+    .copy-output-btn:hover:not(:disabled) .copy-output-btn__icon {
+      transform: none;
+    }
+  }
+
+  .copy-output-btn:active:not(:disabled) {
+    transform: none;
+  }
+
+  .tool-action-btn__ring,
+  .tool-action-btn__shine,
+  .tool-action-btn__ripple--active {
+    animation: none !important;
+  }
+
+  @media (hover: hover) {
+    .tool-action-btn:hover:not(:disabled) {
+      transform: none;
+    }
+
+    .tool-action-btn:hover:not(:disabled) .tool-action-btn__content {
+      transform: none;
+    }
+  }
+
+  .tool-action-btn:active:not(:disabled) {
+    transform: none;
   }
 }

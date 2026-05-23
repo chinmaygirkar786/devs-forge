@@ -45,9 +45,7 @@ export function getToolUsageHistory() {
 
     const parsed = JSON.parse(raw) as LegacyToolUsageEntry[];
     cachedRawHistory = raw;
-    cachedHistory = Array.isArray(parsed)
-      ? parsed.map(normalizeUsageEntry)
-      : emptyHistory;
+    cachedHistory = Array.isArray(parsed) ? parsed.map(normalizeUsageEntry) : emptyHistory;
     return cachedHistory;
   } catch {
     cachedRawHistory = null;

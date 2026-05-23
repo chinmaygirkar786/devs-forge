@@ -74,13 +74,12 @@ const toolSeeds: ToolSeed[] = [
     ],
     relatedSlugs: [
       "json-to-typescript",
+      "xml-formatter",
       "html-formatter",
       "base64-encoder",
       "jwt-decoder",
       "regex-tester",
       "url-encoder",
-      "timestamp-converter",
-      "uuid-generator",
     ],
     affiliateContext: ["backend", "api", "hosting"],
     loadComponent: () => import("@/tools/json-formatter/Tool"),
@@ -125,8 +124,7 @@ const toolSeeds: ToolSeed[] = [
       },
       {
         title: "Compare header algorithm values",
-        input:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
+        input: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
       },
     ],
     relatedSlugs: [
@@ -245,11 +243,10 @@ const toolSeeds: ToolSeed[] = [
     relatedSlugs: [
       "jwt-decoder",
       "json-formatter",
+      "xml-formatter",
       "url-encoder",
       "json-to-typescript",
       "regex-tester",
-      "uuid-generator",
-      "timestamp-converter",
     ],
     affiliateContext: ["api", "backend", "productivity"],
     loadComponent: () => import("@/tools/base64-encoder/Tool"),
@@ -257,8 +254,7 @@ const toolSeeds: ToolSeed[] = [
   {
     slug: "uuid-generator",
     title: "UUID Generator",
-    description:
-      "Generate UUID v4 values in batches for seeds, fixtures, IDs, and test data.",
+    description: "Generate UUID v4 values in batches for seeds, fixtures, IDs, and test data.",
     category: "generators",
     popular: true,
     keywordCluster: {
@@ -388,8 +384,7 @@ const toolSeeds: ToolSeed[] = [
   {
     slug: "markdown-previewer",
     title: "Markdown Previewer",
-    description:
-      "Write Markdown and preview rendered output side by side with clean typography.",
+    description: "Write Markdown and preview rendered output side by side with clean typography.",
     category: "formatting",
     popular: false,
     keywordCluster: {
@@ -418,7 +413,7 @@ const toolSeeds: ToolSeed[] = [
         input: "# Devs Forge\n\n- Fast\n- Browser-only\n- Free tools",
       },
     ],
-    relatedSlugs: ["html-formatter", "gradient-generator", "color-palette-generator"],
+    relatedSlugs: ["html-formatter", "xml-formatter", "json-formatter", "gradient-generator"],
     affiliateContext: ["frontend", "productivity", "design"],
     loadComponent: () => import("@/tools/markdown-previewer/Tool"),
   },
@@ -455,15 +450,21 @@ const toolSeeds: ToolSeed[] = [
         input: "https://example.com/callback?tab=team members",
       },
     ],
-    relatedSlugs: ["regex-tester", "base64-encoder", "json-formatter", "html-formatter"],
+    relatedSlugs: [
+      "query-string-parser",
+      "regex-tester",
+      "base64-encoder",
+      "json-formatter",
+      "html-formatter",
+      "xml-formatter",
+    ],
     affiliateContext: ["api", "backend", "frontend"],
     loadComponent: () => import("@/tools/url-encoder/Tool"),
   },
   {
     slug: "html-formatter",
     title: "HTML Formatter / Minifier",
-    description:
-      "Beautify messy HTML or minify markup for compact embeds and production snippets.",
+    description: "Beautify messy HTML or minify markup for compact embeds and production snippets.",
     category: "formatting",
     popular: true,
     keywordCluster: {
@@ -493,14 +494,372 @@ const toolSeeds: ToolSeed[] = [
       },
     ],
     relatedSlugs: [
+      "css-formatter",
       "markdown-previewer",
       "json-formatter",
+      "xml-formatter",
       "url-encoder",
       "regex-tester",
-      "gradient-generator",
     ],
     affiliateContext: ["frontend", "hosting", "design"],
     loadComponent: () => import("@/tools/html-formatter/Tool"),
+  },
+  {
+    slug: "xml-formatter",
+    title: "XML Formatter / Minifier",
+    description:
+      "Pretty-print or minify XML for RSS feeds, SOAP envelopes, Android layouts, and config files—validated locally in your browser.",
+    category: "formatting",
+    popular: true,
+    keywordCluster: {
+      primary: "xml formatter online",
+      secondary: [
+        "pretty print xml",
+        "xml validator",
+        "format xml",
+        "xml beautifier",
+        "minify xml online",
+      ],
+      longTail: [
+        "format soap xml envelope online",
+        "pretty print rss feed xml",
+        "validate android layout xml in browser",
+      ],
+    },
+    howItWorks: [
+      "Paste XML and choose format or minify—the parser validates structure before transforming output.",
+      "Formatting indents nested elements for readability; minifying removes extra whitespace between tags.",
+      "Processing uses the browser DOMParser locally, so payloads never leave your device.",
+    ],
+    examples: [
+      {
+        title: "Pretty-print a minified RSS feed",
+        input:
+          '<?xml version="1.0"?><rss version="2.0"><channel><title>Devs Forge</title><item><title>JSON Formatter</title></item></channel></rss>',
+        output: `<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Devs Forge</title>
+    <item>
+      <title>JSON Formatter</title>
+    </item>
+  </channel>
+</rss>`,
+      },
+      {
+        title: "Format a SOAP envelope",
+        input:
+          '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><GetUser><id>42</id></GetUser></soap:Body></soap:Envelope>',
+      },
+      {
+        title: "Catch an unclosed tag before deploy",
+        input: "<root><item>open</root>",
+      },
+      {
+        title: "Indent Android-style layout XML",
+        input:
+          '<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"><TextView android:text="Hello"/></LinearLayout>',
+      },
+    ],
+    relatedSlugs: [
+      "json-formatter",
+      "html-formatter",
+      "markdown-previewer",
+      "base64-encoder",
+      "url-encoder",
+    ],
+    affiliateContext: ["api", "backend", "hosting"],
+    loadComponent: () => import("@/tools/xml-formatter/Tool"),
+  },
+  {
+    slug: "yaml-formatter",
+    title: "YAML Formatter / Minifier",
+    description:
+      "Format and validate YAML for Kubernetes, Docker Compose, and CI pipelines with local parsing and copy-ready output.",
+    category: "formatting",
+    popular: true,
+    keywordCluster: {
+      primary: "yaml formatter online",
+      secondary: [
+        "yaml validator",
+        "pretty print yaml",
+        "format yaml",
+        "yaml beautifier",
+        "minify yaml online",
+      ],
+      longTail: [
+        "format kubernetes yaml manifest online",
+        "validate docker compose yaml in browser",
+        "pretty print github actions workflow yaml",
+      ],
+    },
+    howItWorks: [
+      "Paste YAML and choose format or minify—the parser validates structure before output updates.",
+      "Format expands nested maps into indented block style for readability.",
+      "Minify uses flow style ({ key: value }) on nested structures to reduce whitespace while keeping top-level keys separate.",
+    ],
+    examples: [
+      {
+        title: "Format compact Kubernetes YAML",
+        input:
+          'apiVersion: v1\nkind: ConfigMap\nmetadata: { name: app-config }\ndata: { DEBUG: "true", RETRIES: 3 }',
+        output: `apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  DEBUG: "true"
+  RETRIES: 3`,
+      },
+      {
+        title: "Validate docker-compose services block",
+        input: 'services:\n  web:\n    image: nginx:latest\n    ports:\n      - "8080:80"',
+      },
+      {
+        title: "Catch bad indentation",
+        input: "root:\n  child:\n   bad-indent: 1",
+      },
+      {
+        title: "Minify CI workflow snippet",
+        input: "name: CI\non: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest",
+      },
+    ],
+    relatedSlugs: [
+      "json-formatter",
+      "xml-formatter",
+      "html-formatter",
+      "json-to-typescript",
+      "timestamp-converter",
+    ],
+    affiliateContext: ["backend", "api", "hosting"],
+    loadComponent: () => import("@/tools/yaml-formatter/Tool"),
+  },
+  {
+    slug: "css-formatter",
+    title: "CSS Formatter / Minifier",
+    description:
+      "Beautify or minify CSS rules for components, email templates, and quick style debugging in the browser.",
+    category: "formatting",
+    popular: false,
+    keywordCluster: {
+      primary: "css formatter online",
+      secondary: [
+        "css beautifier",
+        "css minifier",
+        "format css",
+        "pretty print css",
+        "minify css online",
+      ],
+      longTail: [
+        "beautify copied chrome devtools css",
+        "minify email template css snippet",
+        "format component css module online",
+      ],
+    },
+    howItWorks: [
+      "Paste CSS and pick format or minify to transform output instantly.",
+      "Formatting splits selectors and declarations onto readable lines.",
+      "Processing is local—styles never upload to a server.",
+    ],
+    examples: [
+      {
+        title: "Format a card component rule",
+        input: ".card{display:flex;gap:1rem;padding:1.5rem;border-radius:1rem;}",
+      },
+      {
+        title: "Minify hero section CSS",
+        input: ".hero { padding: 4rem 2rem; background: #111; color: #fff; }",
+      },
+      {
+        title: "Format media query block",
+        input: "@media (min-width:768px){.grid{grid-template-columns:repeat(2,1fr);}}",
+      },
+      {
+        title: "Clean utility classes",
+        input: ".btn-primary{background:#4f46e5;color:#fff;border-radius:999px;}",
+      },
+    ],
+    relatedSlugs: [
+      "html-formatter",
+      "gradient-generator",
+      "color-palette-generator",
+      "markdown-previewer",
+    ],
+    affiliateContext: ["frontend", "design", "hosting"],
+    loadComponent: () => import("@/tools/css-formatter/Tool"),
+  },
+  {
+    slug: "case-converter",
+    title: "Case Converter",
+    description:
+      "Convert identifiers between camelCase, PascalCase, snake_case, kebab-case, and CONSTANT_CASE for APIs and configs.",
+    category: "conversion",
+    popular: true,
+    keywordCluster: {
+      primary: "case converter online",
+      secondary: [
+        "camelCase converter",
+        "snake_case converter",
+        "kebab-case converter",
+        "pascal case converter",
+        "convert variable name case",
+      ],
+      longTail: [
+        "convert api field names to camelCase",
+        "turn database column to snake_case online",
+        "generate kebab-case slug from title",
+      ],
+    },
+    howItWorks: [
+      "Paste any identifier or phrase and pick the target naming convention.",
+      "The converter tokenizes words from spaces, underscores, hyphens, and camelCase boundaries.",
+      "Output updates instantly with no network requests.",
+    ],
+    examples: [
+      { title: "snake_case to camelCase", input: "user_profile_id", output: "userProfileId" },
+      { title: "Phrase to kebab-case", input: "Order Line Item", output: "order-line-item" },
+      { title: "camelCase to CONSTANT_CASE", input: "maxRetryCount", output: "MAX_RETRY_COUNT" },
+      {
+        title: "Mixed input to PascalCase",
+        input: "http_response_code",
+        output: "HttpResponseCode",
+      },
+    ],
+    relatedSlugs: [
+      "json-formatter",
+      "json-to-typescript",
+      "url-encoder",
+      "regex-tester",
+      "uuid-generator",
+    ],
+    affiliateContext: ["backend", "frontend", "api"],
+    loadComponent: () => import("@/tools/case-converter/Tool"),
+  },
+  {
+    slug: "hash-generator",
+    title: "Hash Generator",
+    description:
+      "Generate SHA-256, SHA-384, SHA-512, and SHA-1 hex digests from text using Web Crypto in your browser.",
+    category: "utilities",
+    popular: true,
+    keywordCluster: {
+      primary: "hash generator online",
+      secondary: [
+        "sha256 generator",
+        "sha512 hash online",
+        "text to sha256",
+        "checksum generator",
+        "sha hash calculator",
+      ],
+      longTail: [
+        "generate sha256 checksum for string online",
+        "compute sha512 digest in browser",
+        "hash text locally without upload",
+      ],
+    },
+    howItWorks: [
+      "Enter plain text and select a SHA algorithm.",
+      "Web Crypto computes the digest locally and shows lowercase hex output.",
+      "Copy the hash into scripts, tickets, or comparison notes.",
+    ],
+    examples: [
+      { title: "SHA-256 of a short string", input: "developer-tools-hub" },
+      { title: "SHA-512 for cache key material", input: "cache:user:42:preferences" },
+      { title: "SHA-384 sample", input: "webhook-payload-v3" },
+      { title: "SHA-1 legacy checksum", input: "legacy-integration-token" },
+    ],
+    relatedSlugs: [
+      "base64-encoder",
+      "jwt-decoder",
+      "uuid-generator",
+      "json-formatter",
+      "regex-tester",
+    ],
+    affiliateContext: ["api", "backend", "productivity"],
+    loadComponent: () => import("@/tools/hash-generator/Tool"),
+  },
+  {
+    slug: "cron-parser",
+    title: "Cron Expression Parser",
+    description:
+      "Explain standard five-field cron expressions in plain English for crontab, workers, and CI schedules.",
+    category: "utilities",
+    popular: false,
+    keywordCluster: {
+      primary: "cron expression parser",
+      secondary: [
+        "cron parser online",
+        "cron to english",
+        "explain cron schedule",
+        "crontab translator",
+        "cron syntax helper",
+      ],
+      longTail: [
+        "what does 0 star slash 6 star star star mean",
+        "explain github actions cron schedule",
+        "decode crontab line online",
+      ],
+    },
+    howItWorks: [
+      "Paste a five-field cron expression such as `0 */6 * * *`.",
+      "The parser validates syntax and returns a human-readable schedule description.",
+      "Use the explanation when reviewing jobs without modifying server crontabs here.",
+    ],
+    examples: [
+      { title: "Every six hours", input: "0 */6 * * *" },
+      { title: "Weekday mornings", input: "15 2 * * 1-5" },
+      { title: "Weekly Sunday job", input: "0 0 * * 0" },
+      { title: "Every minute (demo)", input: "* * * * *" },
+    ],
+    relatedSlugs: ["timestamp-converter", "yaml-formatter", "json-formatter", "regex-tester"],
+    affiliateContext: ["backend", "api", "productivity"],
+    loadComponent: () => import("@/tools/cron-parser/Tool"),
+  },
+  {
+    slug: "query-string-parser",
+    title: "Query String Parser",
+    description:
+      "Parse URL query parameters into a table and rebuild percent-encoded query strings for API debugging.",
+    category: "utilities",
+    popular: false,
+    keywordCluster: {
+      primary: "query string parser",
+      secondary: [
+        "url query parser",
+        "parse url parameters",
+        "decode query string",
+        "url parameter decoder",
+        "query param parser online",
+      ],
+      longTail: [
+        "parse oauth redirect query parameters",
+        "split url search params into table",
+        "rebuild encoded query string online",
+      ],
+    },
+    howItWorks: [
+      "Paste a full URL or raw query string starting with `?`.",
+      "Keys and values appear in a table with decoding applied by URLSearchParams.",
+      "Copy the rebuilt query string after inspecting or mentally editing values.",
+    ],
+    examples: [
+      {
+        title: "Search API URL",
+        input: "https://api.example.com/search?q=dev+tools&page=2&sort=desc",
+      },
+      { title: "OAuth-style callback", input: "?code=abc123&state=csrf-token-9" },
+      { title: "Pagination params", input: "?limit=50&offset=100&fields=id,name" },
+      { title: "Tracking query", input: "?utm_source=newsletter&utm_campaign=launch" },
+    ],
+    relatedSlugs: [
+      "url-encoder",
+      "base64-encoder",
+      "jwt-decoder",
+      "json-formatter",
+      "html-formatter",
+    ],
+    affiliateContext: ["api", "frontend", "backend"],
+    loadComponent: () => import("@/tools/query-string-parser/Tool"),
   },
   {
     slug: "timestamp-converter",
@@ -578,12 +937,7 @@ const toolSeeds: ToolSeed[] = [
         input: '{"id":"usr_1","name":"Ava","roles":["admin"],"profile":{"timezone":"UTC"}}',
       },
     ],
-    relatedSlugs: [
-      "json-formatter",
-      "uuid-generator",
-      "base64-encoder",
-      "timestamp-converter",
-    ],
+    relatedSlugs: ["json-formatter", "uuid-generator", "base64-encoder", "timestamp-converter"],
     affiliateContext: ["ai-coding", "backend", "frontend"],
     loadComponent: () => import("@/tools/json-to-typescript/Tool"),
   },

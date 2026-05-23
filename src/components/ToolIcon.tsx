@@ -20,16 +20,11 @@ const iconSizes = {
   lg: "h-7 w-7",
 } as const;
 
-export function ToolIcon({
-  slug,
-  size = "md",
-  className,
-  iconClassName,
-}: ToolIconProps) {
+export function ToolIcon({ slug, size = "md", className, iconClassName }: ToolIconProps) {
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center justify-center bg-primary-soft text-primary",
+        "bg-primary-soft text-primary inline-flex shrink-0 items-center justify-center",
         containerSizes[size],
         className,
       )}

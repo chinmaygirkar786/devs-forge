@@ -7,10 +7,7 @@ import {
 } from "@/lib/chunk-access-guard";
 import { getInternalRouteDenyReason } from "@/lib/route-access-policy";
 
-function denyInternalRoute(
-  request: NextRequest,
-  reason: "redirect" | "forbidden",
-) {
+function denyInternalRoute(request: NextRequest, reason: "redirect" | "forbidden") {
   if (reason === "redirect") {
     return NextResponse.redirect(new URL("/", request.url));
   }

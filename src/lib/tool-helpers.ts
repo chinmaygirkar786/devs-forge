@@ -1,5 +1,26 @@
+import {
+  Document as YamlDocument,
+  isMap as isYamlMap,
+  isSeq as isYamlSeq,
+  parse as parseYaml,
+  stringify as stringifyYaml,
+  visit as visitYaml,
+} from "yaml";
+import cronstrue from "cronstrue";
+
 type JwtDecodedPart = Record<string, unknown> | null;
 type RGB = { r: number; g: number; b: number };
+
+export type HashAlgorithm = "SHA-256" | "SHA-384" | "SHA-512" | "SHA-1";
+
+export type CaseStyle =
+  | "camelCase"
+  | "PascalCase"
+  | "snake_case"
+  | "kebab-case"
+  | "CONSTANT_CASE"
+  | "lower case"
+  | "UPPER CASE";
 
 export function formatJson(value: string, space = 2) {
   const parsed = JSON.parse(value);
@@ -12,10 +33,7 @@ export function encodeBase64(value: string) {
 
 export function decodeBase64(value: string) {
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-  const padded = normalized.padEnd(
-    normalized.length + ((4 - (normalized.length % 4)) % 4),
-    "=",
-  );
+  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), "=");
 
   return decodeURIComponent(escape(atob(padded)));
 }
@@ -126,11 +144,7 @@ function inferType(value: unknown, keyName: string, interfaces: string[]): strin
   return "unknown";
 }
 
-function generateInterface(
-  name: string,
-  value: Record<string, unknown>,
-  interfaces: string[],
-) {
+function generateInterface(name: string, value: Record<string, unknown>, interfaces: string[]) {
   const lines = Object.entries(value).map(([key, entryValue]) => {
     const safeKey = /^[a-zA-Z_$][\w$]*$/.test(key) ? key : JSON.stringify(key);
     const inferredType = inferType(entryValue, key, interfaces);
@@ -184,9 +198,7 @@ const HTML_VOID_ELEMENTS = new Set([
   "wbr",
 ]);
 
-type HtmlToken =
-  | { type: "text"; value: string }
-  | { type: "tag"; value: string };
+type HtmlToken = { type: "text"; value: string } | { type: "tag"; value: string };
 
 function readHtmlTag(source: string, start: number) {
   let index = start + 1;
@@ -266,8 +278,7 @@ function parseHtmlTag(tag: string) {
   }
 
   const name = openingMatch[1].toLowerCase();
-  const selfClosing =
-    /\/\s*>$/.test(trimmed) || HTML_VOID_ELEMENTS.has(name);
+  const selfClosing = /\/\s*>$/.test(trimmed) || HTML_VOID_ELEMENTS.has(name);
 
   return {
     kind: selfClosing ? ("self-closing" as const) : ("open" as const),
@@ -332,6 +343,324 @@ export function formatHtml(value: string, indentSize = 2) {
   }
 
   return lines.join("\n");
+}
+
+function parseXmlDocument(value: string): Document {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error("XML input is empty.");
+  }
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(trimmed, "application/xml");
+  const parseError = doc.querySelector("parsererror");
+
+  if (parseError) {
+    const message = parseError.textContent?.replace(/\s+/g, " ").trim() || "Invalid XML document.";
+    throw new Error(message);
+  }
+
+  return doc;
+}
+
+function escapeXmlText(text: string) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function formatXmlElement(element: Element, depth: number, indentSize: number, lines: string[]) {
+  const indent = " ".repeat(indentSize);
+  const attrString = Array.from(element.attributes)
+    .map((attr) => ` ${attr.name}="${attr.value}"`)
+    .join("");
+
+  const meaningfulChildren = Array.from(element.childNodes).filter((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return (node.textContent?.trim().length ?? 0) > 0;
+    }
+
+    return node.nodeType !== Node.PROCESSING_INSTRUCTION_NODE;
+  });
+
+  if (meaningfulChildren.length === 0) {
+    lines.push(`${indent.repeat(depth)}<${element.tagName}${attrString} />`);
+    return;
+  }
+
+  const onlyText =
+    meaningfulChildren.length === 1 && meaningfulChildren[0].nodeType === Node.TEXT_NODE;
+
+  if (onlyText) {
+    const text = meaningfulChildren[0].textContent?.trim() ?? "";
+    lines.push(
+      `${indent.repeat(depth)}<${element.tagName}${attrString}>${escapeXmlText(text)}</${element.tagName}>`,
+    );
+    return;
+  }
+
+  lines.push(`${indent.repeat(depth)}<${element.tagName}${attrString}>`);
+
+  for (const child of meaningfulChildren) {
+    if (child.nodeType === Node.TEXT_NODE) {
+      const text = child.textContent?.trim();
+      if (text) {
+        lines.push(`${indent.repeat(depth + 1)}${escapeXmlText(text)}`);
+      }
+      continue;
+    }
+
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      formatXmlElement(child as Element, depth + 1, indentSize, lines);
+      continue;
+    }
+
+    if (child.nodeType === Node.COMMENT_NODE) {
+      lines.push(`${indent.repeat(depth + 1)}<!--${child.textContent ?? ""}-->`);
+      continue;
+    }
+
+    if (child.nodeType === Node.CDATA_SECTION_NODE) {
+      lines.push(`${indent.repeat(depth + 1)}<![CDATA[${child.textContent ?? ""}]]>`);
+    }
+  }
+
+  lines.push(`${indent.repeat(depth)}</${element.tagName}>`);
+}
+
+export function formatXml(value: string, indentSize = 2) {
+  const doc = parseXmlDocument(value);
+  const root = doc.documentElement;
+
+  if (!root) {
+    return "";
+  }
+
+  const lines: string[] = [];
+  formatXmlElement(root, 0, indentSize, lines);
+  const body = lines.join("\n");
+  const hasDeclaration = /^\s*<\?xml/i.test(value);
+
+  if (hasDeclaration) {
+    const versionMatch = value.match(/version\s*=\s*["']([^"']+)["']/i);
+    const encodingMatch = value.match(/encoding\s*=\s*["']([^"']+)["']/i);
+    const version = versionMatch?.[1] ?? "1.0";
+    const encoding = encodingMatch?.[1];
+    const declaration = encoding
+      ? `<?xml version="${version}" encoding="${encoding}"?>`
+      : `<?xml version="${version}"?>`;
+
+    return `${declaration}\n${body}`;
+  }
+
+  return body;
+}
+
+export function minifyXml(value: string) {
+  const doc = parseXmlDocument(value);
+  const serialized = new XMLSerializer().serializeToString(doc);
+  const minified = serialized.replace(/>\s+</g, "><").trim();
+  const hasDeclaration = /^\s*<\?xml/i.test(value);
+
+  if (hasDeclaration && !minified.startsWith("<?xml")) {
+    const versionMatch = value.match(/version\s*=\s*["']([^"']+)["']/i);
+    const encodingMatch = value.match(/encoding\s*=\s*["']([^"']+)["']/i);
+    const version = versionMatch?.[1] ?? "1.0";
+    const encoding = encodingMatch?.[1];
+    const declaration = encoding
+      ? `<?xml version="${version}" encoding="${encoding}"?>`
+      : `<?xml version="${version}"?>`;
+
+    return `${declaration}${minified}`;
+  }
+
+  return minified;
+}
+
+export function formatYaml(value: string, indent = 2) {
+  const parsed = parseYaml(value);
+  return stringifyYaml(parsed, { indent, lineWidth: 0 });
+}
+
+function nestedYamlMapDepth(path: readonly unknown[]) {
+  return path.filter(isYamlMap).length;
+}
+
+export function minifyYaml(value: string) {
+  const doc = new YamlDocument(parseYaml(value));
+
+  visitYaml(doc, {
+    Map(_key, node, path) {
+      if (!isYamlMap(node)) {
+        return;
+      }
+
+      // Keep top-level keys on separate lines; inline nested maps (flow style).
+      if (nestedYamlMapDepth(path) > 0) {
+        node.flow = true;
+      }
+    },
+    Seq(_key, node, path) {
+      if (isYamlSeq(node) && nestedYamlMapDepth(path) > 0) {
+        node.flow = true;
+      }
+    },
+  });
+
+  return doc.toString({ indent: 2, lineWidth: 0 }).trimEnd();
+}
+
+export function formatCss(value: string, indentSize = 2) {
+  const indent = " ".repeat(indentSize);
+  let depth = 0;
+  const normalized = value
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized) {
+    return "";
+  }
+
+  const tokens = normalized.split(/(\{|\}|;)/).filter(Boolean);
+  const lines: string[] = [];
+  let buffer = "";
+
+  for (const token of tokens) {
+    if (token === "{") {
+      buffer = buffer.trim();
+      if (buffer) {
+        lines.push(`${indent.repeat(depth)}${buffer} {`);
+      }
+      depth += 1;
+      buffer = "";
+      continue;
+    }
+
+    if (token === "}") {
+      depth = Math.max(depth - 1, 0);
+      lines.push(`${indent.repeat(depth)}}`);
+      buffer = "";
+      continue;
+    }
+
+    if (token === ";") {
+      const rule = buffer.trim();
+      if (rule) {
+        lines.push(`${indent.repeat(depth)}${rule};`);
+      }
+      buffer = "";
+      continue;
+    }
+
+    buffer += token;
+  }
+
+  const tail = buffer.trim();
+  if (tail) {
+    lines.push(`${indent.repeat(depth)}${tail}`);
+  }
+
+  return lines.join("\n");
+}
+
+export function minifyCss(value: string) {
+  return value
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*{\s*/g, "{")
+    .replace(/\s*}\s*/g, "}")
+    .replace(/\s*;\s*/g, ";")
+    .replace(/\s*:\s*/g, ":")
+    .trim();
+}
+
+function splitIdentifierWords(value: string) {
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.toLowerCase());
+}
+
+export function convertCase(value: string, style: CaseStyle) {
+  const words = splitIdentifierWords(value);
+  if (words.length === 0) {
+    return "";
+  }
+
+  switch (style) {
+    case "camelCase":
+      return words
+        .map((word, index) =>
+          index === 0 ? word : `${word.charAt(0).toUpperCase()}${word.slice(1)}`,
+        )
+        .join("");
+    case "PascalCase":
+      return words.map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join("");
+    case "snake_case":
+      return words.join("_");
+    case "kebab-case":
+      return words.join("-");
+    case "CONSTANT_CASE":
+      return words.join("_").toUpperCase();
+    case "lower case":
+      return words.join(" ");
+    case "UPPER CASE":
+      return words.join(" ").toUpperCase();
+    default:
+      return value;
+  }
+}
+
+export async function hashText(value: string, algorithm: HashAlgorithm) {
+  const data = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest(algorithm, data);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export function describeCron(expression: string) {
+  const trimmed = expression.trim();
+  if (!trimmed) {
+    throw new Error("Cron expression is empty.");
+  }
+
+  return cronstrue.toString(trimmed, { throwExceptionOnParseError: true });
+}
+
+export type QueryParamRow = {
+  key: string;
+  value: string;
+};
+
+export function parseQueryStringInput(value: string): QueryParamRow[] {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return [];
+  }
+
+  const query = trimmed.includes("?") ? trimmed.split("?").slice(1).join("?") : trimmed;
+  const params = new URLSearchParams(query.startsWith("?") ? query : `?${query}`);
+
+  return Array.from(params.entries()).map(([key, paramValue]) => ({
+    key,
+    value: paramValue,
+  }));
+}
+
+export function buildQueryString(rows: QueryParamRow[]) {
+  const params = new URLSearchParams();
+  for (const row of rows) {
+    if (!row.key) {
+      continue;
+    }
+    params.append(row.key, row.value);
+  }
+
+  const serialized = params.toString();
+  return serialized ? `?${serialized}` : "";
 }
 
 export function parseTimestamp(value: string) {
@@ -401,8 +730,7 @@ function rgbToHsl({ r, g, b }: RGB) {
   }
 
   const delta = max - min;
-  const saturation =
-    lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  const saturation = lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
 
   let hue = 0;
   switch (max) {
