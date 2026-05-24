@@ -79,8 +79,8 @@ export function PwaProvider() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch((error) => {
-        console.error("[pwa] Service worker registration failed:", error);
+      void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {
+        // Avoid console noise in production (Lighthouse best practices); SW is optional.
       });
     }
   }, []);
