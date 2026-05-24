@@ -1,6 +1,6 @@
 "use client";
 
-import posthog from "posthog-js";
+import { capturePosthog } from "@/lib/posthog";
 import { useMemo, useState } from "react";
 
 import {
@@ -80,7 +80,7 @@ export default function JsonFormatterTool() {
             variant="ghost"
             onClick={() => {
               setInput(sampleJson);
-              posthog.capture("tool_example_loaded", { tool_slug: "json-formatter" });
+              capturePosthog("tool_example_loaded", { tool_slug: "json-formatter" });
             }}
           >
             Load example
@@ -90,7 +90,7 @@ export default function JsonFormatterTool() {
             variant="ghost"
             onClick={() => {
               setInput("");
-              posthog.capture("tool_input_cleared", { tool_slug: "json-formatter" });
+              capturePosthog("tool_input_cleared", { tool_slug: "json-formatter" });
             }}
           >
             Clear

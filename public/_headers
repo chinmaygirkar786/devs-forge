@@ -11,5 +11,20 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests
 
+/icon
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
+/apple-icon
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
+/favicon.ico
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
+/manifest.webmanifest
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
+/pwa/*
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
