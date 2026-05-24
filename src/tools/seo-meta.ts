@@ -141,4 +141,11 @@ export const toolSerpMeta: Record<ToolSlug, ToolSerpMeta> = {
     pageHeading: "JSON to TypeScript Generator",
     seoLinkLabel: "JSON to TypeScript interface generator",
   },
+  "linkedin-post-formatter": {
+    metaTitle: "LinkedIn Post Formatter – Bold, Italic & Unicode Text",
+    metaDescription:
+      "Free linkedin post formatter online to apply bold, italic, underline, and strikethrough with Unicode. Copy and paste into LinkedIn—no Word required.",
+    pageHeading: "LinkedIn Post Formatter",
+    seoLinkLabel: "LinkedIn post formatter",
+  },
 };

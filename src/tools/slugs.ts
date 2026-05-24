@@ -18,6 +18,7 @@ export const toolSlugList = [
   "query-string-parser",
   "timestamp-converter",
   "json-to-typescript",
+  "linkedin-post-formatter",
 ] as const;
 
 export type ToolSlug = (typeof toolSlugList)[number];

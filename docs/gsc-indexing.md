@@ -7,7 +7,7 @@ Production site: **https://devs-forge.com**
 1. Open [Google Search Console](https://search.google.com/search-console) → property **`https://devs-forge.com`**.
 2. **Indexing → Sitemaps**.
 3. Submit **`sitemap.xml`** (full URL: `https://devs-forge.com/sitemap.xml`).
-4. After 24–48h, confirm status **Success** and **~26** discovered URLs (3 static + 4 category hubs + 19 tools).
+4. After 24–48h, confirm status **Success** and **~28** discovered URLs (3 static + 5 category hubs + 20 tools).
 
 **Repo sources:** `src/app/sitemap.ts`, `src/app/robots.ts` (`Sitemap:` line uses `NEXT_PUBLIC_SITE_URL` or `https://devs-forge.com`).
 
@@ -61,7 +61,7 @@ For targeted code fixes, export **Indexing → Pages** (or **Why pages aren’t 
 
 ## 5. Success criteria
 
-- GSC **Sitemaps**: `sitemap.xml` **Success**, ~26 URLs.
+- GSC **Sitemaps**: `sitemap.xml` **Success**, ~28 URLs.
 - **URL inspection** for core tools: “URL is on Google” or “Crawled” within ~1–2 weeks.
 - `npm run verify:crawl` passes (no 403 on pages or chunks for Googlebot).
 - Crawl errors limited to intentional PWA/icon blocks or “Discovered – not indexed”, not 5xx/chunk 403.

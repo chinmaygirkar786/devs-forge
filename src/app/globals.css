@@ -958,3 +958,30 @@ select {
     transform: none;
   }
 }
+
+/* LinkedIn emoji picker — category tabs (outline icons) vs grid (full-color emojis) */
+.emoji-picker-category-tab--active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 1rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary);
+  transform: translateX(-50%);
+}
+
+.emoji-picker-category-tab:not(.emoji-picker-category-tab--active) {
+  opacity: 0.72;
+}
+
+.emoji-picker-category-tab--active {
+  background: var(--primary-soft);
+  opacity: 1;
+}
+
+.emoji-picker-grid-item {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-variant-emoji: emoji;
+}

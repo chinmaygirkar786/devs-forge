@@ -795,3 +795,30 @@ export function generatePalette(baseHex: string) {
     value: rgbToHex(hslToRgb(hsl.h, saturation, step.lightness)),
   }));
 }
+
+export {
+  applyLinkedInStyle,
+  applyStyleToSelection,
+  insertAtCursor,
+  linkedInCharacterCount,
+  LINKEDIN_POST_CHAR_LIMIT,
+  selectionHasStyle,
+  stripLinkedInStyles,
+} from "@/lib/linkedin-format";
+export type { LinkedInTextStyle } from "@/lib/linkedin-format";
+export {
+  applyStyleToDocumentSelection,
+  buildLinkedInDisplaySegments,
+  createLinkedInDocument,
+  insertIntoLinkedInDocument,
+  linkedInDocumentCharacterCount,
+  linkedInDocumentToUnicode,
+  remapStylesAfterPlainEdit,
+  selectionHasStyleOnDocument,
+  unicodeToLinkedInDocument,
+} from "@/lib/linkedin-document";
+export type {
+  CharStyles,
+  LinkedInDisplaySegment,
+  LinkedInPostDocument,
+} from "@/lib/linkedin-document";

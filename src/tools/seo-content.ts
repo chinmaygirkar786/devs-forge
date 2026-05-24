@@ -12,6 +12,7 @@ import { hashGeneratorSeo } from "@/tools/seo/hash-generator";
 import { queryStringParserSeo } from "@/tools/seo/query-string-parser";
 import { xmlFormatterSeo } from "@/tools/seo/xml-formatter";
 import { yamlFormatterSeo } from "@/tools/seo/yaml-formatter";
+import { linkedinPostFormatterSeo } from "@/tools/seo/linkedin-post-formatter";
 
 const defaultSeoFields: Pick<ToolSeoBlock, "contentSections" | "internalLinkSlugs"> = {
   contentSections: [],
@@ -209,4 +210,5 @@ export const toolSeoContent: Record<ToolSlug, ToolSeoBlock> = {
       },
     ],
   },
+  "linkedin-post-formatter": linkedinPostFormatterSeo,
 };

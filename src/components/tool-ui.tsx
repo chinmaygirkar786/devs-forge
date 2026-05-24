@@ -1,6 +1,14 @@
 "use client";
 
-import { cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
+import {
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { Check, Copy } from "lucide-react";
 
 import posthog from "posthog-js";
@@ -71,22 +79,21 @@ type TextareaFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   minHeight?: string;
 };
 
-export function TextareaField({
-  className,
-  minHeight = "min-h-[220px]",
-  ...props
-}: TextareaFieldProps) {
-  return (
-    <textarea
-      {...props}
-      className={cn(
-        "border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-2xl border px-4 py-3 font-mono text-sm leading-6 outline-none focus:ring-2",
-        minHeight,
-        className,
-      )}
-    />
-  );
-}
+export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
+  function TextareaField({ className, minHeight = "min-h-[220px]", ...props }, ref) {
+    return (
+      <textarea
+        ref={ref}
+        {...props}
+        className={cn(
+          "border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-2xl border px-4 py-3 font-mono text-sm leading-6 outline-none focus:ring-2",
+          minHeight,
+          className,
+        )}
+      />
+    );
+  },
+);
 
 export function InputField(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (

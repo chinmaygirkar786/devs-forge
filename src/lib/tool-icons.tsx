@@ -14,6 +14,7 @@ import {
   KeyRound,
   Link2,
   ListFilter,
+  Megaphone,
   Palette,
   ScrollText,
   SearchCode,
@@ -78,6 +79,8 @@ export function ToolIconGlyph({ slug, className }: IconGlyphProps & { slug: stri
       return <Clock {...props} />;
     case "json-to-typescript":
       return <FileJson2 {...props} />;
+    case "linkedin-post-formatter":
+      return <Megaphone {...props} />;
     default: {
       const _exhaustive: never = slug;
       return _exhaustive;

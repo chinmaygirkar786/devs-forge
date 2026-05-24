@@ -1,6 +1,6 @@
 import type { ToolSlug } from "@/tools/slugs";
 
-export type RelatedClusterId = "json" | "encoding" | "security";
+export type RelatedClusterId = "json" | "encoding" | "security" | "content";
 
 export type RelatedCluster = {
   id: RelatedClusterId;
@@ -23,6 +23,11 @@ export const toolRelatedClusters: readonly RelatedCluster[] = [
     id: "security",
     label: "Security & crypto",
     slugs: ["jwt-decoder", "hash-generator", "uuid-generator"],
+  },
+  {
+    id: "content",
+    label: "Content & social",
+    slugs: ["linkedin-post-formatter"],
   },
 ] as const;
 

@@ -942,6 +942,54 @@ data:
     affiliateContext: ["ai-coding", "backend", "frontend"],
     loadComponent: () => import("@/tools/json-to-typescript/Tool"),
   },
+  {
+    slug: "linkedin-post-formatter",
+    title: "LinkedIn Post Formatter",
+    description:
+      "Bold, italic, underline, and strikethrough LinkedIn posts with Unicode formatting—copy and paste without Word or Google Docs.",
+    category: "content",
+    popular: true,
+    keywordCluster: {
+      primary: "linkedin post formatter",
+      secondary: [
+        "linkedin text formatter",
+        "linkedin bold text",
+        "linkedin italic generator",
+        "format linkedin post",
+        "linkedin unicode text",
+      ],
+      longTail: [
+        "bold italic linkedin post online",
+        "linkedin post character counter",
+        "copy paste formatted linkedin post",
+        "linkedin post styling tool browser",
+      ],
+    },
+    howItWorks: [
+      "Write or paste your post, then select text and apply bold, italic, underline, or strikethrough.",
+      "The tool converts characters to Unicode styles LinkedIn renders when you paste.",
+      "Copy the output and paste directly into LinkedIn’s post composer—no upload required.",
+    ],
+    examples: [
+      {
+        title: "Bold hook line for a launch post",
+        input: "I shipped a free developer toolkit today.",
+      },
+      {
+        title: "Italic emphasis on a key phrase",
+        input: "Everything runs locally in your browser.",
+      },
+    ],
+    relatedSlugs: [
+      "markdown-previewer",
+      "case-converter",
+      "url-encoder",
+      "json-formatter",
+      "regex-tester",
+    ],
+    affiliateContext: ["productivity", "frontend", "design"],
+    loadComponent: () => import("@/tools/linkedin-post-formatter/Tool"),
+  },
 ];
 
 const assembledTools: ToolDefinition[] = toolSeeds.map((seed) => {

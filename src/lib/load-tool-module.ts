@@ -22,6 +22,7 @@ const toolLoaders: Record<string, () => Promise<ToolModule>> = {
   "query-string-parser": () => import("@/tools/query-string-parser/Tool"),
   "timestamp-converter": () => import("@/tools/timestamp-converter/Tool"),
   "json-to-typescript": () => import("@/tools/json-to-typescript/Tool"),
+  "linkedin-post-formatter": () => import("@/tools/linkedin-post-formatter/Tool"),
 };
 
 export const toolLoaderSlugs = Object.keys(toolLoaders);

@@ -18,6 +18,11 @@ export const toolCategories: Record<ToolCategory, { title: string; description: 
     title: "Developer Utilities",
     description: "Inspect tokens, validate patterns, and work through developer workflows faster.",
   },
+  content: {
+    title: "Content & Social Tools",
+    description:
+      "Format posts, captions, and social copy for platforms with limited rich-text editors.",
+  },
 };
 
 export const toolCategoryKeys = Object.keys(toolCategories) as ToolCategory[];

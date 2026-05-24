@@ -21,4 +21,9 @@ export const categorySeoCopy: Record<ToolCategory, { headline: string; intro: st
     intro:
       "Inspect tokens, test regular expressions, and validate patterns during development. Utilities on this page focus on quick inspection tasks that come up constantly when working with authentication, log parsing, and string matching.",
   },
+  content: {
+    headline: "Content and social tools for LinkedIn and more",
+    intro:
+      "Format posts and captions for social platforms that do not support Word-style rich text. These tools use Unicode styling and browser-local editing so your copy stays private until you paste it into LinkedIn or other networks.",
+  },
 };
