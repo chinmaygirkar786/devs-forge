@@ -13,14 +13,19 @@ const permissionsPolicy = [
   "microphone=()",
   "payment=()",
   "usb=()",
-  "interest-cohort=()",
 ].join(", ");
+
+/** Cloudflare Web Analytics beacon (injected by the Cloudflare dashboard). */
+const CLOUDFLARE_ANALYTICS_SCRIPT = "https://static.cloudflareinsights.com";
+const CLOUDFLARE_ANALYTICS_CONNECT = "https://cloudflareinsights.com";
 
 /**
  * CSP for a Next.js App Router + Tailwind + PostHog (`/ingest` proxy) app.
  * Enforced only when `SECURITY_CSP_ENFORCE=true`; otherwise report-only in production.
  */
-export function buildContentSecurityPolicy(): string {
+export function buildContentSecurityPolicy(options?: { enforce?: boolean }) {
+  const enforce = options?.enforce ?? isEnforcingCsp();
+
   const directives = [
     "default-src 'self'",
     [
@@ -29,19 +34,30 @@ export function buildContentSecurityPolicy(): string {
       "'unsafe-inline'",
       `'sha256-${themeScriptSha256}'`,
       "https://us-assets.i.posthog.com",
+      CLOUDFLARE_ANALYTICS_SCRIPT,
     ].join(" "),
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    ["connect-src", "'self'", "https://us.i.posthog.com", "https://us.posthog.com"].join(" "),
+    [
+      "connect-src",
+      "'self'",
+      "https://us.i.posthog.com",
+      "https://us.posthog.com",
+      CLOUDFLARE_ANALYTICS_CONNECT,
+    ].join(" "),
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
     "object-src 'none'",
     "manifest-src 'self'",
     "worker-src 'self'",
-    "upgrade-insecure-requests",
   ];
+
+  // Ignored in report-only mode and logs a console error (hurts Lighthouse best practices).
+  if (enforce) {
+    directives.push("upgrade-insecure-requests");
+  }
 
   return directives.join("; ");
 }
@@ -78,9 +94,10 @@ export function getSecurityHeaderRows(): SecurityHeaderRow[] {
   }
 
   if (shouldApplyCsp()) {
-    const policy = buildContentSecurityPolicy();
+    const enforce = isEnforcingCsp();
+    const policy = buildContentSecurityPolicy({ enforce });
     rows.push({
-      key: isEnforcingCsp() ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
+      key: enforce ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
       value: policy,
     });
   }
