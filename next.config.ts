@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
+import { staticAssetCacheHeaderRows } from "./src/lib/static-asset-cache";
 import { getSecurityHeaderRows } from "./src/lib/security-headers";
 
 const nextConfig: NextConfig = {
   experimental: {
+    inlineCss: true,
     optimizePackageImports: ["lucide-react", "react-markdown"],
   },
   async rewrites() {
@@ -33,7 +35,14 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    const cacheHeaders = staticAssetCacheHeaderRows.map(({ key, value }) => ({ key, value }));
+
     return [
+      { source: "/icon", headers: cacheHeaders },
+      { source: "/apple-icon", headers: cacheHeaders },
+      { source: "/favicon.ico", headers: cacheHeaders },
+      { source: "/manifest.webmanifest", headers: cacheHeaders },
+      { source: "/pwa/:path*", headers: cacheHeaders },
       {
         source: "/:path*",
         headers: getSecurityHeaderRows(),

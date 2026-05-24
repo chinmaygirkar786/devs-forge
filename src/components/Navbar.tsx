@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import posthog from "posthog-js";
+import { capturePosthog } from "@/lib/posthog";
 
 import { SearchShortcutHint } from "@/components/SearchShortcutHint";
 import { SiteLogo } from "@/components/SiteLogo";
@@ -25,7 +25,7 @@ export function Navbar({ searchIndex }: NavbarProps) {
 
   const openPalette = useCallback((trigger: "button" | "keyboard") => {
     setPaletteOpen(true);
-    posthog.capture("command_palette_opened", { trigger });
+    capturePosthog("command_palette_opened", { trigger });
   }, []);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Navbar({ searchIndex }: NavbarProps) {
         event.preventDefault();
         setPaletteOpen((current) => {
           if (!current) {
-            posthog.capture("command_palette_opened", { trigger: "keyboard" });
+            capturePosthog("command_palette_opened", { trigger: "keyboard" });
           }
           return !current;
         });

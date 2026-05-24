@@ -26,6 +26,12 @@
     "react-markdown": "^10.1.0",
     "yaml": "^2.9.0"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4"
+  ],
   "devDependencies": {
     "@next/bundle-analyzer": "16.2.6",
     "@opennextjs/cloudflare": "^1.19.11",

@@ -1,6 +1,6 @@
 "use client";
 
-import posthog from "posthog-js";
+import { capturePosthog } from "@/lib/posthog";
 import { useMemo, useRef, useState } from "react";
 
 import { ToolCardLink } from "@/components/ToolCardLink";
@@ -62,7 +62,7 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
               if (debounceRef.current) clearTimeout(debounceRef.current);
               if (nextQuery.trim().length >= 2) {
                 debounceRef.current = setTimeout(() => {
-                  posthog.capture("home_explorer_searched", {
+                  capturePosthog("home_explorer_searched", {
                     query: nextQuery.trim(),
                     results_count: tools.filter((tool) =>
                       [tool.title, tool.cardTitle, tool.description, ...tool.keywords]

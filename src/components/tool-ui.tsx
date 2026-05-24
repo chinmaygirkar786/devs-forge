@@ -3,8 +3,7 @@
 import { cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 
-import posthog from "posthog-js";
-
+import { capturePosthog } from "@/lib/posthog";
 import { cn } from "@/lib/utils";
 
 type SectionCardProps = {
@@ -413,7 +412,7 @@ export function CopyButton({ value, label = "Copy output", className }: CopyButt
         triggerRipple();
         await navigator.clipboard.writeText(value);
         setCopied(true);
-        posthog.capture("tool_output_copied", { method: "button", output_length: value.length });
+        capturePosthog("tool_output_copied", { method: "button", output_length: value.length });
       }}
     >
       <span className="copy-output-btn__glow" aria-hidden />
@@ -496,7 +495,7 @@ export function useToolShortcuts({ onCopy, onClear }: ToolShortcutsOptions) {
       if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "c") {
         event.preventDefault();
         onCopy?.();
-        posthog.capture("tool_output_copied", { method: "keyboard_shortcut" });
+        capturePosthog("tool_output_copied", { method: "keyboard_shortcut" });
       }
 
       if ((event.ctrlKey || event.metaKey) && event.key === "Backspace") {
