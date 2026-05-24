@@ -44,7 +44,7 @@ Environment variables for production (Workers build + runtime):
 
 - `NEXT_PUBLIC_SITE_URL=https://devs-forge.com`
 - `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` (optional; analytics disabled when unset)
-- `SECURITY_CSP_ENFORCE=true` (optional; default is CSP **report-only** in production)
+- `SECURITY_CSP_DISABLE=true` (optional; disables CSP entirely — not recommended)
 
 ## Security headers
 
@@ -54,7 +54,7 @@ HTTP security headers (HSTS, `nosniff`, frame denial, Permissions-Policy, CSP) a
 - `src/middleware.ts` and `cloudflare/entry.worker.ts` (edge responses)
 - `public/_headers` for Cloudflare static assets (keep in sync when editing the CSP)
 
-CSP ships as **Report-Only** in production so you can watch the browser console for violations before enforcing. Set `SECURITY_CSP_ENFORCE=true` on the Worker when ready.
+CSP is **enforced** in production (PostHog via `/ingest`, Cloudflare Web Analytics allowed). Report-only was removed because it still fills Chrome DevTools Issues and lowers Lighthouse Best Practices. Set `SECURITY_CSP_DISABLE=true` only while debugging a new third-party script.
 
 **Cloudflare dashboard (manual):** enable WAF managed rules, Bot Fight Mode with **allow verified bots** (Googlebot/Bingbot), and optional rate limits on `/ingest/*` so analytics cannot be abused as an open relay.
 
