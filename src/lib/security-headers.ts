@@ -1,6 +1,6 @@
 /**
  * SHA-256 (base64) of the inline theme bootstrap in `src/lib/theme.ts`.
- * Recompute when `themeScript` changes: `node -e "..."` or update `public/_headers` too.
+ * Reference only — do not add to `script-src` alongside `'unsafe-inline'` (browsers ignore inline).
  */
 export const themeScriptSha256 = "oo3FANOraHvAaybf9nQ/2E6O07se9p9X/uLTT5PVox8=";
 
@@ -21,43 +21,31 @@ const CLOUDFLARE_ANALYTICS_CONNECT = "https://cloudflareinsights.com";
 
 /**
  * CSP for a Next.js App Router + Tailwind + PostHog (`/ingest` proxy) app.
- * Enforced only when `SECURITY_CSP_ENFORCE=true`; otherwise report-only in production.
+ * Enforced in production only — report-only is omitted because Chrome DevTools
+ * still logs CSP Issues (hurts Lighthouse Best Practices) without blocking anything.
  */
-export function buildContentSecurityPolicy(options?: { enforce?: boolean }) {
-  const enforce = options?.enforce ?? isEnforcingCsp();
-
+export function buildContentSecurityPolicy() {
   const directives = [
     "default-src 'self'",
     [
       "script-src",
       "'self'",
+      // Do not combine hashes/nonces with 'unsafe-inline' — browsers ignore inline allowance.
       "'unsafe-inline'",
-      `'sha256-${themeScriptSha256}'`,
-      "https://us-assets.i.posthog.com",
       CLOUDFLARE_ANALYTICS_SCRIPT,
     ].join(" "),
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    [
-      "connect-src",
-      "'self'",
-      "https://us.i.posthog.com",
-      "https://us.posthog.com",
-      CLOUDFLARE_ANALYTICS_CONNECT,
-    ].join(" "),
+    ["connect-src", "'self'", CLOUDFLARE_ANALYTICS_CONNECT].join(" "),
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
     "object-src 'none'",
     "manifest-src 'self'",
-    "worker-src 'self'",
+    ["worker-src", "'self'", "blob:"].join(" "),
+    "upgrade-insecure-requests",
   ];
-
-  // Ignored in report-only mode and logs a console error (hurts Lighthouse best practices).
-  if (enforce) {
-    directives.push("upgrade-insecure-requests");
-  }
 
   return directives.join("; ");
 }
@@ -68,11 +56,7 @@ export type SecurityHeaderRow = {
 };
 
 function shouldApplyCsp() {
-  return process.env.NODE_ENV === "production";
-}
-
-function isEnforcingCsp() {
-  return process.env.SECURITY_CSP_ENFORCE === "true";
+  return process.env.NODE_ENV === "production" && process.env.SECURITY_CSP_DISABLE !== "true";
 }
 
 /** Security headers safe for HTML pages and static assets (CSP only affects documents). */
@@ -94,11 +78,9 @@ export function getSecurityHeaderRows(): SecurityHeaderRow[] {
   }
 
   if (shouldApplyCsp()) {
-    const enforce = isEnforcingCsp();
-    const policy = buildContentSecurityPolicy({ enforce });
     rows.push({
-      key: enforce ? "Content-Security-Policy" : "Content-Security-Policy-Report-Only",
-      value: policy,
+      key: "Content-Security-Policy",
+      value: buildContentSecurityPolicy(),
     });
   }
 

@@ -2,8 +2,6 @@ import type { NextConfig } from "next";
 
 import { getSecurityHeaderRows } from "./src/lib/security-headers";
 
-const securityHeaders = getSecurityHeaderRows();
-
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "react-markdown"],
@@ -38,7 +36,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/:path*",
-        headers: securityHeaders,
+        headers: getSecurityHeaderRows(),
       },
       {
         source: "/_next/static/:path*",
