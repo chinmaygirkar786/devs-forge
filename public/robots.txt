@@ -1,0 +1,17 @@
+# https://devs-forge.com/robots.txt
+# Keep in sync with NEXT_PUBLIC_SITE_URL / src/lib/site.ts when the production domain changes.
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /BUILD_ID
+Disallow: /_routes.json
+Disallow: /_redirects
+Disallow: /sw.js
+Disallow: /manifest.webmanifest
+Disallow: /apple-icon
+Disallow: /icon
+Disallow: /pwa/icon-
+
+Host: https://devs-forge.com/
+Sitemap: https://devs-forge.com/sitemap.xml

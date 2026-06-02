@@ -30,19 +30,26 @@ type HomeDeferredSectionsProps = {
 
 export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProps) {
   return (
-    <LazyWhenVisible
-      fallback={<SectionSkeleton minHeight="min-h-[620px]" />}
-      minHeight="620px"
-      rootMargin="280px 0px"
-    >
-      <div className="space-y-10">
+    <div className="space-y-10">
+      <LazyWhenVisible
+        fallback={<SectionSkeleton minHeight="min-h-[200px]" />}
+        minHeight="200px"
+        rootMargin="120px 0px"
+      >
         <Suspense fallback={<SectionSkeleton minHeight="min-h-[200px]" />}>
           <RecentlyUsedTools />
         </Suspense>
+      </LazyWhenVisible>
+
+      <LazyWhenVisible
+        fallback={<SectionSkeleton minHeight="min-h-[420px]" />}
+        minHeight="420px"
+        rootMargin="0px"
+      >
         <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
           <HomeExplorer tools={explorerTools} />
         </Suspense>
-      </div>
-    </LazyWhenVisible>
+      </LazyWhenVisible>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ Production site: **https://devs-forge.com**
 3. Submit **`sitemap.xml`** (full URL: `https://devs-forge.com/sitemap.xml`).
 4. After 24–48h, confirm status **Success** and **~26** discovered URLs (3 static + 4 category hubs + 19 tools).
 
-**Repo sources:** `src/app/sitemap.ts`, `src/app/robots.ts` (`Sitemap:` line uses `NEXT_PUBLIC_SITE_URL` or `https://devs-forge.com`).
+**Repo sources:** `src/app/sitemap.ts`, `public/robots.txt` (static; `Sitemap:` points to `https://devs-forge.com/sitemap.xml`).
 
 If GSC shows **Couldn’t fetch**:
 
@@ -47,15 +47,16 @@ Checks (Googlebot user-agent): `robots.txt`, `sitemap.xml` (200 + 19 URLs), 10 c
 
 ## 4. GSC issue → action matrix
 
-| GSC issue                                                                              | Likely cause                                              | Action                                                                        |
-| -------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Blocked by robots.txt** on `/icon`, `/apple-icon`, `/sw.js`, `/manifest.webmanifest` | Intentional in `src/app/robots.ts`                        | **No fix** — not needed for rankings                                          |
-| **403** on `/_next/static/chunks/*.js`                                                 | Chunk guard without crawler bypass or stale cache         | Deploy `src/lib/chunk-access-guard.ts`; purge CF cache for chunks             |
-| **Page with redirect** on `/robots.txt` or `/icon` (normal browser)                    | `src/lib/route-access-policy.ts` redirects tab navigation | **Expected** for users; Googlebot should get **200** (`npm run verify:crawl`) |
-| **Soft 404** / **Crawled – not indexed**                                               | New site / authority                                      | On-page SEO + time; not a robots bug                                          |
-| **Server error (5xx)**                                                                 | Worker / Cloudflare                                       | Security → Events, Wrangler logs                                              |
-| **Sitemap couldn’t read**                                                              | Wrong property, 403, non-XML                              | Fix deploy; expect `Content-Type: application/xml`                            |
-| **Alternate page with proper canonical**                                               | —                                                         | Usually valid; confirm canonical matches tool URL                             |
+| GSC issue                                                                              | Likely cause                                      | Action                                                                               |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **Blocked by robots.txt** on `/icon`, `/apple-icon`, `/sw.js`, `/manifest.webmanifest` | Intentional in `public/robots.txt`                | **No fix** — not needed for rankings                                                 |
+| **403** on `/_next/static/chunks/*.js`                                                 | Chunk guard without crawler bypass or stale cache | Deploy `src/lib/chunk-access-guard.ts`; purge CF cache for chunks                    |
+| **robots.txt not valid** / **503** / redirect on `/robots.txt`                         | Edge policy blocked non-Googlebot fetches         | Deploy latest; `robots.txt` must be **200** for all clients (`npm run verify:crawl`) |
+| **Page with redirect** on `/icon` (normal browser)                                     | `route-access-policy` redirects tab navigation    | **Expected** for users; crawlers still get **200** for OG/icon when allowed          |
+| **Soft 404** / **Crawled – not indexed**                                               | New site / authority                              | On-page SEO + time; not a robots bug                                                 |
+| **Server error (5xx)**                                                                 | Worker / Cloudflare                               | Security → Events, Wrangler logs                                                     |
+| **Sitemap couldn’t read**                                                              | Wrong property, 403, non-XML                      | Fix deploy; expect `Content-Type: application/xml`                                   |
+| **Alternate page with proper canonical**                                               | —                                                 | Usually valid; confirm canonical matches tool URL                                    |
 
 For targeted code fixes, export **Indexing → Pages** (or **Why pages aren’t indexed**) with example URLs and error types.
 

@@ -92,6 +92,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
                   <li key={related.slug}>
                     <Link
                       href={link.href}
+                      prefetch={false}
                       className="border-border hover:border-border-strong hover:bg-background-soft flex gap-3 rounded-2xl border p-4"
                     >
                       <ToolIcon slug={related.slug} size="sm" />

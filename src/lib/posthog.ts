@@ -34,15 +34,31 @@ export function initPosthog() {
   return initPromise;
 }
 
+function shouldLoadPosthog() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.location.pathname.startsWith("/tools");
+}
+
 export function capturePosthog(event: string, properties?: CaptureProperties) {
+  if (!shouldLoadPosthog()) {
+    return;
+  }
+
   void initPosthog().then((posthog) => {
     posthog?.capture(event, properties);
   });
 }
 
-/** Load analytics after first paint so PostHog does not bloat the critical JS bundle. */
+/** Load analytics after idle — skipped on marketing-only routes to save main-thread work. */
 export function schedulePosthogBootstrap() {
   if (!token || typeof window === "undefined") {
+    return;
+  }
+
+  if (!shouldLoadPosthog()) {
     return;
   }
 
@@ -51,9 +67,9 @@ export function schedulePosthogBootstrap() {
   };
 
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(run, { timeout: 2500 });
+    requestIdleCallback(run, { timeout: 5000 });
     return;
   }
 
-  setTimeout(run, 1500);
+  setTimeout(run, 3500);
 }

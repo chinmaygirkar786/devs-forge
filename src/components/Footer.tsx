@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { SiteLogo } from "@/components/SiteLogo";
-import { ToolIcon } from "@/components/ToolIcon";
 
 function HeartIcon() {
   return (
@@ -36,11 +35,16 @@ export function Footer() {
           <div className="mt-4 flex flex-wrap gap-4 text-sm">
             <Link
               href={routes.toolsIndex}
+              prefetch={false}
               className="text-foreground hover:text-primary font-medium"
             >
               All tools
             </Link>
-            <Link href={routes.about} className="text-foreground hover:text-primary font-medium">
+            <Link
+              href={routes.about}
+              prefetch={false}
+              className="text-foreground hover:text-primary font-medium"
+            >
               About
             </Link>
           </div>
@@ -55,9 +59,10 @@ export function Footer() {
               <Link
                 key={tool.slug}
                 href={routes.tool(tool.slug)}
-                className="text-foreground hover:text-primary flex items-center gap-2.5 text-sm"
+                prefetch={false}
+                className="text-foreground hover:text-primary flex items-center gap-2 text-sm"
               >
-                <ToolIcon slug={tool.slug} size="sm" className="h-8 w-8 rounded-lg" />
+                <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                 {tool.title}
               </Link>
             ))}
@@ -70,17 +75,25 @@ export function Footer() {
           </h3>
           <ul className="text-muted-foreground mt-4 space-y-3 text-sm">
             <li>
-              <Link href={routes.toolsIndex} className="hover:text-foreground">
+              <Link href={routes.toolsIndex} prefetch={false} className="hover:text-foreground">
                 Full tools directory
               </Link>
             </li>
             <li>
-              <Link href={routes.category("formatting")} className="hover:text-foreground">
+              <Link
+                href={routes.category("formatting")}
+                prefetch={false}
+                className="hover:text-foreground"
+              >
                 Formatting tools
               </Link>
             </li>
             <li>
-              <Link href={routes.category("utilities")} className="hover:text-foreground">
+              <Link
+                href={routes.category("utilities")}
+                prefetch={false}
+                className="hover:text-foreground"
+              >
                 Developer utilities
               </Link>
             </li>

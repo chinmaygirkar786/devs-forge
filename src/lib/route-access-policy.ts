@@ -58,17 +58,6 @@ export function isDeployInfraPath(pathname: string) {
   return DEPLOY_INFRA_PATHS.has(pathname);
 }
 
-/** Google/Bing must reach these; block users opening them in a tab. */
-export function isAllowedSeoDiscoveryRequest(request: Request) {
-  const userAgent = request.headers.get("user-agent") ?? "";
-
-  if (isSearchCrawler(userAgent)) {
-    return true;
-  }
-
-  return !isDirectBrowserNavigation(request);
-}
-
 /** OG + favicons for SEO/social; block viewing raw image URLs in a tab. */
 export function isAllowedBrandImageRequest(request: Request) {
   const userAgent = request.headers.get("user-agent") ?? "";
@@ -104,8 +93,9 @@ export function getInternalRouteDenyReason(
     return isAllowedDeployInfraRequest() ? null : "forbidden";
   }
 
+  // robots.txt and sitemap.xml must always return 200 for crawlers, GSC, and Lighthouse.
   if (isSeoDiscoveryPath(pathname)) {
-    return isAllowedSeoDiscoveryRequest(request) ? null : "redirect";
+    return null;
   }
 
   if (isBrandImagePath(pathname)) {
