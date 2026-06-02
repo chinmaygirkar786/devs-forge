@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
 import { ToolCardLink } from "@/components/ToolCardLink";
-import { ToolIcon } from "@/components/ToolIcon";
 import { SEOHead } from "@/components/SEOHead";
 import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
+import { isMacUserAgent } from "@/lib/platform";
 import { siteConfig } from "@/lib/site";
 import { routes } from "@/lib/internal-links";
 import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
 
-export default function Home() {
+export default async function Home() {
+  const userAgent = (await headers()).get("user-agent") ?? "";
+  const isMac = isMacUserAgent(userAgent);
   const categories = getToolsByCategory();
   const popularTools = getPopularTools(6);
   const searchableTools = tools.map(
@@ -54,12 +57,14 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={routes.toolsIndex}
+                prefetch
                 className="bg-foreground text-background rounded-full px-5 py-3 text-sm font-semibold"
               >
                 Browse all tools
               </Link>
               <Link
                 href={routes.tool("json-formatter")}
+                prefetch
                 className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
               >
                 JSON Formatter
@@ -68,7 +73,7 @@ export default function Home() {
                 type="button"
                 className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
               >
-                <SearchShortcutPhrase template="press-to-search" />
+                <SearchShortcutPhrase template="press-to-search" isMac={isMac} />
               </button>
             </div>
           </div>
@@ -112,7 +117,11 @@ export default function Home() {
                 {category.title}
               </p>
               <h3 className="text-foreground mt-3 text-2xl font-bold">
-                <Link href={routes.category(category.key)} className="hover:text-primary">
+                <Link
+                  href={routes.category(category.key)}
+                  prefetch={false}
+                  className="hover:text-primary"
+                >
                   {category.tools.length} tools
                 </Link>
               </h3>
@@ -122,10 +131,14 @@ export default function Home() {
                   <Link
                     key={tool.slug}
                     href={routes.tool(tool.slug)}
+                    prefetch={false}
                     title={tool.title}
-                    className="text-foreground hover:text-primary flex items-center gap-3"
+                    className="text-foreground hover:text-primary flex items-center gap-2"
                   >
-                    <ToolIcon slug={tool.slug} size="sm" />
+                    <span
+                      className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                      aria-hidden
+                    />
                     <span className="font-medium">{tool.seoLinkLabel}</span>
                   </Link>
                 ))}
@@ -169,7 +182,7 @@ export default function Home() {
             <div className="surface-muted rounded-2xl p-4">
               <h3 className="text-foreground font-semibold">Command palette</h3>
               <p className="text-muted-foreground mt-2 text-sm leading-6">
-                <SearchShortcutPhrase template="open-anywhere" />
+                <SearchShortcutPhrase template="open-anywhere" isMac={isMac} />
               </p>
             </div>
             <div className="surface-muted rounded-2xl p-4">

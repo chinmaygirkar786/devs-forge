@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { PlatformProvider } from "@/components/PlatformProvider";
 import { PwaProviderDeferred } from "@/components/PwaProviderDeferred";
 import { isMacUserAgent } from "@/lib/platform";
 import { siteConfig } from "@/lib/site";
@@ -66,20 +65,19 @@ export default async function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
+      {...(isMac ? { "data-mac": "" } : {})}
       className={`${geistSans.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${geistSans.className} flex min-h-full flex-col`}>
-        <PlatformProvider isMac={isMac}>
-          <Navbar searchIndex={toolSearchIndex} />
-          <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
-            {children}
-          </main>
-          <Footer />
-          <PwaProviderDeferred />
-        </PlatformProvider>
+        <Navbar searchIndex={toolSearchIndex} isMac={isMac} />
+        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
+          {children}
+        </main>
+        <Footer />
+        <PwaProviderDeferred />
       </body>
     </html>
   );

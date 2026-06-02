@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { capturePosthog } from "@/lib/posthog";
 
+import { capturePosthog } from "@/lib/posthog";
+import { DeferredThemeToggle } from "@/components/DeferredThemeToggle";
 import { SearchShortcutHint } from "@/components/SearchShortcutHint";
 import { SiteLogo } from "@/components/SiteLogo";
-import { ThemeToggleLazy } from "@/components/ThemeToggleLazy";
 import type { ToolSearchEntry } from "@/lib/tool-search-index";
 import { siteConfig } from "@/lib/site";
 
@@ -16,11 +16,16 @@ const CommandPalette = lazy(() =>
   })),
 );
 
+function preloadCommandPalette() {
+  void import("@/components/CommandPalette");
+}
+
 type NavbarProps = {
   searchIndex: ToolSearchEntry[];
+  isMac: boolean;
 };
 
-export function Navbar({ searchIndex }: NavbarProps) {
+export function Navbar({ searchIndex, isMac }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
   const openPalette = useCallback((trigger: "button" | "keyboard") => {
@@ -50,14 +55,19 @@ export function Navbar({ searchIndex }: NavbarProps) {
       <header className="border-border/80 bg-background/80 sticky top-0 z-40 border-b backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/" prefetch className="flex items-center gap-3">
               <SiteLogo />
               <span className="text-foreground text-lg font-bold">{siteConfig.name}</span>
             </Link>
 
             <nav className="text-muted-foreground hidden items-center gap-5 text-sm lg:flex">
               {siteConfig.navigation.map((item) => (
-                <Link key={item.href} href={item.href} className="hover:text-foreground">
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  prefetch={false}
+                  className="hover:text-foreground"
+                >
                   {item.label}
                 </Link>
               ))}
@@ -68,14 +78,16 @@ export function Navbar({ searchIndex }: NavbarProps) {
             <button
               type="button"
               onClick={() => openPalette("button")}
+              onMouseEnter={preloadCommandPalette}
+              onFocus={preloadCommandPalette}
               className="surface-muted text-muted-foreground hover:text-foreground hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium sm:flex"
             >
               <span>Search tools</span>
               <span className="border-border inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold whitespace-nowrap">
-                <SearchShortcutHint />
+                <SearchShortcutHint isMac={isMac} />
               </span>
             </button>
-            <ThemeToggleLazy />
+            <DeferredThemeToggle />
           </div>
         </div>
       </header>

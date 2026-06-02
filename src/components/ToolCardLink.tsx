@@ -14,6 +14,8 @@ type ToolCardLinkProps = ComponentProps<typeof Link> & {
   layout?: "horizontal" | "stacked";
   /** Perceptible hover lift on home-style tool cards (no scale/will-change). */
   interactive?: boolean;
+  /** Default false — avoids prefetching many tool chunks on hub/list pages (PSI unused JS). */
+  prefetch?: boolean;
 };
 
 export function ToolCardLink({
@@ -25,12 +27,14 @@ export function ToolCardLink({
   iconSize = "md",
   layout = "horizontal",
   interactive = false,
+  prefetch = false,
   className,
   children,
   ...props
 }: ToolCardLinkProps) {
   return (
     <Link
+      prefetch={prefetch}
       title={tooltip}
       className={cn(
         layout === "horizontal" && "flex gap-4",

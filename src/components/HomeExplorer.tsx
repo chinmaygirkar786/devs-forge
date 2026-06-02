@@ -1,7 +1,6 @@
 "use client";
 
-import { capturePosthog } from "@/lib/posthog";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { routes } from "@/lib/internal-links";
@@ -18,14 +17,15 @@ type HomeExplorerProps = {
   tools: HomeExplorerTool[];
 };
 
+const HOME_EXPLORER_IDLE_LIMIT = 6;
+
 export function HomeExplorer({ tools }: HomeExplorerProps) {
   const [query, setQuery] = useState("");
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const filteredTools = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     if (!normalizedQuery) {
-      return tools;
+      return tools.slice(0, HOME_EXPLORER_IDLE_LIMIT);
     }
 
     return tools.filter((tool) =>
@@ -36,6 +36,8 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
         .includes(normalizedQuery),
     );
   }, [query, tools]);
+
+  const isSearching = query.trim().length > 0;
 
   return (
     <section className="surface-card rounded-[2rem] p-6 sm:p-8">
@@ -56,30 +58,19 @@ export function HomeExplorer({ tools }: HomeExplorerProps) {
         <div className="w-full max-w-xl">
           <input
             value={query}
-            onChange={(event) => {
-              const nextQuery = event.target.value;
-              setQuery(nextQuery);
-              if (debounceRef.current) clearTimeout(debounceRef.current);
-              if (nextQuery.trim().length >= 2) {
-                debounceRef.current = setTimeout(() => {
-                  capturePosthog("home_explorer_searched", {
-                    query: nextQuery.trim(),
-                    results_count: tools.filter((tool) =>
-                      [tool.title, tool.cardTitle, tool.description, ...tool.keywords]
-                        .filter((v): v is string => Boolean(v))
-                        .join(" ")
-                        .toLowerCase()
-                        .includes(nextQuery.trim().toLowerCase()),
-                    ).length,
-                  });
-                }, 600);
-              }
-            }}
+            onChange={(event) => setQuery(event.target.value)}
             placeholder="Search JSON, JWT, regex, UUID, markdown, gradients..."
             className="border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-[1.75rem] border px-5 py-4 text-base outline-none focus:ring-2"
           />
         </div>
       </div>
+
+      {!isSearching ? (
+        <p className="text-muted-foreground mt-4 text-sm">
+          Showing {HOME_EXPLORER_IDLE_LIMIT} popular tools — search above to browse all{" "}
+          {tools.length} utilities.
+        </p>
+      ) : null}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {filteredTools.map((tool) => (

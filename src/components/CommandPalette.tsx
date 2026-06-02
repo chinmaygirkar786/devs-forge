@@ -98,6 +98,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
                 <Link
                   key={tool.slug}
                   href={routes.tool(tool.slug)}
+                  prefetch={false}
                   onClick={() => {
                     capturePosthog("command_palette_tool_selected", {
                       tool_slug: tool.slug,
