@@ -47,6 +47,31 @@ check_status "robots.txt (document fetch)" "$BASE/robots.txt" \
   -H "Sec-Fetch-Site: none"
 check_status "sitemap.xml" "$BASE/sitemap.xml"
 
+check_redirect() {
+  local label="$1"
+  local url="$2"
+  shift 2
+  local status
+  status=$(curl -sI -A "$UA" "$@" "$url" | head -1 | awk '{print $2}')
+  if [[ "$status" != "302" && "$status" != "301" && "$status" != "307" && "$status" != "308" ]]; then
+    echo "FAIL $label: expected redirect, got HTTP $status ($url)"
+    failures=$((failures + 1))
+  else
+    echo "OK   $label: HTTP $status (redirect)"
+  fi
+}
+
+check_status "icon (Googlebot)" "$BASE/icon"
+check_redirect "icon (document tab)" "$BASE/icon" \
+  -H "Sec-Fetch-Dest: document" \
+  -H "Sec-Fetch-Mode: navigate"
+check_redirect "icon (anonymous fetch)" "$BASE/icon" -A "curl/8.0"
+check_status "manifest (Googlebot)" "$BASE/manifest.webmanifest"
+check_redirect "manifest (document tab)" "$BASE/manifest.webmanifest" \
+  -H "Sec-Fetch-Dest: document" \
+  -H "Sec-Fetch-Mode: navigate"
+check_redirect "manifest (anonymous fetch)" "$BASE/manifest.webmanifest" -A "curl/8.0"
+
 loc_count=$(curl -s -A "$UA" "$BASE/sitemap.xml" | grep -c "<loc>" || true)
 echo "INFO sitemap <loc> count: $loc_count (expected 26)"
 if [[ "$loc_count" != "26" ]]; then
