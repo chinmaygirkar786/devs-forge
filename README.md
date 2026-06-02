@@ -51,7 +51,7 @@ Environment variables for production (Workers build + runtime):
 HTTP security headers (HSTS, `nosniff`, frame denial, Permissions-Policy, CSP) are defined in `src/lib/security-headers.ts` and applied via:
 
 - `next.config.ts` (`headers()`)
-- `src/middleware.ts` and `cloudflare/entry.worker.ts` (edge responses)
+- `src/proxy.ts` and `cloudflare/entry.worker.ts` (edge responses)
 - `public/_headers` for Cloudflare static assets (keep in sync when editing the CSP)
 
 CSP is **enforced** in production (PostHog via `/ingest`, Cloudflare Web Analytics allowed). Report-only was removed because it still fills Chrome DevTools Issues and lowers Lighthouse Best Practices. Set `SECURITY_CSP_DISABLE=true` only while debugging a new third-party script.

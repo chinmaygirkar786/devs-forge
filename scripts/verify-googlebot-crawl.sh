@@ -41,6 +41,10 @@ echo "User-Agent: $UA"
 echo ""
 
 check_status "robots.txt" "$BASE/robots.txt"
+check_status "robots.txt (document fetch)" "$BASE/robots.txt" \
+  -H "Sec-Fetch-Dest: document" \
+  -H "Sec-Fetch-Mode: navigate" \
+  -H "Sec-Fetch-Site: none"
 check_status "sitemap.xml" "$BASE/sitemap.xml"
 
 loc_count=$(curl -s -A "$UA" "$BASE/sitemap.xml" | grep -c "<loc>" || true)

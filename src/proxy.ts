@@ -23,7 +23,7 @@ function denyInternalRoute(request: NextRequest, reason: "redirect" | "forbidden
   );
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/cdn-cgi/rum") {
@@ -52,8 +52,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/cdn-cgi/rum",
-    "/robots.txt",
-    "/sitemap.xml",
     "/BUILD_ID",
     "/_routes.json",
     "/_redirects",

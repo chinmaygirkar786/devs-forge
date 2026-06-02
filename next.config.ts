@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
     const cacheHeaders = staticAssetCacheHeaderRows.map(({ key, value }) => ({ key, value }));
 
     return [
+      { source: "/robots.txt", headers: cacheHeaders },
+      { source: "/sitemap.xml", headers: cacheHeaders },
       { source: "/icon", headers: cacheHeaders },
       { source: "/apple-icon", headers: cacheHeaders },
       { source: "/favicon.ico", headers: cacheHeaders },
