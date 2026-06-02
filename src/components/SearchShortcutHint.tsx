@@ -32,7 +32,11 @@ type SearchShortcutPhraseProps = {
   isMac?: boolean;
 };
 
-export function SearchShortcutPhrase({ className, template, isMac = false }: SearchShortcutPhraseProps) {
+export function SearchShortcutPhrase({
+  className,
+  template,
+  isMac = false,
+}: SearchShortcutPhraseProps) {
   if (template === "press-to-search") {
     return (
       <span className={className}>

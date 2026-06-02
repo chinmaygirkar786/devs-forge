@@ -8,6 +8,16 @@ import {
 import { getInternalRouteDenyReason } from "@/lib/route-access-policy";
 import { applySecurityHeadersInPlace } from "@/lib/security-headers";
 
+/**
+ * Edge middleware for route guards and security headers.
+ *
+ * Keep this file as `middleware.ts` (not `proxy.ts`) until @opennextjs/cloudflare
+ * supports Next.js 16 proxy — `opennextjs-cloudflare build` fails with:
+ * "Node.js middleware is not currently supported. Consider switching to Edge Middleware."
+ * Production on Cloudflare also enforces the same rules in `cloudflare/entry.worker.ts`.
+ */
+export const runtime = "experimental-edge";
+
 function denyInternalRoute(request: NextRequest, reason: "redirect" | "forbidden") {
   if (reason === "redirect") {
     return applySecurityHeadersInPlace(NextResponse.redirect(new URL("/", request.url)));
@@ -23,7 +33,7 @@ function denyInternalRoute(request: NextRequest, reason: "redirect" | "forbidden
   );
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/cdn-cgi/rum") {

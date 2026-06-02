@@ -107,7 +107,7 @@ export function applySecurityHeaders(response: Response): Response {
   });
 }
 
-/** Apply headers on a Next.js proxy response without replacing the instance. */
+/** Apply headers on a Next.js middleware response without replacing the instance. */
 export function applySecurityHeadersInPlace<T extends Response>(response: T): T {
   applySecurityHeaderRows(response.headers);
   return response;

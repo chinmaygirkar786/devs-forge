@@ -25,12 +25,7 @@ export function DeferredThemeToggle() {
   }, []);
 
   if (!ready) {
-    return (
-      <div
-        className="surface-muted h-[34px] w-[148px] shrink-0 rounded-full"
-        aria-hidden
-      />
-    );
+    return <div className="surface-muted h-[34px] w-[148px] shrink-0 rounded-full" aria-hidden />;
   }
 
   return (
