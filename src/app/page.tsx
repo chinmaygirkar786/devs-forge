@@ -3,14 +3,14 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
+import { HomeHeroVisual } from "@/components/HomeHeroVisual";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
-import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
 import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
 import { isMacUserAgent } from "@/lib/platform";
 import { siteConfig } from "@/lib/site";
 import { routes } from "@/lib/internal-links";
-import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
+import { getToolsByCategory, tools } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
 
@@ -18,7 +18,6 @@ export default async function Home() {
   const userAgent = (await headers()).get("user-agent") ?? "";
   const isMac = isMacUserAgent(userAgent);
   const categories = getToolsByCategory();
-  const popularTools = getPopularTools(6);
   const searchableTools = tools.map(
     ({ slug, title, description, keywords, seoLinkLabel, keywordCluster }) => ({
       slug,
@@ -30,71 +29,49 @@ export default async function Home() {
   );
 
   return (
-    <div className="page-fade space-y-10">
+    <div className="page-fade">
       <SEOHead jsonLd={buildHomeJsonLd()} />
 
-      <section className="surface-card overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
-          <div>
+      <section
+        className="home-hero relative left-1/2 -mt-8 -ml-[50vw] w-screen max-w-[100vw] overflow-x-clip border-b border-border/60 pt-10 pb-12 sm:pt-12 sm:pb-14 lg:pt-14 lg:pb-16"
+        aria-labelledby="home-hero-title"
+      >
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="home-hero__layout">
+            <div className="home-hero__content min-w-0">
             <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
               Free online developer tools
             </p>
-            <h1 className="text-foreground mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+            <h1
+              id="home-hero-title"
+              className="text-foreground mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl"
+            >
               {siteConfig.heroTitle}
             </h1>
             <p className="text-muted-foreground mt-5 max-w-3xl text-base leading-8 sm:text-lg">
               {siteConfig.heroDescription}
             </p>
-            <ul className="text-muted-foreground mt-5 flex max-w-3xl flex-wrap gap-x-4 gap-y-2 text-sm">
-              {siteConfig.heroHighlights.map((highlight) => (
-                <li key={highlight} className="flex items-center gap-2">
-                  <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" />
-                  <span>{highlight}</span>
-                </li>
-              ))}
-            </ul>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8">
               <Link
                 href={routes.toolsIndex}
                 prefetch
-                className="bg-foreground text-background rounded-full px-5 py-3 text-sm font-semibold"
+                className="bg-foreground text-background inline-flex rounded-full px-5 py-3 text-sm font-semibold"
               >
                 Browse all tools
               </Link>
-              <Link
-                href={routes.tool("json-formatter")}
-                prefetch
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                JSON Formatter
-              </Link>
-              <button
-                type="button"
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                <SearchShortcutPhrase template="press-to-search" isMac={isMac} />
-              </button>
             </div>
-          </div>
+            </div>
 
-          <div className="grid gap-4">
-            {popularTools.slice(0, 4).map((tool) => (
-              <ToolCardLink
-                key={tool.slug}
-                href={routes.tool(tool.slug)}
-                slug={tool.slug}
-                title={tool.title}
-                description={tool.description}
-                className="surface-muted rounded-3xl p-5"
-                interactive
-              />
-            ))}
+            <div className="home-hero__visual min-w-0" aria-hidden>
+              <HomeHeroVisual />
+            </div>
           </div>
         </div>
       </section>
 
-      <HomeDeferredSections explorerTools={searchableTools} />
+      <div className="mt-14 space-y-10 sm:mt-16 lg:mt-20">
+        <HomeDeferredSections explorerTools={searchableTools} />
 
       <section id="categories" className="space-y-8">
         <div className="max-w-3xl">
@@ -195,6 +172,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

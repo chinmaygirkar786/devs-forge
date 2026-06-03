@@ -219,6 +219,120 @@ select {
   border: 1px solid var(--border);
 }
 
+/* Landing hero — full-width band (not a card) */
+.home-hero {
+  background:
+    radial-gradient(circle at 12% 20%, var(--primary-soft), transparent 42%),
+    radial-gradient(circle at 88% 12%, var(--accent-soft), transparent 36%),
+    var(--background);
+}
+
+.home-hero__layout {
+  display: grid;
+  align-items: center;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: visible;
+}
+
+.home-hero__layout > * {
+  overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .home-hero__layout {
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 200px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-hero__layout {
+    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
+  }
+}
+
+.home-hero__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  width: 100%;
+  max-width: 9.5rem;
+  margin-inline: auto;
+  padding: 0.25rem 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Soft ambient glow — centered on mobile so it does not skew layout */
+.home-hero__visual::before {
+  content: "";
+  position: absolute;
+  inset: -28%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    color-mix(in srgb, var(--primary) 14%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 6%, transparent) 40%,
+    transparent 70%
+  );
+  filter: blur(16px);
+  opacity: 0.75;
+}
+
+.home-hero-visual__svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  max-width: 9.5rem;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .home-hero__layout {
+    gap: 1.5rem;
+  }
+
+  .home-hero__visual {
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
+    justify-content: flex-end;
+    align-self: center;
+    padding: 1rem 0.25rem 1rem 0.75rem;
+  }
+
+  .home-hero__visual::before {
+    inset: -35% -20% -35% -12%;
+    background: radial-gradient(
+      ellipse 85% 75% at 58% 50%,
+      color-mix(in srgb, var(--primary) 18%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 8%, transparent) 38%,
+      transparent 72%
+    );
+    filter: blur(20px);
+    opacity: 0.85;
+  }
+
+  .home-hero-visual__svg {
+    max-width: 11.25rem;
+    margin-inline: 0;
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-hero-visual__svg {
+    max-width: 15rem;
+  }
+}
+
 .home-card-interactive,
 .tool-card-interactive {
   transition:

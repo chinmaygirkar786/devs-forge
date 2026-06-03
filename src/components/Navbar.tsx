@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
 import { capturePosthog } from "@/lib/posthog";
@@ -26,7 +27,12 @@ type NavbarProps = {
 };
 
 export function Navbar({ searchIndex, isMac }: NavbarProps) {
+  const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
+
+  const navItems = siteConfig.navigation.filter(
+    (item) => !(pathname === "/" && item.href === "/"),
+  );
 
   const openPalette = useCallback((trigger: "button" | "keyboard") => {
     setPaletteOpen(true);
@@ -61,7 +67,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
             </Link>
 
             <nav className="text-muted-foreground hidden items-center gap-5 text-sm lg:flex">
-              {siteConfig.navigation.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
