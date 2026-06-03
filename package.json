@@ -19,10 +19,10 @@
   "dependencies": {
     "cronstrue": "^3.14.0",
     "lucide-react": "^1.17.0",
-    "next": "16.2.6",
-    "posthog-js": "^1.376.4",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
+    "next": "16.2.7",
+    "posthog-js": "^1.379.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-markdown": "^10.1.0",
     "yaml": "^2.9.0"
   },
@@ -33,18 +33,18 @@
     "safari >= 16.4"
   ],
   "devDependencies": {
-    "@next/bundle-analyzer": "16.2.6",
+    "@next/bundle-analyzer": "16.2.7",
     "@opennextjs/cloudflare": "^1.19.11",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.2.7",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "wrangler": "^4.95.0"
+    "wrangler": "^4.97.0"
   }
 }
