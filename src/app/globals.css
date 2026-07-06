@@ -219,6 +219,60 @@ select {
   border: 1px solid var(--border);
 }
 
+/* Skeleton loaders — pulse + shimmer wave */
+@keyframes skeleton-wave {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.62;
+  }
+}
+
+.skeleton-bar {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--border) 72%, var(--card-muted));
+}
+
+.skeleton-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--foreground) 6%, transparent) 42%,
+    color-mix(in srgb, var(--foreground) 14%, transparent) 50%,
+    color-mix(in srgb, var(--foreground) 6%, transparent) 58%,
+    transparent 100%
+  );
+  animation: skeleton-wave 1.6s ease-in-out infinite;
+}
+
+.skeleton-pulse {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-bar::after {
+    animation: none;
+  }
+
+  .skeleton-pulse {
+    animation: none;
+  }
+}
+
 .home-card-interactive,
 .tool-card-interactive {
   transition:

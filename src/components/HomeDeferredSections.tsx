@@ -3,7 +3,7 @@
 import { lazy, Suspense, useSyncExternalStore } from "react";
 
 import { LazyWhenVisible } from "@/components/LazyWhenVisible";
-import { SectionSkeleton } from "@/components/SectionSkeleton";
+import { HomeExplorerSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
 import {
   getToolUsageHistory,
   getToolUsageHistoryServerSnapshot,
@@ -41,11 +41,8 @@ function DeferredRecentlyUsedTools() {
   }
 
   return (
-    <LazyWhenVisible
-      fallback={<SectionSkeleton minHeight="min-h-0" />}
-      rootMargin="120px 0px"
-    >
-      <Suspense fallback={<SectionSkeleton minHeight="min-h-0" />}>
+    <LazyWhenVisible fallback={<RecentlyUsedSkeleton />} rootMargin="120px 0px">
+      <Suspense fallback={<RecentlyUsedSkeleton />}>
         <RecentlyUsedTools />
       </Suspense>
     </LazyWhenVisible>
@@ -68,12 +65,8 @@ export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProp
     <div className="space-y-10">
       <DeferredRecentlyUsedTools />
 
-      <LazyWhenVisible
-        fallback={<SectionSkeleton minHeight="min-h-[420px]" />}
-        minHeight="420px"
-        rootMargin="0px"
-      >
-        <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
+      <LazyWhenVisible fallback={<HomeExplorerSkeleton />} rootMargin="0px">
+        <Suspense fallback={<HomeExplorerSkeleton />}>
           <HomeExplorer tools={explorerTools} />
         </Suspense>
       </LazyWhenVisible>

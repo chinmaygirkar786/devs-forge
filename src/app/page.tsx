@@ -3,6 +3,12 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
+import { DeferredReveal } from "@/components/DeferredReveal";
+import {
+  CategoriesSectionSkeleton,
+  HeroPopularToolsSkeleton,
+  WorkflowSectionSkeleton,
+} from "@/components/home-skeletons";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
 import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
@@ -78,77 +84,82 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="grid gap-4">
-            {popularTools.slice(0, 4).map((tool) => (
-              <ToolCardLink
-                key={tool.slug}
-                href={routes.tool(tool.slug)}
-                slug={tool.slug}
-                title={tool.title}
-                description={tool.description}
-                className="surface-muted rounded-3xl p-5"
-                interactive
-              />
-            ))}
-          </div>
+          <DeferredReveal fallback={<HeroPopularToolsSkeleton />} rootMargin="400px 0px">
+            <div className="grid gap-4">
+              {popularTools.slice(0, 4).map((tool) => (
+                <ToolCardLink
+                  key={tool.slug}
+                  href={routes.tool(tool.slug)}
+                  slug={tool.slug}
+                  title={tool.title}
+                  description={tool.description}
+                  className="surface-muted rounded-3xl p-5"
+                  interactive
+                />
+              ))}
+            </div>
+          </DeferredReveal>
         </div>
       </section>
 
       <HomeDeferredSections explorerTools={searchableTools} />
 
-      <section id="categories" className="space-y-8">
-        <div className="max-w-3xl">
-          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-            Browse by category
-          </p>
-          <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            Developer tools categories
-          </h2>
-          <p className="text-muted-foreground mt-4 text-base leading-8">
-            Explore free browser-based developer tools grouped by formatting, conversion,
-            generators, and utilities—each category links to every tool in that workflow.
-          </p>
-        </div>
+      <DeferredReveal fallback={<CategoriesSectionSkeleton />}>
+        <section id="categories" className="space-y-8">
+          <div className="max-w-3xl">
+            <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
+              Browse by category
+            </p>
+            <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+              Developer tools categories
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base leading-8">
+              Explore free browser-based developer tools grouped by formatting, conversion,
+              generators, and utilities—each category links to every tool in that workflow.
+            </p>
+          </div>
 
-        <div className="grid gap-6 xl:grid-cols-4">
-          {categories.map((category) => (
-            <div key={category.key} className="surface-card rounded-3xl p-6">
-              <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-                {category.title}
-              </p>
-              <h3 className="text-foreground mt-3 text-2xl font-bold">
-                <Link
-                  href={routes.category(category.key)}
-                  prefetch={false}
-                  className="hover:text-primary"
-                >
-                  {category.tools.length} tools
-                </Link>
-              </h3>
-              <p className="text-muted-foreground mt-3 text-sm leading-7">{category.description}</p>
-              <div className="mt-5 space-y-3 text-sm">
-                {category.tools.map((tool) => (
+          <div className="grid gap-6 xl:grid-cols-4">
+            {categories.map((category) => (
+              <div key={category.key} className="surface-card rounded-3xl p-6">
+                <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
+                  {category.title}
+                </p>
+                <h3 className="text-foreground mt-3 text-2xl font-bold">
                   <Link
-                    key={tool.slug}
-                    href={routes.tool(tool.slug)}
+                    href={routes.category(category.key)}
                     prefetch={false}
-                    title={tool.title}
-                    className="text-foreground hover:text-primary flex items-center gap-2"
+                    className="hover:text-primary"
                   >
-                    <span
-                      className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                      aria-hidden
-                    />
-                    <span className="font-medium">{tool.seoLinkLabel}</span>
+                    {category.tools.length} tools
                   </Link>
-                ))}
+                </h3>
+                <p className="text-muted-foreground mt-3 text-sm leading-7">{category.description}</p>
+                <div className="mt-5 space-y-3 text-sm">
+                  {category.tools.map((tool) => (
+                    <Link
+                      key={tool.slug}
+                      href={routes.tool(tool.slug)}
+                      prefetch={false}
+                      title={tool.title}
+                      className="text-foreground hover:text-primary flex items-center gap-2"
+                    >
+                      <span
+                        className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                        aria-hidden
+                      />
+                      <span className="font-medium">{tool.seoLinkLabel}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </DeferredReveal>
 
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <DeferredReveal fallback={<WorkflowSectionSkeleton />}>
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="surface-card rounded-[2rem] p-6 sm:p-8">
           <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
             Why {siteConfig.name}
@@ -194,7 +205,8 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </DeferredReveal>
     </div>
   );
 }
