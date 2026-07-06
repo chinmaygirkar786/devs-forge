@@ -147,10 +147,7 @@ export default async function Home() {
                       title={tool.title}
                       className="text-foreground hover:text-primary flex items-center gap-2"
                     >
-                      <span
-                        className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                        aria-hidden
-                      />
+                      <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                       <span className="font-medium">{tool.seoLinkLabel}</span>
                     </Link>
                   ))}
