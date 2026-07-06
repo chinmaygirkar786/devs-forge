@@ -27,8 +27,10 @@ type NavbarProps = {
 
 export function Navbar({ searchIndex, isMac }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteMounted, setPaletteMounted] = useState(false);
 
   const openPalette = useCallback((trigger: "button" | "keyboard") => {
+    setPaletteMounted(true);
     setPaletteOpen(true);
     capturePosthog("command_palette_opened", { trigger });
   }, []);
@@ -39,6 +41,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
         event.preventDefault();
         setPaletteOpen((current) => {
           if (!current) {
+            setPaletteMounted(true);
             capturePosthog("command_palette_opened", { trigger: "keyboard" });
           }
           return !current;
@@ -92,7 +95,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
         </div>
       </header>
 
-      {paletteOpen ? (
+      {paletteMounted ? (
         <Suspense fallback={null}>
           <CommandPalette
             open={paletteOpen}

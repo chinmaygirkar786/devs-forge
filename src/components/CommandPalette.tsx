@@ -24,6 +24,7 @@ type CommandPaletteProps = {
 
 const SEARCH_DEBOUNCE_MS = 220;
 const SEARCH_MIN_LOADING_MS = 380;
+const MODAL_CLOSE_MS = 260;
 
 function useDebouncedSearchQuery(query: string, open: boolean) {
   const [resolvedQuery, setResolvedQuery] = useState("");
@@ -95,7 +96,9 @@ function CommandPaletteSkeleton() {
 
 export function CommandPalette({ open, onClose, searchIndex }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
-  const { resolvedQuery, isSearching } = useDebouncedSearchQuery(query, open);
+  const [rendered, setRendered] = useState(open);
+  const [closing, setClosing] = useState(false);
+  const { resolvedQuery, isSearching } = useDebouncedSearchQuery(query, open && !closing);
   const recent = useSyncExternalStore(
     subscribeToToolUsageHistory,
     getToolUsageHistory,
@@ -124,6 +127,40 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
   }, [resolvedQuery, recent, searchIndex]);
 
   const resultsListKey = query.trim() ? resolvedQuery.trim().toLowerCase() : "recent";
+  const motionState = closing ? "closing" : "open";
+
+  useEffect(() => {
+    if (open) {
+      setRendered(true);
+      setClosing(false);
+      return;
+    }
+
+    if (!rendered) {
+      return;
+    }
+
+    setClosing(true);
+    const timer = window.setTimeout(() => {
+      setRendered(false);
+      setClosing(false);
+    }, MODAL_CLOSE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [open, rendered]);
+
+  useEffect(() => {
+    if (!rendered) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [rendered]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -132,27 +169,36 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
       }
     }
 
-    if (open) {
+    if (rendered) {
       window.addEventListener("keydown", onKeyDown);
       return () => window.removeEventListener("keydown", onKeyDown);
     }
 
     return undefined;
-  }, [onClose, open]);
+  }, [onClose, rendered]);
 
   useEffect(() => {
-    if (!open) {
+    if (!open && !closing) {
       setQuery("");
     }
-  }, [open]);
+  }, [closing, open]);
 
-  if (!open) {
+  if (!rendered) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/40 px-4 pt-24 backdrop-blur-sm">
-      <div className="command-palette-panel surface-card w-full max-w-2xl overflow-hidden rounded-3xl">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search tools"
+      data-state={motionState}
+      className="command-palette-overlay fixed inset-0 z-50 flex items-start justify-center px-4 pt-24"
+    >
+      <div
+        data-state={motionState}
+        className="command-palette-panel surface-card w-full max-w-2xl overflow-hidden rounded-3xl"
+      >
         <div
           className={cn(
             "command-palette-search border-border border-b px-5 py-4",
