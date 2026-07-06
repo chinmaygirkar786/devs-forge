@@ -509,6 +509,261 @@ select {
   }
 }
 
+/* Navbar search trigger */
+.nav-search-trigger {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.nav-search-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    110deg,
+    transparent 28%,
+    color-mix(in srgb, var(--primary) 12%, transparent) 48%,
+    transparent 68%
+  );
+  transform: translateX(-120%);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .nav-search-trigger:hover {
+    border-color: color-mix(in srgb, var(--primary) 42%, var(--border));
+    background: color-mix(in srgb, var(--primary-soft) 55%, var(--card-muted));
+    color: var(--foreground);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--primary) 16%, transparent),
+      0 10px 28px -16px color-mix(in srgb, var(--primary) 45%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .nav-search-trigger:hover::after {
+    transform: translateX(120%);
+  }
+
+  .nav-search-trigger:hover .nav-search-kbd {
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+    background: color-mix(in srgb, var(--primary-soft) 70%, var(--background));
+    color: var(--primary);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 12%, transparent);
+    transform: scale(1.04);
+  }
+}
+
+.nav-search-kbd {
+  transition:
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* Command palette */
+@keyframes command-palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes command-palette-option-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes command-palette-search-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 0%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent);
+  }
+}
+
+.command-palette-panel {
+  animation: command-palette-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.command-palette-search {
+  position: relative;
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.command-palette-search:focus-within {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  background: color-mix(in srgb, var(--primary-soft) 35%, var(--card));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.command-palette-search-icon {
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition:
+    color 220ms ease,
+    transform 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.command-palette-search:focus-within .command-palette-search-icon {
+  color: var(--primary);
+  transform: scale(1.08);
+}
+
+.command-palette-search--pending .command-palette-search-icon {
+  animation: command-palette-search-pulse 1.1s ease-in-out infinite;
+}
+
+.command-palette-option {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  background-color: color-mix(in srgb, var(--card-muted) 45%, transparent);
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  animation: command-palette-option-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.command-palette-option > * {
+  position: relative;
+  z-index: 1;
+}
+
+.command-palette-option::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    transparent 24%,
+    color-mix(in srgb, var(--primary) 16%, transparent) 50%,
+    transparent 76%
+  );
+  transform: translateX(-110%);
+  opacity: 0;
+  transition:
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .command-palette-option:hover {
+    border-color: color-mix(in srgb, var(--primary) 50%, var(--border-strong));
+    background-color: color-mix(in srgb, var(--primary-soft) 80%, var(--background-soft));
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--primary) 18%, transparent),
+      0 12px 28px -16px color-mix(in srgb, var(--primary) 42%, transparent);
+    transform: translateX(6px);
+  }
+
+  .command-palette-option:hover::before {
+    transform: translateX(110%);
+    opacity: 1;
+  }
+
+  .command-palette-option:hover .command-palette-option-icon {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 35%, transparent);
+  }
+
+  .command-palette-option:hover .command-palette-option-badge {
+    background-color: color-mix(in srgb, var(--accent) 22%, var(--accent-soft));
+    transform: scale(1.05);
+  }
+}
+
+.command-palette-option-icon {
+  border-radius: 0.75rem;
+  transition:
+    transform 220ms cubic-bezier(0.34, 1.2, 0.64, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.command-palette-option-badge {
+  transition:
+    background-color 220ms ease,
+    transform 220ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.command-palette-results {
+  animation: command-palette-option-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.command-palette-skeleton-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  padding: 0.75rem 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-search-trigger,
+  .nav-search-trigger::after,
+  .nav-search-kbd {
+    transition: none;
+  }
+
+  .nav-search-trigger:hover {
+    transform: none;
+  }
+
+  .nav-search-trigger:hover::after {
+    transform: translateX(-120%);
+  }
+
+  .command-palette-panel,
+  .command-palette-option {
+    animation: none;
+  }
+
+  .command-palette-search--pending .command-palette-search-icon {
+    animation: none;
+  }
+
+  .command-palette-option:hover {
+    transform: none;
+  }
+
+  .command-palette-option:hover .command-palette-option-icon,
+  .command-palette-option:hover .command-palette-option-badge {
+    transform: none;
+  }
+}
+
 .text-gradient {
   background: linear-gradient(120deg, var(--primary), var(--accent));
   -webkit-background-clip: text;

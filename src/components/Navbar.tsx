@@ -80,10 +80,10 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
               onClick={() => openPalette("button")}
               onMouseEnter={preloadCommandPalette}
               onFocus={preloadCommandPalette}
-              className="surface-muted text-muted-foreground hover:text-foreground hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium sm:flex"
+              className="nav-search-trigger surface-muted text-muted-foreground hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium sm:flex"
             >
               <span>Search tools</span>
-              <span className="border-border inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold whitespace-nowrap">
+              <span className="nav-search-kbd border-border inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-semibold whitespace-nowrap">
                 <SearchShortcutHint isMac={isMac} />
               </span>
             </button>
