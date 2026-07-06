@@ -14,7 +14,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "analyze": "ANALYZE=true next build",
-    "verify:crawl": "bash scripts/verify-googlebot-crawl.sh"
+    "verify:crawl": "bash scripts/verify-googlebot-crawl.sh",
+    "validate": "npm run lint && npm run format:check && npm run typecheck"
   },
   "dependencies": {
     "cronstrue": "^3.24.0",
