@@ -10,12 +10,12 @@ import {
   WorkflowSectionSkeleton,
 } from "@/components/home-skeletons";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
-import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
-import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
-import { isMacUserAgent } from "@/lib/platform";
-import { siteConfig } from "@/lib/site";
+import { ToolCardLink } from "@/components/ToolCardLink";
 import { routes } from "@/lib/internal-links";
+import { isMacUserAgent } from "@/lib/platform";
+import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
 import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
@@ -131,10 +131,13 @@ export default async function Home() {
                     prefetch={false}
                     className="hover:text-primary"
                   >
-                    {category.tools.length} tools
+                    <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
+                    <span className="font-medium">{category.title}</span>
                   </Link>
                 </h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-7">{category.description}</p>
+                <p className="text-muted-foreground mt-3 text-sm leading-7">
+                  {category.description}
+                </p>
                 <div className="mt-5 space-y-3 text-sm">
                   {category.tools.map((tool) => (
                     <Link
@@ -160,51 +163,51 @@ export default async function Home() {
 
       <DeferredReveal fallback={<WorkflowSectionSkeleton />}>
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-        <div className="surface-card rounded-[2rem] p-6 sm:p-8">
-          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-            Why {siteConfig.name}
-          </p>
-          <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight">
-            A single hub for the coding utilities you reach for every day.
-          </h2>
-          <p className="text-muted-foreground mt-4 text-base leading-8">
-            {siteConfig.name} exists to help you format, decode, convert, and generate data without
-            switching tabs, creating accounts, or uploading sensitive payloads to a server. Each
-            tool is built for a specific developer task you already do regularly.
-          </p>
-          <p className="text-muted-foreground mt-4 text-base leading-8">
-            From JSON and JWT workflows to regex checks, timestamps, colors, and markup—open the
-            tool you need, get a clear result, copy it, and move on.
-          </p>
-        </div>
+          <div className="surface-card rounded-[2rem] p-6 sm:p-8">
+            <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
+              Why {siteConfig.name}
+            </p>
+            <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight">
+              A single hub for the coding utilities you reach for every day.
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base leading-8">
+              {siteConfig.name} exists to help you format, decode, convert, and generate data
+              without switching tabs, creating accounts, or uploading sensitive payloads to a
+              server. Each tool is built for a specific developer task you already do regularly.
+            </p>
+            <p className="text-muted-foreground mt-4 text-base leading-8">
+              From JSON and JWT workflows to regex checks, timestamps, colors, and markup—open the
+              tool you need, get a clear result, copy it, and move on.
+            </p>
+          </div>
 
-        <div className="surface-card rounded-[2rem] p-6 sm:p-8">
-          <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-            Workflow ready
-          </p>
-          <div className="mt-4 space-y-4">
-            <div className="surface-muted rounded-2xl p-4">
-              <h3 className="text-foreground font-semibold">Copy-first UX</h3>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                Every tool includes instant output and copy-to-clipboard support for low-friction
-                workflows.
-              </p>
-            </div>
-            <div className="surface-muted rounded-2xl p-4">
-              <h3 className="text-foreground font-semibold">Command palette</h3>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                <SearchShortcutPhrase template="open-anywhere" isMac={isMac} />
-              </p>
-            </div>
-            <div className="surface-muted rounded-2xl p-4">
-              <h3 className="text-foreground font-semibold">Privacy first</h3>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                Inputs stay on your device. No account, no uploads, and no backend required to use
-                the tools.
-              </p>
+          <div className="surface-card rounded-[2rem] p-6 sm:p-8">
+            <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
+              Workflow ready
+            </p>
+            <div className="mt-4 space-y-4">
+              <div className="surface-muted rounded-2xl p-4">
+                <h3 className="text-foreground font-semibold">Copy-first UX</h3>
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  Every tool includes instant output and copy-to-clipboard support for low-friction
+                  workflows.
+                </p>
+              </div>
+              <div className="surface-muted rounded-2xl p-4">
+                <h3 className="text-foreground font-semibold">Command palette</h3>
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  <SearchShortcutPhrase template="open-anywhere" isMac={isMac} />
+                </p>
+              </div>
+              <div className="surface-muted rounded-2xl p-4">
+                <h3 className="text-foreground font-semibold">Privacy first</h3>
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  Inputs stay on your device. No account, no uploads, and no backend required to use
+                  the tools.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
         </section>
       </DeferredReveal>
     </div>
