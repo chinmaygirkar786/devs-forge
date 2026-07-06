@@ -10,7 +10,11 @@ type DeferredRevealProps = {
   rootMargin?: string;
 };
 
-export function DeferredReveal({ children, fallback, rootMargin = "200px 0px" }: DeferredRevealProps) {
+export function DeferredReveal({
+  children,
+  fallback,
+  rootMargin = "200px 0px",
+}: DeferredRevealProps) {
   return (
     <LazyWhenVisible fallback={fallback} rootMargin={rootMargin}>
       {children}

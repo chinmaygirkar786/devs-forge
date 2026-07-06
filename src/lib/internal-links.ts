@@ -11,11 +11,7 @@ export const routes = {
 } as const;
 
 export type InternalLinkKind =
-  | "related"
-  | "categoryHub"
-  | "categoryPeer"
-  | "toolsIndex"
-  | "popular";
+  "related" | "categoryHub" | "categoryPeer" | "toolsIndex" | "popular";
 
 export type InternalLink = {
   href: string;
