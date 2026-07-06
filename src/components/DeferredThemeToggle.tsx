@@ -8,6 +8,16 @@ const ThemeToggle = lazy(() =>
   })),
 );
 
+function ThemeToggleSkeleton() {
+  return (
+    <div className="theme-toggle-skeleton skeleton-pulse surface-muted shrink-0" aria-hidden>
+      <div className="skeleton-bar h-[26px] w-[50px] rounded-full" />
+      <div className="skeleton-bar h-[26px] w-[50px] rounded-full" />
+      <div className="skeleton-bar h-[26px] w-[58px] rounded-full" />
+    </div>
+  );
+}
+
 /** Loads theme controls after idle time so they stay off the critical path. */
 export function DeferredThemeToggle() {
   const [ready, setReady] = useState(false);
@@ -25,15 +35,11 @@ export function DeferredThemeToggle() {
   }, []);
 
   if (!ready) {
-    return <div className="surface-muted h-[34px] w-[148px] shrink-0 rounded-full" aria-hidden />;
+    return <ThemeToggleSkeleton />;
   }
 
   return (
-    <Suspense
-      fallback={
-        <div className="surface-muted h-[34px] w-[148px] animate-pulse rounded-full" aria-hidden />
-      }
-    >
+    <Suspense fallback={<ThemeToggleSkeleton />}>
       <ThemeToggle />
     </Suspense>
   );
