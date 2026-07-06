@@ -1,5 +1,6 @@
 "use client";
 
+import { Monitor, Moon, Sun, type LucideIcon } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 
 import {
@@ -12,11 +13,12 @@ import {
 } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const options: Array<{ value: ThemePreference; label: string }> = [
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
-  { value: "system", label: "System" },
-];
+const options: Array<{ value: ThemePreference; label: string; icon: LucideIcon; iconClass?: string }> =
+  [
+    { value: "light", label: "Light", icon: Sun, iconClass: "theme-toggle-icon--sun" },
+    { value: "dark", label: "Dark", icon: Moon },
+    { value: "system", label: "System", icon: Monitor },
+  ];
 
 export function ThemeToggle() {
   const preference = useSyncExternalStore(
@@ -54,24 +56,30 @@ export function ThemeToggle() {
     <div
       role="group"
       aria-label="Color theme"
-      className="surface-muted inline-flex rounded-full p-1"
+      className="theme-toggle surface-muted shrink-0 rounded-full p-1"
     >
-      {options.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          aria-pressed={preference === option.value}
-          onClick={() => onChange(option.value)}
-          className={cn(
-            "cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold",
-            preference === option.value
-              ? "bg-primary text-white shadow-sm"
-              : "text-muted-foreground hover:text-foreground",
-          )}
-        >
-          {option.label}
-        </button>
-      ))}
+      <span aria-hidden className="theme-toggle-indicator" data-active={preference} />
+      {options.map((option) => {
+        const Icon = option.icon;
+        const isActive = preference === option.value;
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            aria-pressed={isActive}
+            onClick={() => onChange(option.value)}
+            className="theme-toggle-option whitespace-nowrap"
+          >
+            <Icon
+              className={cn("theme-toggle-icon", option.iconClass)}
+              strokeWidth={2.25}
+              aria-hidden
+            />
+            <span>{option.label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }

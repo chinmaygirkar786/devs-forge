@@ -1,9 +1,14 @@
 "use client";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useSyncExternalStore } from "react";
 
 import { LazyWhenVisible } from "@/components/LazyWhenVisible";
-import { SectionSkeleton } from "@/components/SectionSkeleton";
+import { HomeExplorerSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
+import {
+  getToolUsageHistory,
+  getToolUsageHistoryServerSnapshot,
+  subscribeToToolUsageHistory,
+} from "@/lib/history";
 
 const RecentlyUsedTools = lazy(() =>
   import("@/components/RecentlyUsedTools").then((module) => ({
@@ -28,25 +33,33 @@ type HomeDeferredSectionsProps = {
   explorerTools: HomeExplorerTool[];
 };
 
+function DeferredRecentlyUsedTools() {
+  const recent = useSyncExternalStore(
+    subscribeToToolUsageHistory,
+    getToolUsageHistory,
+    getToolUsageHistoryServerSnapshot,
+  );
+
+  if (!recent.length) {
+    return null;
+  }
+
+  return (
+    <LazyWhenVisible fallback={<RecentlyUsedSkeleton />} rootMargin="120px 0px">
+      <Suspense fallback={<RecentlyUsedSkeleton />}>
+        <RecentlyUsedTools />
+      </Suspense>
+    </LazyWhenVisible>
+  );
+}
+
 export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProps) {
   return (
     <div className="space-y-10">
-      <LazyWhenVisible
-        fallback={<SectionSkeleton minHeight="min-h-[200px]" />}
-        minHeight="200px"
-        rootMargin="120px 0px"
-      >
-        <Suspense fallback={<SectionSkeleton minHeight="min-h-[200px]" />}>
-          <RecentlyUsedTools />
-        </Suspense>
-      </LazyWhenVisible>
+      <DeferredRecentlyUsedTools />
 
-      <LazyWhenVisible
-        fallback={<SectionSkeleton minHeight="min-h-[420px]" />}
-        minHeight="420px"
-        rootMargin="0px"
-      >
-        <Suspense fallback={<SectionSkeleton minHeight="min-h-[420px]" />}>
+      <LazyWhenVisible fallback={<HomeExplorerSkeleton />} rootMargin="0px">
+        <Suspense fallback={<HomeExplorerSkeleton />}>
           <HomeExplorer tools={explorerTools} />
         </Suspense>
       </LazyWhenVisible>
