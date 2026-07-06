@@ -25,13 +25,13 @@ function buildLlmsTxt(): string {
 
   lines.push("## Main pages");
   lines.push("");
-  lines.push(
-    `- [Home](${absoluteUrl(routes.home)}): Overview of the available developer tools.`,
-  );
+  lines.push(`- [Home](${absoluteUrl(routes.home)}): Overview of the available developer tools.`);
   lines.push(
     `- [All tools](${absoluteUrl(routes.toolsIndex)}): Full directory of tools grouped by category.`,
   );
-  lines.push(`- [About](${absoluteUrl(routes.about)}): What ${siteConfig.name} is and how it works.`);
+  lines.push(
+    `- [About](${absoluteUrl(routes.about)}): What ${siteConfig.name} is and how it works.`,
+  );
   lines.push("");
 
   for (const category of getToolsByCategory()) {
@@ -43,7 +43,9 @@ function buildLlmsTxt(): string {
     lines.push("");
 
     for (const tool of category.tools) {
-      lines.push(`- [${tool.seoLinkLabel}](${absoluteUrl(routes.tool(tool.slug))}): ${tool.description}`);
+      lines.push(
+        `- [${tool.seoLinkLabel}](${absoluteUrl(routes.tool(tool.slug))}): ${tool.description}`,
+      );
     }
 
     lines.push("");

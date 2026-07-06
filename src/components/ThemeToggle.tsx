@@ -13,12 +13,16 @@ import {
 } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const options: Array<{ value: ThemePreference; label: string; icon: LucideIcon; iconClass?: string }> =
-  [
-    { value: "light", label: "Light", icon: Sun, iconClass: "theme-toggle-icon--sun" },
-    { value: "dark", label: "Dark", icon: Moon },
-    { value: "system", label: "System", icon: Monitor },
-  ];
+const options: Array<{
+  value: ThemePreference;
+  label: string;
+  icon: LucideIcon;
+  iconClass?: string;
+}> = [
+  { value: "light", label: "Light", icon: Sun, iconClass: "theme-toggle-icon--sun" },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "System", icon: Monitor },
+];
 
 export function ThemeToggle() {
   const preference = useSyncExternalStore(

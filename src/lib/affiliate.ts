@@ -1,13 +1,7 @@
 import { uniqueBy } from "@/lib/utils";
 
 export type AffiliateContext =
-  | "ai-coding"
-  | "hosting"
-  | "api"
-  | "backend"
-  | "frontend"
-  | "design"
-  | "productivity";
+  "ai-coding" | "hosting" | "api" | "backend" | "frontend" | "design" | "productivity";
 
 export type AffiliateItem = {
   id: string;

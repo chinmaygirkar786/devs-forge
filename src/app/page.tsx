@@ -134,7 +134,9 @@ export default async function Home() {
                     {category.tools.length} tools
                   </Link>
                 </h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-7">{category.description}</p>
+                <p className="text-muted-foreground mt-3 text-sm leading-7">
+                  {category.description}
+                </p>
                 <div className="mt-5 space-y-3 text-sm">
                   {category.tools.map((tool) => (
                     <Link
@@ -165,9 +167,9 @@ export default async function Home() {
               A single hub for the coding utilities you reach for every day.
             </h2>
             <p className="text-muted-foreground mt-4 text-base leading-8">
-              {siteConfig.name} exists to help you format, decode, convert, and generate data without
-              switching tabs, creating accounts, or uploading sensitive payloads to a server. Each
-              tool is built for a specific developer task you already do regularly.
+              {siteConfig.name} exists to help you format, decode, convert, and generate data
+              without switching tabs, creating accounts, or uploading sensitive payloads to a
+              server. Each tool is built for a specific developer task you already do regularly.
             </p>
             <p className="text-muted-foreground mt-4 text-base leading-8">
               From JSON and JWT workflows to regex checks, timestamps, colors, and markup—open the
