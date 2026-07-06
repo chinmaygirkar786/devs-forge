@@ -4,12 +4,12 @@ import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
-import { ToolCardLink } from "@/components/ToolCardLink";
 import { SEOHead } from "@/components/SEOHead";
-import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
-import { isMacUserAgent } from "@/lib/platform";
-import { siteConfig } from "@/lib/site";
+import { ToolCardLink } from "@/components/ToolCardLink";
 import { routes } from "@/lib/internal-links";
+import { isMacUserAgent } from "@/lib/platform";
+import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
 import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
@@ -135,10 +135,7 @@ export default async function Home() {
                     title={tool.title}
                     className="text-foreground hover:text-primary flex items-center gap-2"
                   >
-                    <span
-                      className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                      aria-hidden
-                    />
+                    <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
                     <span className="font-medium">{tool.seoLinkLabel}</span>
                   </Link>
                 ))}
