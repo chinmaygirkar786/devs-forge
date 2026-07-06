@@ -3,7 +3,7 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { capturePosthog } from "@/lib/posthog";
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import {
   getToolUsageHistory,
@@ -26,54 +26,53 @@ const SEARCH_DEBOUNCE_MS = 220;
 const SEARCH_MIN_LOADING_MS = 380;
 const MODAL_CLOSE_MS = 260;
 
-function useDebouncedSearchQuery(query: string, open: boolean) {
+function useDebouncedSearchQuery(query: string, active: boolean) {
   const [resolvedQuery, setResolvedQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const timersRef = useRef<{ debounce?: number; finish?: number }>({});
+  const [isHolding, setIsHolding] = useState(false);
+  const timersRef = useRef<number[]>([]);
+
+  const trimmedQuery = query.trim();
+  const effectiveResolvedQuery = active && trimmedQuery ? resolvedQuery : "";
+  const queryMismatch =
+    active &&
+    trimmedQuery.length > 0 &&
+    trimmedQuery.toLowerCase() !== effectiveResolvedQuery.trim().toLowerCase();
+  const isSearching = Boolean(active && trimmedQuery && (queryMismatch || isHolding));
 
   useEffect(() => {
     const clearTimers = () => {
-      if (timersRef.current.debounce !== undefined) {
-        window.clearTimeout(timersRef.current.debounce);
-      }
-      if (timersRef.current.finish !== undefined) {
-        window.clearTimeout(timersRef.current.finish);
-      }
-      timersRef.current = {};
+      timersRef.current.forEach((timerId) => window.clearTimeout(timerId));
+      timersRef.current = [];
     };
 
-    if (!open) {
+    if (!active || !trimmedQuery) {
       clearTimers();
-      setResolvedQuery("");
-      setIsSearching(false);
       return clearTimers;
     }
 
-    const trimmed = query.trim();
-    if (!trimmed) {
-      clearTimers();
-      setResolvedQuery("");
-      setIsSearching(false);
-      return clearTimers;
-    }
-
-    setIsSearching(true);
     const startedAt = Date.now();
-
     clearTimers();
-    timersRef.current.debounce = window.setTimeout(() => {
+
+    const debounceId = window.setTimeout(() => {
       setResolvedQuery(query);
       const elapsed = Date.now() - startedAt;
       const finishDelay = Math.max(0, SEARCH_MIN_LOADING_MS - elapsed);
-      timersRef.current.finish = window.setTimeout(() => {
-        setIsSearching(false);
+      setIsHolding(true);
+
+      const finishId = window.setTimeout(() => {
+        setIsHolding(false);
       }, finishDelay);
+      timersRef.current.push(finishId);
     }, SEARCH_DEBOUNCE_MS);
+    timersRef.current.push(debounceId);
 
     return clearTimers;
-  }, [open, query]);
+  }, [active, query, trimmedQuery]);
 
-  return { resolvedQuery, isSearching };
+  return {
+    resolvedQuery: effectiveResolvedQuery,
+    isSearching,
+  };
 }
 
 function CommandPaletteSkeleton() {
@@ -96,14 +95,42 @@ function CommandPaletteSkeleton() {
 
 export function CommandPalette({ open, onClose, searchIndex }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
-  const [rendered, setRendered] = useState(open);
   const [closing, setClosing] = useState(false);
-  const { resolvedQuery, isSearching } = useDebouncedSearchQuery(query, open && !closing);
+  const closeTimerRef = useRef<number | undefined>(undefined);
+  const openRef = useRef(open);
+  const searchActive = open && !closing;
+  const { resolvedQuery, isSearching } = useDebouncedSearchQuery(query, searchActive);
   const recent = useSyncExternalStore(
     subscribeToToolUsageHistory,
     getToolUsageHistory,
     getToolUsageHistoryServerSnapshot,
   );
+
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  const handleClose = useCallback(() => {
+    if (closing) {
+      return;
+    }
+
+    onClose();
+    setClosing(true);
+
+    if (closeTimerRef.current !== undefined) {
+      window.clearTimeout(closeTimerRef.current);
+    }
+
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = undefined;
+      setClosing(false);
+
+      if (!openRef.current) {
+        setQuery("");
+      }
+    }, MODAL_CLOSE_MS);
+  }, [closing, onClose]);
 
   const results = useMemo(() => {
     const normalizedQuery = resolvedQuery.trim().toLowerCase();
@@ -127,27 +154,16 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
   }, [resolvedQuery, recent, searchIndex]);
 
   const resultsListKey = query.trim() ? resolvedQuery.trim().toLowerCase() : "recent";
-  const motionState = closing ? "closing" : "open";
+  const rendered = open || closing;
+  const motionState = closing && !open ? "closing" : "open";
 
   useEffect(() => {
-    if (open) {
-      setRendered(true);
-      setClosing(false);
-      return;
-    }
-
-    if (!rendered) {
-      return;
-    }
-
-    setClosing(true);
-    const timer = window.setTimeout(() => {
-      setRendered(false);
-      setClosing(false);
-    }, MODAL_CLOSE_MS);
-
-    return () => window.clearTimeout(timer);
-  }, [open, rendered]);
+    return () => {
+      if (closeTimerRef.current !== undefined) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!rendered) {
@@ -165,7 +181,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        onClose();
+        handleClose();
       }
     }
 
@@ -175,13 +191,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
     }
 
     return undefined;
-  }, [onClose, rendered]);
-
-  useEffect(() => {
-    if (!open && !closing) {
-      setQuery("");
-    }
-  }, [closing, open]);
+  }, [handleClose, rendered]);
 
   if (!rendered) {
     return null;
@@ -206,7 +216,11 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
           )}
         >
           <div className="flex items-center gap-3">
-            <Search className="command-palette-search-icon h-4 w-4" strokeWidth={2.25} aria-hidden />
+            <Search
+              className="command-palette-search-icon h-4 w-4"
+              strokeWidth={2.25}
+              aria-hidden
+            />
             <span className="bg-primary-soft text-primary inline-flex min-w-[4.75rem] shrink-0 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
               <SearchShortcutHint />
             </span>
@@ -242,7 +256,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
                         search_query: query.trim() || "",
                         source: query.trim() ? "search" : "recent",
                       });
-                      onClose();
+                      handleClose();
                     }}
                     className="command-palette-option block rounded-2xl px-4 py-3"
                     style={{ animationDelay: `${index * 45}ms` }}
@@ -275,7 +289,7 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
 
       <button
         type="button"
-        onClick={onClose}
+        onClick={handleClose}
         aria-label="Close command palette"
         className="absolute inset-0 -z-10"
       />
