@@ -2,7 +2,6 @@
 
 import { Search } from "lucide-react";
 import Link from "next/link";
-import { capturePosthog } from "@/lib/posthog";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import {
@@ -250,12 +249,6 @@ export function CommandPalette({ open, onClose, searchIndex }: CommandPalettePro
                     href={routes.tool(tool.slug)}
                     prefetch={false}
                     onClick={() => {
-                      capturePosthog("command_palette_tool_selected", {
-                        tool_slug: tool.slug,
-                        tool_title: tool.title,
-                        search_query: query.trim() || "",
-                        source: query.trim() ? "search" : "recent",
-                      });
                       handleClose();
                     }}
                     className="command-palette-option block rounded-2xl px-4 py-3"

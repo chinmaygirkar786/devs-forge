@@ -1,6 +1,5 @@
 "use client";
 
-import { capturePosthog } from "@/lib/posthog";
 import { useState } from "react";
 
 import {
@@ -41,10 +40,6 @@ export default function UuidGeneratorTool() {
               value={count}
               options={uuidCountOptions}
               onChange={(nextCount) => {
-                capturePosthog("uuid_count_changed", {
-                  previous_count: Number(count),
-                  new_count: Number(nextCount),
-                });
                 setCount(nextCount);
                 setUuids(generateUuids(Number(nextCount)));
               }}
@@ -56,7 +51,6 @@ export default function UuidGeneratorTool() {
               variant="secondary"
               onClick={() => {
                 setUuids(generateUuids(Number(count)));
-                capturePosthog("uuid_batch_generated", { count: Number(count) });
               }}
             >
               Generate fresh UUIDs

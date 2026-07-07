@@ -1,6 +1,5 @@
 "use client";
 
-import { capturePosthog } from "@/lib/posthog";
 import { useMemo, useState } from "react";
 
 import {
@@ -73,7 +72,6 @@ export default function JwtDecoderTool() {
             variant="ghost"
             onClick={() => {
               setInput(sampleToken);
-              capturePosthog("jwt_example_loaded");
             }}
           >
             Load example
@@ -82,7 +80,6 @@ export default function JwtDecoderTool() {
             variant="ghost"
             onClick={() => {
               setInput("");
-              capturePosthog("jwt_input_cleared");
             }}
           >
             Clear

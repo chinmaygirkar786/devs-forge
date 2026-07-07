@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { serviceWorkerScript } from "@/lib/service-worker-script";
+import { buildServiceWorkerScript } from "@/lib/service-worker-script";
 
 export async function GET() {
-  return new NextResponse(serviceWorkerScript, {
+  return new NextResponse(buildServiceWorkerScript(), {
     status: 200,
     headers: {
       "Content-Type": "application/javascript; charset=utf-8",

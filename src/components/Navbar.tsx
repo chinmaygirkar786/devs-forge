@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
-import { capturePosthog } from "@/lib/posthog";
 import { DeferredThemeToggle } from "@/components/DeferredThemeToggle";
 import { SearchShortcutHint } from "@/components/SearchShortcutHint";
 import { SiteLogo } from "@/components/SiteLogo";
@@ -29,10 +28,9 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteMounted, setPaletteMounted] = useState(false);
 
-  const openPalette = useCallback((trigger: "button" | "keyboard") => {
+  const openPalette = useCallback(() => {
     setPaletteMounted(true);
     setPaletteOpen(true);
-    capturePosthog("command_palette_opened", { trigger });
   }, []);
 
   useEffect(() => {
@@ -42,7 +40,6 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
         setPaletteOpen((current) => {
           if (!current) {
             setPaletteMounted(true);
-            capturePosthog("command_palette_opened", { trigger: "keyboard" });
           }
           return !current;
         });
@@ -80,7 +77,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => openPalette("button")}
+              onClick={() => openPalette()}
               onMouseEnter={preloadCommandPalette}
               onFocus={preloadCommandPalette}
               className="nav-search-trigger surface-muted text-muted-foreground hidden cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium sm:flex"

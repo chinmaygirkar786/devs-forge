@@ -20,7 +20,7 @@ const CLOUDFLARE_ANALYTICS_SCRIPT = "https://static.cloudflareinsights.com";
 const CLOUDFLARE_ANALYTICS_CONNECT = "https://cloudflareinsights.com";
 
 /**
- * CSP for a Next.js App Router + Tailwind + PostHog (`/ingest` proxy) app.
+ * CSP for a Next.js App Router + Tailwind app.
  * Enforced in production only — report-only is omitted because Chrome DevTools
  * still logs CSP Issues (hurts Lighthouse Best Practices) without blocking anything.
  */
