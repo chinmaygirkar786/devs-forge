@@ -1,14 +1,15 @@
 import type { ReactNode } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 function SkeletonBar({ className }: { className?: string }) {
-  return <div className={cn("skeleton-bar", className)} aria-hidden />;
+  return <Skeleton className={cn("h-4 w-full rounded-lg", className)} />;
 }
 
 function SkeletonSurface({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div className={cn("skeleton-pulse", className)} aria-hidden>
+    <div className={cn(className)} aria-hidden>
       {children}
     </div>
   );
@@ -37,29 +38,6 @@ export function RecentlyUsedSkeleton() {
       <div className="mt-4 flex flex-wrap gap-3">
         {Array.from({ length: 3 }, (_, index) => (
           <SkeletonBar key={index} className="h-11 w-36 rounded-full" />
-        ))}
-      </div>
-    </SkeletonSurface>
-  );
-}
-
-export function HomeExplorerSkeleton() {
-  return (
-    <SkeletonSurface className="surface-card rounded-[2rem] p-6 sm:p-8">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <div className="max-w-3xl space-y-4">
-          <SkeletonBar className="h-4 w-48" />
-          <SkeletonBar className="h-9 w-full max-w-lg" />
-          <SkeletonBar className="h-9 w-4/5 max-w-md" />
-          <SkeletonBar className="h-4 w-full" />
-          <SkeletonBar className="h-4 w-11/12" />
-        </div>
-        <SkeletonBar className="h-14 w-full max-w-xl rounded-[1.75rem]" />
-      </div>
-      <SkeletonBar className="mt-4 h-4 w-72" />
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {Array.from({ length: 6 }, (_, index) => (
-          <ToolCardSkeleton key={index} className="surface-muted" />
         ))}
       </div>
     </SkeletonSurface>

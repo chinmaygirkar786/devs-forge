@@ -1,8 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { Menu, Search } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { capturePosthog } from "@/lib/posthog";
 import { DeferredThemeToggle } from "@/components/DeferredThemeToggle";
 import { SearchShortcutHint } from "@/components/SearchShortcutHint";
@@ -28,6 +38,7 @@ type NavbarProps = {
 export function Navbar({ searchIndex, isMac }: NavbarProps) {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteMounted, setPaletteMounted] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const openPalette = useCallback((trigger: "button" | "keyboard") => {
     setPaletteMounted(true);
@@ -77,7 +88,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={() => openPalette("button")}
@@ -90,7 +101,54 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
                 <SearchShortcutHint isMac={isMac} />
               </span>
             </button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => openPalette("button")}
+              onMouseEnter={preloadCommandPalette}
+              onFocus={preloadCommandPalette}
+              className="rounded-full sm:hidden"
+              aria-label="Search tools"
+            >
+              <Search className="size-4" aria-hidden />
+            </Button>
             <DeferredThemeToggle />
+
+            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full lg:hidden"
+                  aria-label="Open menu"
+                >
+                  <Menu className="size-4" aria-hidden />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-72">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <SiteLogo size="sm" />
+                    {siteConfig.name}
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-1 px-4">
+                  {siteConfig.navigation.map((item) => (
+                    <SheetClose asChild key={item.href}>
+                      <Link
+                        href={item.href}
+                        prefetch={false}
+                        className="hover:bg-muted text-foreground rounded-lg px-3 py-2.5 text-sm font-medium"
+                      >
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>

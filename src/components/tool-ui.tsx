@@ -1,8 +1,19 @@
 "use client";
 
-import { cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
+import { cloneElement, isValidElement, useEffect, useId, useState } from "react";
 import { Check, Copy } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { capturePosthog } from "@/lib/posthog";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +26,7 @@ type SectionCardProps = {
 
 export function SectionCard({ title, description, children, className }: SectionCardProps) {
   return (
-    <section className={cn("surface-card rounded-3xl p-5 sm:p-6", className)}>
+    <section className={cn("surface-card rounded-2xl p-5 sm:p-6", className)}>
       <div className="mb-4">
         <h3 className="text-foreground text-lg font-semibold">{title}</h3>
         {description ? (
@@ -36,9 +47,9 @@ type FieldLabelProps = {
 export function FieldLabel({ label, hint, htmlFor }: FieldLabelProps) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3">
-      <label htmlFor={htmlFor} className="text-foreground text-sm font-semibold">
+      <Label htmlFor={htmlFor} className="text-foreground text-sm font-semibold">
         {label}
-      </label>
+      </Label>
       {hint ? <span className="text-muted-foreground text-xs">{hint}</span> : null}
     </div>
   );
@@ -66,7 +77,7 @@ export function Field({ label, hint, children }: FieldProps) {
   );
 }
 
-type TextareaFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+type TextareaFieldProps = React.ComponentProps<typeof Textarea> & {
   minHeight?: string;
 };
 
@@ -76,27 +87,15 @@ export function TextareaField({
   ...props
 }: TextareaFieldProps) {
   return (
-    <textarea
+    <Textarea
       {...props}
-      className={cn(
-        "border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-2xl border px-4 py-3 font-mono text-sm leading-6 outline-none focus:ring-2",
-        minHeight,
-        className,
-      )}
+      className={cn("w-full resize-y font-mono text-sm leading-6", minHeight, className)}
     />
   );
 }
 
-export function InputField(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className={cn(
-        "border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-2xl border px-4 py-3 text-sm outline-none focus:ring-2",
-        props.className,
-      )}
-    />
-  );
+export function InputField(props: React.ComponentProps<typeof Input>) {
+  return <Input {...props} className={cn("w-full", props.className)} />;
 }
 
 export function SelectField(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
@@ -104,7 +103,7 @@ export function SelectField(props: React.SelectHTMLAttributes<HTMLSelectElement>
     <select
       {...props}
       className={cn(
-        "border-border bg-background focus:border-primary focus:ring-primary-soft w-full rounded-2xl border px-4 py-3 text-sm outline-none focus:ring-2",
+        "border-input focus-visible:border-ring focus-visible:ring-ring/50 h-8 w-full min-w-0 rounded-lg border bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-3",
         props.className,
       )}
     />
@@ -131,130 +130,19 @@ export function DropdownField({
   placeholder = "Select an option",
   className,
 }: DropdownFieldProps) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const listboxId = useId();
-  const selectedOption = options.find((option) => option.value === value);
-
-  useEffect(() => {
-    function handlePointerDown(event: MouseEvent) {
-      if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
-
   return (
-    <div ref={containerRef} className={cn("relative w-full", className)}>
-      <button
-        type="button"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listboxId}
-        aria-label={placeholder}
-        onClick={() => setOpen((current) => !current)}
-        className={cn(
-          "border-border bg-background flex w-full cursor-pointer items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left text-sm outline-none",
-          "focus:border-primary focus:ring-primary-soft focus:ring-2",
-          open && "border-primary ring-primary-soft ring-2",
-        )}
-      >
-        <span className="text-foreground truncate">{selectedOption?.label ?? placeholder}</span>
-        <span
-          className={cn(
-            "text-muted-foreground shrink-0 transition-transform duration-200 ease-out",
-            open && "rotate-180",
-          )}
-          aria-hidden="true"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="block"
-          >
-            <path
-              d="M6 9L12 15L18 9"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      </button>
-
-      {open ? (
-        <div
-          id={listboxId}
-          role="listbox"
-          className="border-border bg-card absolute top-[calc(100%+0.5rem)] z-30 w-full rounded-2xl border p-2 shadow-xl"
-        >
-          <div className="max-h-64 overflow-y-auto">
-            {options.map((option) => {
-              const isSelected = option.value === value;
-
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  role="option"
-                  aria-selected={isSelected}
-                  onClick={() => {
-                    onChange(option.value);
-                    setOpen(false);
-                  }}
-                  className={cn(
-                    "flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm",
-                    isSelected
-                      ? "bg-primary-soft text-primary font-semibold"
-                      : "text-foreground hover:bg-background-soft",
-                  )}
-                >
-                  <span className="min-w-0 truncate">{option.label}</span>
-                  {isSelected ? (
-                    <span className="ml-3 shrink-0" aria-hidden="true">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="block"
-                      >
-                        <path
-                          d="M20 6L9 17L4 12"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-    </div>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className={cn("w-full", className)} aria-label={placeholder}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
@@ -297,84 +185,47 @@ function resolveActionIntent(
   return "load";
 }
 
-function GhostActionButton({
-  className,
-  children,
-  intent,
-  onClick,
-  disabled,
-  "aria-label": ariaLabel,
-  ...props
-}: ActionButtonProps) {
-  const [ripple, setRipple] = useState(false);
-  const action = resolveActionIntent(intent, children, ariaLabel);
-
-  function triggerRipple() {
-    setRipple(false);
-    requestAnimationFrame(() => setRipple(true));
-  }
-
-  return (
-    <button
-      type="button"
-      {...props}
-      disabled={disabled}
-      aria-label={ariaLabel}
-      data-action={action}
-      className={cn("tool-action-btn", className)}
-      onClick={(event) => {
-        if (!disabled) {
-          triggerRipple();
-        }
-        onClick?.(event);
-      }}
-    >
-      <span className="tool-action-btn__glow" aria-hidden />
-      <span className="tool-action-btn__ring" aria-hidden />
-      <span
-        className={cn("tool-action-btn__ripple", ripple && "tool-action-btn__ripple--active")}
-        aria-hidden
-        onAnimationEnd={() => setRipple(false)}
-      />
-      <span className="tool-action-btn__shine" aria-hidden />
-      <span className="tool-action-btn__content">{children}</span>
-    </button>
-  );
-}
-
 export function ActionButton({
   variant = "secondary",
   className,
   children,
   intent,
+  "aria-label": ariaLabel,
   ...props
 }: ActionButtonProps) {
   if (variant === "ghost") {
+    const action = resolveActionIntent(intent, children, ariaLabel);
+
     return (
-      <GhostActionButton className={className} intent={intent} {...props}>
+      <Button
+        type="button"
+        variant="outline"
+        data-action={action}
+        aria-label={ariaLabel}
+        className={cn(
+          "rounded-full",
+          action === "clear"
+            ? "hover:border-destructive/40 hover:text-destructive"
+            : "hover:border-primary/40",
+          className,
+        )}
+        {...props}
+      >
         {children}
-      </GhostActionButton>
+      </Button>
     );
   }
 
-  const variants = {
-    primary:
-      "bg-foreground text-background hover:opacity-90 disabled:bg-border disabled:text-muted-foreground",
-    secondary:
-      "bg-primary text-white hover:shadow-lg hover:shadow-primary/20 disabled:bg-border disabled:text-muted-foreground",
-  };
-
   return (
-    <button
+    <Button
+      type="button"
+      variant={variant === "primary" ? "default" : "default"}
+      aria-label={ariaLabel}
+      className={cn("rounded-full", className)}
       {...props}
-      className={cn(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed",
-        variants[variant],
-        className,
-      )}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -386,7 +237,6 @@ type CopyButtonProps = {
 
 export function CopyButton({ value, label = "Copy output", className }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
-  const [ripple, setRipple] = useState(false);
 
   useEffect(() => {
     if (!copied) {
@@ -397,41 +247,27 @@ export function CopyButton({ value, label = "Copy output", className }: CopyButt
     return () => window.clearTimeout(timer);
   }, [copied]);
 
-  function triggerRipple() {
-    setRipple(false);
-    requestAnimationFrame(() => setRipple(true));
-  }
-
   return (
-    <button
+    <Button
       type="button"
-      className={cn("copy-output-btn", copied && "copy-output-btn--copied", className)}
+      variant={copied ? "default" : "outline"}
+      size="sm"
+      className={cn("rounded-full", copied && "bg-success text-white", className)}
       aria-label={copied ? "Copied to clipboard" : label}
       disabled={!value}
       onClick={async () => {
-        triggerRipple();
         await navigator.clipboard.writeText(value);
         setCopied(true);
         capturePosthog("tool_output_copied", { method: "button", output_length: value.length });
       }}
     >
-      <span className="copy-output-btn__glow" aria-hidden />
-      <span className="copy-output-btn__ring" aria-hidden />
-      <span
-        className={cn("copy-output-btn__ripple", ripple && "copy-output-btn__ripple--active")}
-        aria-hidden
-        onAnimationEnd={() => setRipple(false)}
-      />
-      {!copied ? <span className="copy-output-btn__shine" aria-hidden /> : null}
-      <span className="copy-output-btn__content">
-        {copied ? (
-          <Check className="copy-output-btn__icon" strokeWidth={2.5} aria-hidden />
-        ) : (
-          <Copy className="copy-output-btn__icon" strokeWidth={2.25} aria-hidden />
-        )}
-        <span>{copied ? "Copied!" : label}</span>
-      </span>
-    </button>
+      {copied ? (
+        <Check className="size-3.5" strokeWidth={2.5} aria-hidden />
+      ) : (
+        <Copy className="size-3.5" strokeWidth={2.25} aria-hidden />
+      )}
+      <span>{copied ? "Copied!" : label}</span>
+    </Button>
   );
 }
 

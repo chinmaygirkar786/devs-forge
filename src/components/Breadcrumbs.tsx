@@ -1,4 +1,14 @@
 import Link from "next/link";
+import { Fragment } from "react";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export type BreadcrumbItem = {
   label: string;
@@ -11,34 +21,27 @@ type BreadcrumbsProps = {
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="text-muted-foreground flex flex-wrap items-center gap-2 text-sm">
+    <Breadcrumb className="mb-6">
+      <BreadcrumbList>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
           return (
-            <li key={`${item.label}-${index}`} className="flex items-center gap-2">
-              {index > 0 ? (
-                <span aria-hidden className="text-border-strong">
-                  /
-                </span>
-              ) : null}
-              {item.href && !isLast ? (
-                <Link href={item.href} className="hover:text-foreground">
-                  {item.label}
-                </Link>
-              ) : (
-                <span
-                  className={isLast ? "text-foreground font-medium" : undefined}
-                  aria-current={isLast ? "page" : undefined}
-                >
-                  {item.label}
-                </span>
-              )}
-            </li>
+            <Fragment key={`${item.label}-${index}`}>
+              {index > 0 ? <BreadcrumbSeparator /> : null}
+              <BreadcrumbItem>
+                {item.href && !isLast ? (
+                  <BreadcrumbLink asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                )}
+              </BreadcrumbItem>
+            </Fragment>
           );
         })}
-      </ol>
-    </nav>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }

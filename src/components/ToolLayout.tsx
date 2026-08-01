@@ -1,15 +1,17 @@
 import Link from "next/link";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolIcon } from "@/components/ToolIcon";
-import { routes, toolToLink } from "@/lib/internal-links";
+import { routes } from "@/lib/internal-links";
 import type { ToolDefinition } from "@/lib/tools";
-import {
-  getEffectiveRelatedCluster,
-  getRelatedClusterLabel,
-  getToolBySlug,
-  toolCategories,
-} from "@/lib/tools";
+import { toolCategories } from "@/lib/tools";
 
 type ToolLayoutProps = {
   tool: ToolDefinition;
@@ -17,13 +19,9 @@ type ToolLayoutProps = {
 };
 
 export function ToolLayout({ tool, children }: ToolLayoutProps) {
-  const relatedClusterId = getEffectiveRelatedCluster(tool.slug);
-  const relatedClusterLabel = relatedClusterId ? getRelatedClusterLabel(relatedClusterId) : null;
-
-  const featuredLinks = tool.internalLinkSlugs
-    .map((slug) => getToolBySlug(slug))
-    .filter((related): related is ToolDefinition => Boolean(related))
-    .slice(0, 6);
+  const tags = Array.from(
+    new Set([tool.keywordCluster.primary, ...tool.keywordCluster.secondary]),
+  ).slice(0, 6);
 
   return (
     <div className="page-fade">
@@ -39,26 +37,32 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
         ]}
       />
 
-      <section className="surface-card rounded-[2rem] p-6 sm:p-8">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-          <ToolIcon slug={tool.slug} size="lg" className="shadow-primary/10 shadow-sm" />
+      <section className="surface-card rounded-2xl p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+          <ToolIcon slug={tool.slug} size="md" />
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-start gap-3">
-              <Link
-                href={routes.category(tool.category)}
-                className="bg-primary-soft text-primary inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold tracking-[0.18em] whitespace-nowrap uppercase hover:opacity-90"
-              >
+            <Badge asChild variant="secondary" className="tracking-[0.14em] uppercase">
+              <Link href={routes.category(tool.category)}>
                 {toolCategories[tool.category].title}
               </Link>
-            </div>
+            </Badge>
 
-            <h1 className="text-foreground mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+            <h1 className="text-foreground mt-3 text-2xl font-black tracking-tight sm:text-3xl">
               {tool.pageHeading}
             </h1>
-            <p className="text-muted-foreground mt-2 text-sm font-medium">{tool.title}</p>
-            <p className="text-muted-foreground mt-4 max-w-3xl text-base leading-8 sm:text-lg">
+            <p className="text-muted-foreground mt-3 max-w-3xl text-base leading-7">
               {tool.description}
             </p>
+
+            {tags.length > 0 ? (
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <Badge key={tag} variant="outline">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
@@ -73,53 +77,8 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
       <div className="content-deferred mt-8">
         <p className="text-muted-foreground max-w-3xl text-base leading-8">{tool.seoIntro}</p>
 
-        {featuredLinks.length > 0 ? (
-          <section className="surface-card mt-8 rounded-3xl p-6">
-            <h2 className="text-foreground text-2xl font-bold">Related developer tools</h2>
-            {relatedClusterLabel ? (
-              <p className="text-primary mt-2 text-sm font-semibold">{relatedClusterLabel}</p>
-            ) : null}
-            <p className="text-muted-foreground mt-3 text-sm leading-7">
-              Continue your workflow with these free utilities on{" "}
-              {toolCategories[tool.category].title.toLowerCase()} and adjacent tasks—all
-              browser-based, no upload required.
-            </p>
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-              {featuredLinks.map((related) => {
-                const link = toolToLink(related, "related");
-
-                return (
-                  <li key={related.slug}>
-                    <Link
-                      href={link.href}
-                      prefetch={false}
-                      className="border-border hover:border-border-strong hover:bg-background-soft flex gap-3 rounded-2xl border p-4"
-                    >
-                      <ToolIcon slug={related.slug} size="sm" />
-                      <span className="min-w-0">
-                        <span className="text-foreground block font-semibold">{link.label}</span>
-                        <span className="text-muted-foreground mt-1 block text-sm leading-6">
-                          {link.description}
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-            <p className="text-muted-foreground mt-5 text-sm">
-              <Link
-                href={routes.toolsIndex}
-                className="text-primary font-semibold hover:opacity-90"
-              >
-                Browse all developer tools →
-              </Link>
-            </p>
-          </section>
-        ) : null}
-
         {tool.contentSections.length > 0 ? (
-          <article className="content-deferred surface-card mt-8 rounded-3xl p-6 sm:p-8">
+          <article className="content-deferred surface-card mt-8 rounded-2xl p-6 sm:p-8">
             {tool.contentSections.map((section) => (
               <section key={section.heading} className="mt-10 first:mt-0">
                 <h2 className="text-foreground text-2xl font-bold tracking-tight">
@@ -139,7 +98,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
         ) : null}
 
         <div className="content-deferred mt-8 space-y-6">
-          <section className="surface-card rounded-3xl p-6 sm:p-8">
+          <section className="surface-card rounded-2xl p-6 sm:p-8">
             <h2 className="text-foreground text-2xl font-bold">How it works</h2>
             <ol
               className={`text-muted-foreground mt-4 grid gap-4 text-sm leading-6 ${
@@ -161,19 +120,19 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
             </ol>
           </section>
 
-          <section className="surface-card rounded-3xl p-6 sm:p-8">
+          <section className="surface-card rounded-2xl p-6 sm:p-8">
             <h2 className="text-foreground text-2xl font-bold">Examples</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {tool.examples.map((example) => (
-                <div key={example.title} className="surface-muted rounded-2xl p-4">
+                <div key={example.title} className="surface-muted rounded-xl p-4">
                   <h3 className="text-foreground font-semibold">{example.title}</h3>
                   {example.input ? (
-                    <div className="bg-background text-muted-foreground mt-2 overflow-hidden rounded-2xl px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap">
+                    <div className="bg-background text-muted-foreground mt-2 overflow-hidden rounded-xl px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap">
                       {example.input}
                     </div>
                   ) : null}
                   {example.output ? (
-                    <div className="bg-background text-muted-foreground mt-2 overflow-hidden rounded-2xl px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap">
+                    <div className="bg-background text-muted-foreground mt-2 overflow-hidden rounded-xl px-4 py-3 font-mono text-xs leading-6 break-all whitespace-pre-wrap">
                       {example.output}
                     </div>
                   ) : null}
@@ -183,7 +142,7 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
           </section>
         </div>
 
-        <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
+        <section className="content-deferred surface-card mt-8 rounded-2xl p-6">
           <h2 className="text-foreground text-2xl font-bold">When to use this tool</h2>
           <ul className="text-muted-foreground mt-5 space-y-3 text-sm leading-7">
             {tool.useCases.map((useCase) => (
@@ -195,16 +154,20 @@ export function ToolLayout({ tool, children }: ToolLayoutProps) {
           </ul>
         </section>
 
-        <section className="content-deferred surface-card mt-8 rounded-3xl p-6">
+        <section className="content-deferred surface-card mt-8 rounded-2xl p-6">
           <h2 className="text-foreground text-2xl font-bold">Frequently asked questions</h2>
-          <div className="mt-5 space-y-6">
+          <Accordion type="single" collapsible className="mt-3">
             {tool.faqs.map((faq) => (
-              <div key={faq.question}>
-                <h3 className="text-foreground text-base font-semibold">{faq.question}</h3>
-                <p className="text-muted-foreground mt-2 text-sm leading-7">{faq.answer}</p>
-              </div>
+              <AccordionItem key={faq.question} value={faq.question}>
+                <AccordionTrigger className="text-foreground text-base font-semibold">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm leading-7">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </section>
       </div>
     </div>

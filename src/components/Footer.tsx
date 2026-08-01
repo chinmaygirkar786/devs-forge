@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { Globe, Mail } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { SiteLogo } from "@/components/SiteLogo";
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/social-icons";
+import { routes } from "@/lib/internal-links";
+import { siteConfig } from "@/lib/site";
+import { tools } from "@/tools";
 
 function HeartIcon() {
   return (
@@ -14,16 +20,21 @@ function HeartIcon() {
     </svg>
   );
 }
-import { routes } from "@/lib/internal-links";
-import { siteConfig } from "@/lib/site";
-import { tools } from "@/tools";
+
+const socialLinks = [
+  { href: siteConfig.social.portfolio, label: "Portfolio", icon: Globe },
+  { href: `mailto:${siteConfig.social.gmail}`, label: "Email", icon: Mail },
+  { href: siteConfig.social.linkedin, label: "LinkedIn", icon: LinkedInIcon },
+  { href: siteConfig.social.x, label: "X (Twitter)", icon: XIcon },
+  { href: siteConfig.social.github, label: "GitHub", icon: GitHubIcon },
+];
 
 export function Footer() {
   const footerTools = tools.slice(0, 6);
 
   return (
     <footer className="border-border mt-20 border-t">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:px-8">
         <div>
           <div className="flex items-center gap-3">
             <SiteLogo size="sm" />
@@ -99,6 +110,26 @@ export function Footer() {
             </li>
             <li>Local-only workflows for speed and privacy</li>
           </ul>
+        </div>
+
+        <div>
+          <h3 className="text-muted-foreground text-sm font-semibold tracking-[0.2em] uppercase">
+            Connect
+          </h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {socialLinks.map((social) => (
+              <Button key={social.label} asChild variant="outline" size="icon" title={social.label}>
+                <a
+                  href={social.href}
+                  target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                >
+                  <social.icon className="size-4" aria-hidden />
+                  <span className="sr-only">{social.label}</span>
+                </a>
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 

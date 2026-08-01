@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Globe, Mail } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/social-icons";
 import { absoluteUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
@@ -47,6 +51,50 @@ export default function AboutPage() {
             </Link>
             .
           </p>
+        </div>
+      </section>
+
+      <section className="surface-card mt-8 rounded-[2rem] p-6 sm:p-8">
+        <Badge variant="secondary" className="tracking-[0.14em] uppercase">
+          Built by
+        </Badge>
+        <h2 className="text-foreground mt-4 text-3xl font-black tracking-tight">{"{{NAME}}"}</h2>
+        <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-8">{"{{BIO}}"}</p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Button asChild variant="outline" className="rounded-full">
+            <a href={siteConfig.social.portfolio} target="_blank" rel="noopener noreferrer">
+              <Globe className="size-4" aria-hidden />
+              <span>{"{{PORTFOLIO}}"}</span>
+            </a>
+          </Button>
+
+          <div className="flex flex-wrap items-center gap-2" aria-label="{{SOCIAL_LINKS}}">
+            <Button asChild variant="outline" size="icon" title="Email">
+              <a href={`mailto:${siteConfig.social.gmail}`}>
+                <Mail className="size-4" aria-hidden />
+                <span className="sr-only">Email</span>
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="icon" title="LinkedIn">
+              <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">
+                <LinkedInIcon className="size-4" aria-hidden />
+                <span className="sr-only">LinkedIn</span>
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="icon" title="X (Twitter)">
+              <a href={siteConfig.social.x} target="_blank" rel="noopener noreferrer">
+                <XIcon className="size-4" aria-hidden />
+                <span className="sr-only">X (Twitter)</span>
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="icon" title="GitHub">
+              <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">
+                <GitHubIcon className="size-4" aria-hidden />
+                <span className="sr-only">GitHub</span>
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
     </div>

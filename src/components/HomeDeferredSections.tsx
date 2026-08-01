@@ -3,7 +3,8 @@
 import { lazy, Suspense, useSyncExternalStore } from "react";
 
 import { LazyWhenVisible } from "@/components/LazyWhenVisible";
-import { HomeExplorerSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
+import { CategoriesSectionSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
+import type { CategoryExplorerCategory } from "@/components/CategoryExplorer";
 import {
   getToolUsageHistory,
   getToolUsageHistoryServerSnapshot,
@@ -16,21 +17,14 @@ const RecentlyUsedTools = lazy(() =>
   })),
 );
 
-const HomeExplorer = lazy(() =>
-  import("@/components/HomeExplorer").then((module) => ({
-    default: module.HomeExplorer,
+const CategoryExplorer = lazy(() =>
+  import("@/components/CategoryExplorer").then((module) => ({
+    default: module.CategoryExplorer,
   })),
 );
 
-type HomeExplorerTool = {
-  slug: string;
-  title: string;
-  description: string;
-  keywords: string[];
-};
-
 type HomeDeferredSectionsProps = {
-  explorerTools: HomeExplorerTool[];
+  categories: CategoryExplorerCategory[];
 };
 
 function DeferredRecentlyUsedTools() {
@@ -53,14 +47,14 @@ function DeferredRecentlyUsedTools() {
   );
 }
 
-export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProps) {
+export function HomeDeferredSections({ categories }: HomeDeferredSectionsProps) {
   return (
     <div className="space-y-10">
       <DeferredRecentlyUsedTools />
 
-      <LazyWhenVisible fallback={<HomeExplorerSkeleton />} rootMargin="0px">
-        <Suspense fallback={<HomeExplorerSkeleton />}>
-          <HomeExplorer tools={explorerTools} />
+      <LazyWhenVisible fallback={<CategoriesSectionSkeleton />} rootMargin="0px">
+        <Suspense fallback={<CategoriesSectionSkeleton />}>
+          <CategoryExplorer categories={categories} />
         </Suspense>
       </LazyWhenVisible>
     </div>

@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { PwaProviderDeferred } from "@/components/PwaProviderDeferred";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { isMacUserAgent } from "@/lib/platform";
 import { siteConfig } from "@/lib/site";
 import { toolSearchIndex } from "@/lib/tool-search-index";
@@ -44,8 +45,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f9fafb" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -72,12 +73,14 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${geistSans.className} flex min-h-full flex-col`}>
-        <Navbar searchIndex={toolSearchIndex} isMac={isMac} />
-        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
-          {children}
-        </main>
-        <Footer />
-        <PwaProviderDeferred />
+        <TooltipProvider delayDuration={150}>
+          <Navbar searchIndex={toolSearchIndex} isMac={isMac} />
+          <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-8 pb-10 sm:px-6 lg:px-8">
+            {children}
+          </main>
+          <Footer />
+          <PwaProviderDeferred />
+        </TooltipProvider>
       </body>
     </html>
   );

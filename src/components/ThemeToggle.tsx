@@ -3,6 +3,7 @@
 import { Monitor, Moon, Sun, type LucideIcon } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   getThemePreferenceServerSnapshot,
   getThemePreferenceSnapshot,
@@ -11,15 +12,13 @@ import {
   subscribeToThemePreference,
   type ThemePreference,
 } from "@/lib/theme";
-import { cn } from "@/lib/utils";
 
 const options: Array<{
   value: ThemePreference;
   label: string;
   icon: LucideIcon;
-  iconClass?: string;
 }> = [
-  { value: "light", label: "Light", icon: Sun, iconClass: "theme-toggle-icon--sun" },
+  { value: "light", label: "Light", icon: Sun },
   { value: "dark", label: "Dark", icon: Moon },
   { value: "system", label: "System", icon: Monitor },
 ];
@@ -52,38 +51,36 @@ export function ThemeToggle() {
     return () => media.removeEventListener("change", listener);
   }, [preference]);
 
-  function onChange(nextPreference: ThemePreference) {
-    setThemePreference(nextPreference);
+  function onChange(nextPreference: string) {
+    if (nextPreference) {
+      setThemePreference(nextPreference as ThemePreference);
+    }
   }
 
   return (
-    <div
-      role="group"
+    <ToggleGroup
+      type="single"
+      variant="outline"
+      value={preference}
+      onValueChange={onChange}
       aria-label="Color theme"
-      className="theme-toggle surface-muted shrink-0 rounded-full p-1"
+      className="border-border shrink-0 rounded-full border p-0.5"
     >
-      <span aria-hidden className="theme-toggle-indicator" data-active={preference} />
       {options.map((option) => {
         const Icon = option.icon;
-        const isActive = preference === option.value;
 
         return (
-          <button
+          <ToggleGroupItem
             key={option.value}
-            type="button"
-            aria-pressed={isActive}
-            onClick={() => onChange(option.value)}
-            className="theme-toggle-option whitespace-nowrap"
+            value={option.value}
+            aria-label={option.label}
+            className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground gap-1.5 rounded-full border-none px-3 text-xs font-semibold whitespace-nowrap"
           >
-            <Icon
-              className={cn("theme-toggle-icon", option.iconClass)}
-              strokeWidth={2.25}
-              aria-hidden
-            />
-            <span>{option.label}</span>
-          </button>
+            <Icon className="size-3.5" strokeWidth={2.25} aria-hidden />
+            <span className="hidden sm:inline">{option.label}</span>
+          </ToggleGroupItem>
         );
       })}
-    </div>
+    </ToggleGroup>
   );
 }
