@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, Search } from "lucide-react";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState, type MouseEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,12 +31,28 @@ function preloadCommandPalette() {
   void import("@/components/CommandPalette");
 }
 
+/** Same-page hash links (e.g. /#categories) need an explicit hash update so deferred sections can mount + scroll. */
+function activateHomeHash(href: string, pathname: string, event: MouseEvent<HTMLAnchorElement>) {
+  if (!href.startsWith("/#") || pathname !== "/") {
+    return false;
+  }
+
+  event.preventDefault();
+  const hash = href.slice(1);
+  if (window.location.hash !== hash) {
+    window.history.pushState(null, "", href);
+  }
+  window.dispatchEvent(new HashChangeEvent("hashchange"));
+  return true;
+}
+
 type NavbarProps = {
   searchIndex: ToolSearchEntry[];
   isMac: boolean;
 };
 
 export function Navbar({ searchIndex, isMac }: NavbarProps) {
+  const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [paletteMounted, setPaletteMounted] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -81,6 +98,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
                   href={item.href}
                   prefetch={false}
                   className="hover:text-foreground"
+                  onClick={(event) => activateHomeHash(item.href, pathname, event)}
                 >
                   {item.label}
                 </Link>
@@ -141,6 +159,7 @@ export function Navbar({ searchIndex, isMac }: NavbarProps) {
                         href={item.href}
                         prefetch={false}
                         className="hover:bg-muted text-foreground rounded-lg px-3 py-2.5 text-sm font-medium"
+                        onClick={(event) => activateHomeHash(item.href, pathname, event)}
                       >
                         {item.label}
                       </Link>

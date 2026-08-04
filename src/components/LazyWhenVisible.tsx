@@ -7,6 +7,8 @@ type LazyWhenVisibleProps = {
   fallback?: React.ReactNode;
   rootMargin?: string;
   minHeight?: string;
+  /** Mount children immediately (e.g. when navigating to a hash target inside). */
+  forceVisible?: boolean;
 };
 
 export function LazyWhenVisible({
@@ -14,11 +16,17 @@ export function LazyWhenVisible({
   fallback = null,
   rootMargin = "200px 0px",
   minHeight,
+  forceVisible = false,
 }: LazyWhenVisibleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const show = forceVisible || visible;
 
   useEffect(() => {
+    if (show) {
+      return;
+    }
+
     const node = containerRef.current;
     if (!node) {
       return;
@@ -43,11 +51,11 @@ export function LazyWhenVisible({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [rootMargin]);
+  }, [rootMargin, show]);
 
   return (
     <div ref={containerRef} style={minHeight ? { minHeight } : undefined}>
-      {visible ? children : fallback}
+      {show ? children : fallback}
     </div>
   );
 }

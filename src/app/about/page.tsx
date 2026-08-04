@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Globe, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -62,13 +62,6 @@ export default function AboutPage() {
         <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-8">{"{{BIO}}"}</p>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button asChild variant="outline" className="rounded-full">
-            <a href={siteConfig.social.portfolio} target="_blank" rel="noopener noreferrer">
-              <Globe className="size-4" aria-hidden />
-              <span>{"{{PORTFOLIO}}"}</span>
-            </a>
-          </Button>
-
           <div className="flex flex-wrap items-center gap-2" aria-label="{{SOCIAL_LINKS}}">
             <Button asChild variant="outline" size="icon" title="Email">
               <a href={`mailto:${siteConfig.social.gmail}`}>

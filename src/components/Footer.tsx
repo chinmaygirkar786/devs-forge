@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Globe, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SiteLogo } from "@/components/SiteLogo";
@@ -22,7 +22,6 @@ function HeartIcon() {
 }
 
 const socialLinks = [
-  // { href: siteConfig.social.portfolio, label: "Portfolio", icon: Globe },
   { href: `mailto:${siteConfig.social.gmail}`, label: "Email", icon: Mail },
   { href: siteConfig.social.linkedin, label: "LinkedIn", icon: LinkedInIcon },
   { href: siteConfig.social.x, label: "X (Twitter)", icon: XIcon },

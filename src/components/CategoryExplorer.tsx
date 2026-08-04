@@ -46,13 +46,16 @@ export function CategoryExplorer({ categories }: CategoryExplorerProps) {
   const totalMatches = filteredCategories.reduce((sum, category) => sum + category.tools.length, 0);
 
   return (
-    <section id="categories" className="space-y-8">
+    <section className="space-y-8" aria-labelledby="categories-heading">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="text-muted-foreground text-sm font-semibold tracking-[0.22em] uppercase">
             Browse by category
           </p>
-          <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+          <h2
+            id="categories-heading"
+            className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl"
+          >
             Developer tools categories
           </h2>
           <p className="text-muted-foreground mt-4 text-base leading-8">
