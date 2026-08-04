@@ -40,15 +40,20 @@ export default async function Home() {
       <SEOHead jsonLd={buildHomeJsonLd()} />
 
       <section className="surface-card relative overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
-        <Image
-          src="/hero-illustration.png"
-          alt=""
-          fill
-          loading="eager"
-          sizes="(min-width: 1024px) 60vw, 100vw"
-          className="pointer-events-none opacity-[0.05] select-none dark:opacity-[0.07]"
-          style={{ objectFit: "cover", objectPosition: "right center" }}
-        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 select-none [mask-image:linear-gradient(90deg,transparent_0%,transparent_35%,black_70%)]"
+        >
+          <Image
+            src="/hero-illustration.png"
+            alt=""
+            fill
+            loading="eager"
+            sizes="(min-width: 1024px) 55vw, 100vw"
+            className="opacity-[0.06] mix-blend-multiply dark:opacity-[0.1] dark:invert dark:mix-blend-soft-light"
+            style={{ objectFit: "cover", objectPosition: "right center" }}
+          />
+        </div>
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
           <div>
             <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
