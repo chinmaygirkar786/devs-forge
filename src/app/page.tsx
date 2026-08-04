@@ -69,27 +69,14 @@ export default async function Home() {
               ))}
             </ul>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8">
               <Link
                 href={routes.toolsIndex}
                 prefetch
-                className="bg-foreground text-background rounded-full px-5 py-3 text-sm font-semibold"
+                className="bg-foreground text-background inline-flex rounded-full px-5 py-3 text-sm font-semibold"
               >
                 Browse all tools
               </Link>
-              <Link
-                href={routes.tool("json-formatter")}
-                prefetch
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                JSON Formatter
-              </Link>
-              <button
-                type="button"
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                <SearchShortcutPhrase template="press-to-search" isMac={isMac} />
-              </button>
             </div>
           </div>
 
