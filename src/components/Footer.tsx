@@ -22,7 +22,7 @@ function HeartIcon() {
 }
 
 const socialLinks = [
-  { href: siteConfig.social.portfolio, label: "Portfolio", icon: Globe },
+  // { href: siteConfig.social.portfolio, label: "Portfolio", icon: Globe },
   { href: `mailto:${siteConfig.social.gmail}`, label: "Email", icon: Mail },
   { href: siteConfig.social.linkedin, label: "LinkedIn", icon: LinkedInIcon },
   { href: siteConfig.social.x, label: "X (Twitter)", icon: XIcon },

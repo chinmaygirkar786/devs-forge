@@ -43,10 +43,10 @@ export const siteConfig = {
   ],
   /** Placeholder personal/social links — replace with real URLs before launch. */
   social: {
-    portfolio: "{{PORTFOLIO_URL}}",
-    gmail: "{{GMAIL}}",
-    linkedin: "{{LINKEDIN_URL}}",
-    x: "{{X_URL}}",
-    github: "{{GITHUB_URL}}",
+    // portfolio: "{{PORTFOLIO_URL}}",
+    gmail: "chinmaygirkar542@gmail.com",
+    linkedin: "https://www.linkedin.com/in/chinmaygirkar/",
+    x: "https://x.com/chinmay_girkar",
+    github: "https://github.com/chinmaygirkar786",
   },
 };
