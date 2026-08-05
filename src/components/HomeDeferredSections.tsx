@@ -1,9 +1,10 @@
 "use client";
 
-import { lazy, Suspense, useSyncExternalStore } from "react";
+import { lazy, Suspense, useEffect, useState, useSyncExternalStore } from "react";
 
 import { LazyWhenVisible } from "@/components/LazyWhenVisible";
-import { HomeExplorerSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
+import { CategoriesSectionSkeleton, RecentlyUsedSkeleton } from "@/components/home-skeletons";
+import type { CategoryExplorerCategory } from "@/components/CategoryExplorer";
 import {
   getToolUsageHistory,
   getToolUsageHistoryServerSnapshot,
@@ -16,22 +17,35 @@ const RecentlyUsedTools = lazy(() =>
   })),
 );
 
-const HomeExplorer = lazy(() =>
-  import("@/components/HomeExplorer").then((module) => ({
-    default: module.HomeExplorer,
+const CategoryExplorer = lazy(() =>
+  import("@/components/CategoryExplorer").then((module) => ({
+    default: module.CategoryExplorer,
   })),
 );
 
-type HomeExplorerTool = {
-  slug: string;
-  title: string;
-  description: string;
-  keywords: string[];
+type HomeDeferredSectionsProps = {
+  categories: CategoryExplorerCategory[];
 };
 
-type HomeDeferredSectionsProps = {
-  explorerTools: HomeExplorerTool[];
-};
+function useCategoriesHashTarget() {
+  const [targeted, setTargeted] = useState(false);
+  const [scrollToken, setScrollToken] = useState(0);
+
+  useEffect(() => {
+    const sync = () => {
+      if (window.location.hash === "#categories") {
+        setTargeted(true);
+        setScrollToken((token) => token + 1);
+      }
+    };
+
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+
+  return { targeted, scrollToken };
+}
 
 function DeferredRecentlyUsedTools() {
   const recent = useSyncExternalStore(
@@ -53,16 +67,48 @@ function DeferredRecentlyUsedTools() {
   );
 }
 
-export function HomeDeferredSections({ explorerTools }: HomeDeferredSectionsProps) {
+export function HomeDeferredSections({ categories }: HomeDeferredSectionsProps) {
+  const { targeted: forceCategories, scrollToken } = useCategoriesHashTarget();
+
+  useEffect(() => {
+    if (!scrollToken) {
+      return;
+    }
+
+    const scrollToCategories = () => {
+      document.getElementById("categories")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    // Wait a frame so the section (or its skeleton) is laid out, then again after
+    // the lazy CategoryExplorer chunk mounts so the final position is correct.
+    const frameId = requestAnimationFrame(scrollToCategories);
+    const timerId = window.setTimeout(scrollToCategories, 120);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.clearTimeout(timerId);
+    };
+  }, [scrollToken]);
+
   return (
     <div className="space-y-10">
       <DeferredRecentlyUsedTools />
 
-      <LazyWhenVisible fallback={<HomeExplorerSkeleton />} rootMargin="0px">
-        <Suspense fallback={<HomeExplorerSkeleton />}>
-          <HomeExplorer tools={explorerTools} />
-        </Suspense>
-      </LazyWhenVisible>
+      {/* Stable hash target — must exist before CategoryExplorer lazy-mounts. */}
+      <div id="categories" className="scroll-mt-24">
+        <LazyWhenVisible
+          fallback={<CategoriesSectionSkeleton />}
+          rootMargin="0px"
+          forceVisible={forceCategories}
+        >
+          <Suspense fallback={<CategoriesSectionSkeleton />}>
+            <CategoryExplorer categories={categories} />
+          </Suspense>
+        </LazyWhenVisible>
+      </div>
     </div>
   );
 }

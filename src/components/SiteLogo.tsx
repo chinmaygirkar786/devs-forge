@@ -19,7 +19,7 @@ export function SiteLogo({ size = "md", className }: SiteLogoProps) {
     <span
       aria-hidden
       className={cn(
-        "from-primary to-accent shadow-primary/25 flex shrink-0 items-center justify-center bg-gradient-to-br font-black text-white shadow-lg",
+        "bg-primary text-primary-foreground flex shrink-0 items-center justify-center font-black",
         sizeClasses[size],
         className,
       )}

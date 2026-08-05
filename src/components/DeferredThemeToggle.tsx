@@ -2,6 +2,8 @@
 
 import { lazy, Suspense, useEffect, useState } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 const ThemeToggle = lazy(() =>
   import("@/components/ThemeToggle").then((module) => ({
     default: module.ThemeToggle,
@@ -10,10 +12,10 @@ const ThemeToggle = lazy(() =>
 
 function ThemeToggleSkeleton() {
   return (
-    <div className="theme-toggle-skeleton skeleton-pulse surface-muted shrink-0" aria-hidden>
-      <div className="skeleton-bar h-[26px] w-[50px] rounded-full" />
-      <div className="skeleton-bar h-[26px] w-[50px] rounded-full" />
-      <div className="skeleton-bar h-[26px] w-[58px] rounded-full" />
+    <div className="theme-toggle-skeleton shrink-0" aria-hidden>
+      <Skeleton className="h-[26px] w-[38px] rounded-full sm:w-[50px]" />
+      <Skeleton className="h-[26px] w-[38px] rounded-full sm:w-[50px]" />
+      <Skeleton className="h-[26px] w-[38px] rounded-full sm:w-[58px]" />
     </div>
   );
 }

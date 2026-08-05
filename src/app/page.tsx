@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { headers } from "next/headers";
 import Link from "next/link";
 
 import { HomeDeferredSections } from "@/components/HomeDeferredSections";
 import { DeferredReveal } from "@/components/DeferredReveal";
-import {
-  CategoriesSectionSkeleton,
-  HeroPopularToolsSkeleton,
-  WorkflowSectionSkeleton,
-} from "@/components/home-skeletons";
+import { HeroPopularToolsSkeleton, WorkflowSectionSkeleton } from "@/components/home-skeletons";
 import { SearchShortcutPhrase } from "@/components/SearchShortcutHint";
 import { SEOHead } from "@/components/SEOHead";
 import { ToolCardLink } from "@/components/ToolCardLink";
@@ -16,31 +13,48 @@ import { routes } from "@/lib/internal-links";
 import { isMacUserAgent } from "@/lib/platform";
 import { buildHomeJsonLd, buildHomeMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
-import { getPopularTools, getToolsByCategory, tools } from "@/lib/tools";
+import { getPopularTools, getToolsByCategory } from "@/lib/tools";
 
 export const metadata: Metadata = buildHomeMetadata();
 
 export default async function Home() {
   const userAgent = (await headers()).get("user-agent") ?? "";
   const isMac = isMacUserAgent(userAgent);
-  const categories = getToolsByCategory();
   const popularTools = getPopularTools(6);
-  const searchableTools = tools.map(
-    ({ slug, title, description, keywords, seoLinkLabel, keywordCluster }) => ({
-      slug,
-      title: seoLinkLabel,
-      cardTitle: title,
-      description,
-      keywords: [keywordCluster.primary, ...keywords],
-    }),
-  );
+  const categories = getToolsByCategory().map((category) => ({
+    key: category.key,
+    title: category.title,
+    description: category.description,
+    tools: category.tools.map((tool) => ({
+      slug: tool.slug,
+      label: tool.seoLinkLabel,
+      title: tool.title,
+      searchText: [tool.title, tool.description, tool.keywordCluster.primary, ...tool.keywords]
+        .join(" ")
+        .toLowerCase(),
+    })),
+  }));
 
   return (
     <div className="page-fade space-y-10">
       <SEOHead jsonLd={buildHomeJsonLd()} />
 
-      <section className="surface-card overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
+      <section className="surface-card relative overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(90deg,transparent_0%,transparent_35%,black_70%)] select-none"
+        >
+          <Image
+            src="/hero-illustration.png"
+            alt=""
+            fill
+            loading="eager"
+            sizes="(min-width: 1024px) 55vw, 100vw"
+            className="opacity-[0.06] mix-blend-multiply dark:opacity-[0.1] dark:mix-blend-soft-light dark:invert"
+            style={{ objectFit: "cover", objectPosition: "right center" }}
+          />
+        </div>
+        <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-center">
           <div>
             <p className="text-primary text-sm font-semibold tracking-[0.24em] uppercase">
               Free online developer tools
@@ -60,27 +74,14 @@ export default async function Home() {
               ))}
             </ul>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8">
               <Link
                 href={routes.toolsIndex}
                 prefetch
-                className="bg-foreground text-background rounded-full px-5 py-3 text-sm font-semibold"
+                className="bg-foreground text-background inline-flex rounded-full px-5 py-3 text-sm font-semibold"
               >
                 Browse all tools
               </Link>
-              <Link
-                href={routes.tool("json-formatter")}
-                prefetch
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                JSON Formatter
-              </Link>
-              <button
-                type="button"
-                className="border-border text-foreground rounded-full border px-5 py-3 text-sm font-semibold"
-              >
-                <SearchShortcutPhrase template="press-to-search" isMac={isMac} />
-              </button>
             </div>
           </div>
 
@@ -102,60 +103,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <HomeDeferredSections explorerTools={searchableTools} />
-
-      <DeferredReveal fallback={<CategoriesSectionSkeleton />}>
-        <section id="categories" className="space-y-8">
-          <div className="max-w-3xl">
-            <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-              Browse by category
-            </p>
-            <h2 className="text-foreground mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              Developer tools categories
-            </h2>
-            <p className="text-muted-foreground mt-4 text-base leading-8">
-              Explore free browser-based developer tools grouped by formatting, conversion,
-              generators, and utilities—each category links to every tool in that workflow.
-            </p>
-          </div>
-
-          <div className="grid gap-6 xl:grid-cols-4">
-            {categories.map((category) => (
-              <div key={category.key} className="surface-card rounded-3xl p-6">
-                <p className="text-primary text-sm font-semibold tracking-[0.22em] uppercase">
-                  {category.title}
-                </p>
-                <h3 className="text-foreground mt-3 text-2xl font-bold">
-                  <Link
-                    href={routes.category(category.key)}
-                    prefetch={false}
-                    className="hover:text-primary"
-                  >
-                    {category.tools.length} tools
-                  </Link>
-                </h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-7">
-                  {category.description}
-                </p>
-                <div className="mt-5 space-y-3 text-sm">
-                  {category.tools.map((tool) => (
-                    <Link
-                      key={tool.slug}
-                      href={routes.tool(tool.slug)}
-                      prefetch={false}
-                      title={tool.title}
-                      className="text-foreground hover:text-primary flex items-center gap-2"
-                    >
-                      <span className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
-                      <span className="font-medium">{tool.seoLinkLabel}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </DeferredReveal>
+      <HomeDeferredSections categories={categories} />
 
       <DeferredReveal fallback={<WorkflowSectionSkeleton />}>
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">

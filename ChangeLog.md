@@ -88,3 +88,28 @@
   - Timestamp Converter `Formatted output`
   - JSON to TypeScript Interface Generator `TypeScript interfaces`
 - Added clearer pointer affordances to Gradient Generator interactive controls, including the `Copy output` button and the native color picker opener inputs.
+
+## Step 9 - shadcn/ui migration and Vercel-inspired UI/UX overhaul
+
+- Migrated the UI onto `shadcn/ui` (Radix primitives + Tailwind v4 CSS-first config): `Button`, `Input`, `Textarea`, `Select`, `Command`/`CommandDialog`, `Breadcrumb`, `Card`, `Badge`, `Skeleton`, `ToggleGroup`, `Sheet`, `Accordion`, and `Tooltip`.
+  - Rebuilt `ThemeToggle` on `ToggleGroup`, `CommandPalette` on `Command` + `CommandDialog`, `Breadcrumbs` on `Breadcrumb`, and the tool UI primitives (`ActionButton`, `CopyButton`, `InputField`, `TextareaField`, `SelectField`, `DropdownField`) on their shadcn equivalents, preserving existing behavior, props, and PostHog analytics.
+  - Deleted the superseded custom components/CSS once each replacement was verified (bespoke button/toggle/command-palette animation classes, `HomeExplorer`).
+- Re-themed the app with a Vercel-inspired monochrome palette: near-black/white surfaces, flat 1px borders, minimal shadows, tighter radii, and a single restrained accent, defined via OKLCH CSS variables in `src/app/globals.css` alongside the full shadcn token set.
+- Restructured navigation and the home page:
+  - Trimmed the nav to `Categories` + `About` (logo still links home) and added a `Sheet`-based mobile menu.
+  - Removed the flat `HomeExplorer` tool list and replaced it with `CategoryExplorer`, which folds search directly into the category browsing cards.
+  - Added an AI-generated (Nano Banana) monochrome line-art hero illustration, rendered with `next/image` as a subtle background accent behind the hero copy.
+- Simplified the tool detail page (`ToolLayout`): shrank the hero, removed the "Related developer tools" section, added a **Tags** block sourced from each tool's keyword cluster, and converted the FAQ section into a shadcn `Accordion`.
+- Refreshed the footer and about page with a personal-info/social block: `siteConfig.social` links (email, LinkedIn, X, GitHub), a "Connect" icon-link column in the footer, and a "Built by" section on the About page.
+- Removed remaining dead CSS (`.text-gradient`, unused `.tool-card-interactive` hover rules) left over from the pre-shadcn theme.
+- Added a first-time test setup with Vitest + React Testing Library (`vitest.config.mts`, `npm run test`) and smoke tests covering theme preference cycling, category search filtering, and FAQ accordion expand/collapse — wired into `npm run validate`.
+
+## Step 10 - Home, about, and tool-page polish after the overhaul
+
+- Simplified the homepage hero CTA to a single **Browse all tools** button (removed the JSON Formatter and search-shortcut CTAs).
+- Fixed Categories nav scrolling when the category section is still deferred: stable `#categories` hash target always mounts, `LazyWhenVisible` supports `forceVisible`, and same-page `/#categories` clicks update the hash so the section loads and scrolls.
+- Tuned the hero illustration for both themes: soft light-grey in light mode, soft white in dark mode (`invert`), with lower opacity, blend modes, and a right-side mask so it sits behind the copy instead of competing with it.
+- Filled in the About page bio (casual, ~110 words) and real social links in `siteConfig.social` / footer Connect icons.
+- Added `cursor-pointer` to shared `Button`, `Toggle`, and `CommandItem` primitives so theme toggles, tool actions (Copy / Load example / Clear), and command-palette results show a pointer cursor.
+- Fixed the footer heart icon color (`text-danger`) so it is visible in light and dark mode (it previously used near-invisible `text-accent`).
+- Polished the FAQ accordion: horizontal padding on titles and answers, more space between title and body, and removed divider lines between items.

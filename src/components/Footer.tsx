@@ -1,29 +1,39 @@
 import Link from "next/link";
+import { Mail } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { SiteLogo } from "@/components/SiteLogo";
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/social-icons";
+import { routes } from "@/lib/internal-links";
+import { siteConfig } from "@/lib/site";
+import { tools } from "@/tools";
 
 function HeartIcon() {
   return (
     <svg
       aria-hidden
       viewBox="0 0 24 24"
-      className="text-accent h-4 w-4 shrink-0"
+      className="text-danger h-4 w-4 shrink-0"
       fill="currentColor"
     >
       <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
     </svg>
   );
 }
-import { routes } from "@/lib/internal-links";
-import { siteConfig } from "@/lib/site";
-import { tools } from "@/tools";
+
+const socialLinks = [
+  { href: `mailto:${siteConfig.social.gmail}`, label: "Email", icon: Mail },
+  { href: siteConfig.social.linkedin, label: "LinkedIn", icon: LinkedInIcon },
+  { href: siteConfig.social.x, label: "X (Twitter)", icon: XIcon },
+  { href: siteConfig.social.github, label: "GitHub", icon: GitHubIcon },
+];
 
 export function Footer() {
   const footerTools = tools.slice(0, 6);
 
   return (
     <footer className="border-border mt-20 border-t">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:px-8">
         <div>
           <div className="flex items-center gap-3">
             <SiteLogo size="sm" />
@@ -99,6 +109,26 @@ export function Footer() {
             </li>
             <li>Local-only workflows for speed and privacy</li>
           </ul>
+        </div>
+
+        <div>
+          <h3 className="text-muted-foreground text-sm font-semibold tracking-[0.2em] uppercase">
+            Connect
+          </h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {socialLinks.map((social) => (
+              <Button key={social.label} asChild variant="outline" size="icon" title={social.label}>
+                <a
+                  href={social.href}
+                  target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                >
+                  <social.icon className="size-4" aria-hidden />
+                  <span className="sr-only">{social.label}</span>
+                </a>
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 

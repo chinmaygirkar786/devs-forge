@@ -37,6 +37,7 @@ export function ToolCardLink({
       prefetch={prefetch}
       title={tooltip}
       className={cn(
+        "bg-card ring-foreground/10 block rounded-xl ring-1",
         layout === "horizontal" && "flex gap-4",
         interactive && "home-card-interactive",
         className,

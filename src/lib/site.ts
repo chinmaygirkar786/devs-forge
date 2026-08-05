@@ -38,8 +38,15 @@ export const siteConfig = {
     "Color palette, timestamp, and Markdown tools",
   ],
   navigation: [
-    { href: "/", label: "Home" },
-    { href: "/tools", label: "All Tools" },
     { href: "/#categories", label: "Categories" },
+    { href: "/about", label: "About" },
   ],
+  /** Placeholder personal/social links — replace with real URLs before launch. */
+  social: {
+    // portfolio: "{{PORTFOLIO_URL}}",
+    gmail: "chinmaygirkar542@gmail.com",
+    linkedin: "https://www.linkedin.com/in/chinmaygirkar/",
+    x: "https://x.com/chinmay_girkar",
+    github: "https://github.com/chinmaygirkar786",
+  },
 };
