@@ -21,11 +21,7 @@ function AccordionItem({
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
-    <AccordionPrimitive.Item
-      data-slot="accordion-item"
-      className={cn(className)}
-      {...props}
-    />
+    <AccordionPrimitive.Item data-slot="accordion-item" className={cn(className)} {...props} />
   );
 }
 
