@@ -63,8 +63,8 @@ export default function AboutPage() {
         </h2>
         <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-8">
           Hey, I&apos;m Chinmay — a software developer with about five years of experience building
-          frontend web and mobile apps, while steadily growing on the backend side too. Day to day
-          I work with React, Next.js, React Native, Expo, and TypeScript, and I&apos;m also
+          frontend web and mobile apps, while steadily growing on the backend side too. Day to day I
+          work with React, Next.js, React Native, Expo, and TypeScript, and I&apos;m also
           comfortable with Express, Fastify, and MongoDB. Devs Forge started as a learning project:
           I wanted to take something from scratch all the way to a real, globally available product
           on my own — the kind of everyday tools I wish were always one tab away. Outside of code,
