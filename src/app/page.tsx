@@ -42,7 +42,7 @@ export default async function Home() {
       <section className="surface-card relative overflow-hidden rounded-[2rem] p-6 sm:p-8 lg:p-10">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 select-none [mask-image:linear-gradient(90deg,transparent_0%,transparent_35%,black_70%)]"
+          className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(90deg,transparent_0%,transparent_35%,black_70%)] select-none"
         >
           <Image
             src="/hero-illustration.png"
@@ -50,7 +50,7 @@ export default async function Home() {
             fill
             loading="eager"
             sizes="(min-width: 1024px) 55vw, 100vw"
-            className="opacity-[0.06] mix-blend-multiply dark:opacity-[0.1] dark:invert dark:mix-blend-soft-light"
+            className="opacity-[0.06] mix-blend-multiply dark:opacity-[0.1] dark:mix-blend-soft-light dark:invert"
             style={{ objectFit: "cover", objectPosition: "right center" }}
           />
         </div>
