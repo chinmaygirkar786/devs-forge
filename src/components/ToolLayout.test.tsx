@@ -53,4 +53,31 @@ describe("ToolLayout FAQ accordion", () => {
 
     expect(screen.queryByText(/related developer tools/i)).not.toBeInTheDocument();
   });
+
+  it("renders keyword tags from the tool keyword cluster", () => {
+    render(
+      <ToolLayout tool={tool}>
+        <div>workspace</div>
+      </ToolLayout>,
+    );
+
+    expect(screen.getByText(tool.keywordCluster.primary)).toBeInTheDocument();
+  });
+
+  it("spaces FAQ triggers with horizontal padding and no item divider borders", () => {
+    render(
+      <ToolLayout tool={tool}>
+        <div>workspace</div>
+      </ToolLayout>,
+    );
+
+    const firstTrigger = screen.getByRole("button", { name: tool.faqs[0].question });
+    expect(firstTrigger.className).toMatch(/\bpx-3\b/);
+
+    const items = document.querySelectorAll('[data-slot="accordion-item"]');
+    expect(items.length).toBe(tool.faqs.length);
+    items.forEach((item) => {
+      expect(item.className).not.toMatch(/\bborder-b\b/);
+    });
+  });
 });
